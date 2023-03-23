@@ -1,0 +1,1886 @@
+
+
+=========== SyntheticControl_TRAIN.tsv ===========
+--> Nombre de sample : 300
+--> Labels :
+    --> 1 : 50 samples
+    --> 2 : 50 samples
+    --> 3 : 50 samples
+    --> 4 : 50 samples
+    --> 5 : 50 samples
+    --> 6 : 50 samples
+--> Imbalance degree : 0.0
+
+
+================ Worms_TRAIN.tsv =================
+--> Nombre de sample : 181
+--> Labels :
+    --> 1 : 76 samples
+    --> 2 : 31 samples
+    --> 3 : 25 samples
+    --> 4 : 32 samples
+    --> 5 : 17 samples
+--> Imbalance degree : 0.0
+
+
+============== Computers_TRAIN.tsv ===============
+--> Nombre de sample : 250
+--> Labels :
+    --> 1 : 125 samples
+    --> 2 : 125 samples
+--> Imbalance ratio : 1.0
+
+
+============= HouseTwenty_TRAIN.tsv ==============
+--> Nombre de sample : 40
+--> Labels :
+    --> 1 : 20 samples
+    --> 2 : 20 samples
+--> Imbalance ratio : 1.0
+
+
+=========== GestureMidAirD3_TRAIN.tsv ============
+--> Nombre de sample : 208
+--> Labels :
+    --> 1 : 8 samples
+    --> 2 : 8 samples
+    --> 3 : 8 samples
+    --> 4 : 8 samples
+    --> 5 : 8 samples
+    --> 6 : 8 samples
+    --> 7 : 8 samples
+    --> 8 : 8 samples
+    --> 9 : 8 samples
+    --> 10 : 8 samples
+    --> 11 : 8 samples
+    --> 12 : 8 samples
+    --> 13 : 8 samples
+    --> 14 : 8 samples
+    --> 15 : 8 samples
+    --> 16 : 8 samples
+    --> 17 : 8 samples
+    --> 18 : 8 samples
+    --> 19 : 8 samples
+    --> 20 : 8 samples
+    --> 21 : 8 samples
+    --> 22 : 8 samples
+    --> 23 : 8 samples
+    --> 24 : 8 samples
+    --> 25 : 8 samples
+    --> 26 : 8 samples
+--> Imbalance degree : 0.0
+
+
+============== Chinatown_TRAIN.tsv ===============
+--> Nombre de sample : 20
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+--> Imbalance ratio : 1.0
+
+
+======== UWaveGestureLibraryAll_TRAIN.tsv ========
+--> Nombre de sample : 896
+--> Labels :
+    --> 1 : 122 samples
+    --> 2 : 108 samples
+    --> 3 : 106 samples
+    --> 4 : 110 samples
+    --> 5 : 127 samples
+    --> 6 : 111 samples
+    --> 7 : 112 samples
+    --> 8 : 100 samples
+--> Imbalance degree : 0.0
+
+
+============== Strawberry_TRAIN.tsv ==============
+--> Nombre de sample : 613
+--> Labels :
+    --> 1 : 219 samples
+    --> 2 : 394 samples
+--> Imbalance ratio : 0.5558375634517766
+
+
+=========== GunPointAgeSpan_TRAIN.tsv ============
+--> Nombre de sample : 135
+--> Labels :
+    --> 1 : 68 samples
+    --> 2 : 67 samples
+--> Imbalance ratio : 0.9852941176470589
+
+
+=========== GestureMidAirD2_TRAIN.tsv ============
+--> Nombre de sample : 208
+--> Labels :
+    --> 1 : 8 samples
+    --> 2 : 8 samples
+    --> 3 : 8 samples
+    --> 4 : 8 samples
+    --> 5 : 8 samples
+    --> 6 : 8 samples
+    --> 7 : 8 samples
+    --> 8 : 8 samples
+    --> 9 : 8 samples
+    --> 10 : 8 samples
+    --> 11 : 8 samples
+    --> 12 : 8 samples
+    --> 13 : 8 samples
+    --> 14 : 8 samples
+    --> 15 : 8 samples
+    --> 16 : 8 samples
+    --> 17 : 8 samples
+    --> 18 : 8 samples
+    --> 19 : 8 samples
+    --> 20 : 8 samples
+    --> 21 : 8 samples
+    --> 22 : 8 samples
+    --> 23 : 8 samples
+    --> 24 : 8 samples
+    --> 25 : 8 samples
+    --> 26 : 8 samples
+--> Imbalance degree : 0.0
+
+
+============== BeetleFly_TRAIN.tsv ===============
+--> Nombre de sample : 20
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+--> Imbalance ratio : 1.0
+
+
+================ Wafer_TRAIN.tsv =================
+--> Nombre de sample : 1000
+--> Labels :
+    --> -1 : 97 samples
+    --> 1 : 903 samples
+--> Imbalance ratio : 0.10741971207087486
+
+
+================= CBF_TRAIN.tsv ==================
+--> Nombre de sample : 30
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 12 samples
+    --> 3 : 8 samples
+--> Imbalance degree : 0.0
+
+
+=========== ItalyPowerDemand_TRAIN.tsv ===========
+--> Nombre de sample : 67
+--> Labels :
+    --> 1 : 34 samples
+    --> 2 : 33 samples
+--> Imbalance ratio : 0.9705882352941176
+
+
+================= Yoga_TRAIN.tsv =================
+--> Nombre de sample : 300
+--> Labels :
+    --> 1 : 137 samples
+    --> 2 : 163 samples
+--> Imbalance ratio : 0.8404907975460123
+
+
+========== AllGestureWiimoteY_TRAIN.tsv ==========
+--> Nombre de sample : 300
+--> Labels :
+    --> 1 : 30 samples
+    --> 2 : 30 samples
+    --> 3 : 30 samples
+    --> 4 : 30 samples
+    --> 5 : 30 samples
+    --> 6 : 30 samples
+    --> 7 : 30 samples
+    --> 8 : 30 samples
+    --> 9 : 30 samples
+    --> 10 : 30 samples
+--> Imbalance degree : 0.0
+
+
+================ Trace_TRAIN.tsv =================
+--> Nombre de sample : 100
+--> Labels :
+    --> 1 : 26 samples
+    --> 2 : 21 samples
+    --> 3 : 22 samples
+    --> 4 : 31 samples
+--> Imbalance degree : 0.0
+
+
+========== PigAirwayPressure_TRAIN.tsv ===========
+--> Nombre de sample : 104
+--> Labels :
+    --> 1 : 2 samples
+    --> 2 : 2 samples
+    --> 3 : 2 samples
+    --> 4 : 2 samples
+    --> 5 : 2 samples
+    --> 6 : 2 samples
+    --> 7 : 2 samples
+    --> 8 : 2 samples
+    --> 9 : 2 samples
+    --> 10 : 2 samples
+    --> 11 : 2 samples
+    --> 12 : 2 samples
+    --> 13 : 2 samples
+    --> 14 : 2 samples
+    --> 15 : 2 samples
+    --> 16 : 2 samples
+    --> 17 : 2 samples
+    --> 18 : 2 samples
+    --> 19 : 2 samples
+    --> 20 : 2 samples
+    --> 21 : 2 samples
+    --> 22 : 2 samples
+    --> 23 : 2 samples
+    --> 24 : 2 samples
+    --> 25 : 2 samples
+    --> 26 : 2 samples
+    --> 27 : 2 samples
+    --> 28 : 2 samples
+    --> 29 : 2 samples
+    --> 30 : 2 samples
+    --> 31 : 2 samples
+    --> 32 : 2 samples
+    --> 33 : 2 samples
+    --> 34 : 2 samples
+    --> 35 : 2 samples
+    --> 36 : 2 samples
+    --> 37 : 2 samples
+    --> 38 : 2 samples
+    --> 39 : 2 samples
+    --> 40 : 2 samples
+    --> 41 : 2 samples
+    --> 42 : 2 samples
+    --> 43 : 2 samples
+    --> 44 : 2 samples
+    --> 45 : 2 samples
+    --> 46 : 2 samples
+    --> 47 : 2 samples
+    --> 48 : 2 samples
+    --> 49 : 2 samples
+    --> 50 : 2 samples
+    --> 51 : 2 samples
+    --> 52 : 2 samples
+--> Imbalance degree : 0.0
+
+
+============== ShapesAll_TRAIN.tsv ===============
+--> Nombre de sample : 600
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+    --> 3 : 10 samples
+    --> 4 : 10 samples
+    --> 5 : 10 samples
+    --> 6 : 10 samples
+    --> 7 : 10 samples
+    --> 8 : 10 samples
+    --> 9 : 10 samples
+    --> 10 : 10 samples
+    --> 11 : 10 samples
+    --> 12 : 10 samples
+    --> 13 : 10 samples
+    --> 14 : 10 samples
+    --> 15 : 10 samples
+    --> 16 : 10 samples
+    --> 17 : 10 samples
+    --> 18 : 10 samples
+    --> 19 : 10 samples
+    --> 20 : 10 samples
+    --> 21 : 10 samples
+    --> 22 : 10 samples
+    --> 23 : 10 samples
+    --> 24 : 10 samples
+    --> 25 : 10 samples
+    --> 26 : 10 samples
+    --> 27 : 10 samples
+    --> 28 : 10 samples
+    --> 29 : 10 samples
+    --> 30 : 10 samples
+    --> 31 : 10 samples
+    --> 32 : 10 samples
+    --> 33 : 10 samples
+    --> 34 : 10 samples
+    --> 35 : 10 samples
+    --> 36 : 10 samples
+    --> 37 : 10 samples
+    --> 38 : 10 samples
+    --> 39 : 10 samples
+    --> 40 : 10 samples
+    --> 41 : 10 samples
+    --> 42 : 10 samples
+    --> 43 : 10 samples
+    --> 44 : 10 samples
+    --> 45 : 10 samples
+    --> 46 : 10 samples
+    --> 47 : 10 samples
+    --> 48 : 10 samples
+    --> 49 : 10 samples
+    --> 50 : 10 samples
+    --> 51 : 10 samples
+    --> 52 : 10 samples
+    --> 53 : 10 samples
+    --> 54 : 10 samples
+    --> 55 : 10 samples
+    --> 56 : 10 samples
+    --> 57 : 10 samples
+    --> 58 : 10 samples
+    --> 59 : 10 samples
+    --> 60 : 10 samples
+--> Imbalance degree : 0.0
+
+
+================= Beef_TRAIN.tsv =================
+--> Nombre de sample : 30
+--> Labels :
+    --> 1 : 6 samples
+    --> 2 : 6 samples
+    --> 3 : 6 samples
+    --> 4 : 6 samples
+    --> 5 : 6 samples
+--> Imbalance degree : 0.0
+
+
+======== GunPointOldVersusYoung_TRAIN.tsv ========
+--> Nombre de sample : 136
+--> Labels :
+    --> 1 : 65 samples
+    --> 2 : 71 samples
+--> Imbalance ratio : 0.9154929577464789
+
+
+=========== MiddlePhalanxTW_TRAIN.tsv ============
+--> Nombre de sample : 399
+--> Labels :
+    --> 3 : 57 samples
+    --> 4 : 84 samples
+    --> 5 : 43 samples
+    --> 6 : 30 samples
+    --> 7 : 25 samples
+    --> 8 : 160 samples
+--> Imbalance degree : 0.0
+
+
+========== AllGestureWiimoteX_TRAIN.tsv ==========
+--> Nombre de sample : 300
+--> Labels :
+    --> 1 : 30 samples
+    --> 2 : 30 samples
+    --> 3 : 30 samples
+    --> 4 : 30 samples
+    --> 5 : 30 samples
+    --> 6 : 30 samples
+    --> 7 : 30 samples
+    --> 8 : 30 samples
+    --> 9 : 30 samples
+    --> 10 : 30 samples
+--> Imbalance degree : 0.0
+
+
+================= Meat_TRAIN.tsv =================
+--> Nombre de sample : 60
+--> Labels :
+    --> 1 : 20 samples
+    --> 2 : 20 samples
+    --> 3 : 20 samples
+--> Imbalance degree : 0.0
+
+
+=============== Herring_TRAIN.tsv ================
+--> Nombre de sample : 64
+--> Labels :
+    --> 1 : 39 samples
+    --> 2 : 25 samples
+--> Imbalance ratio : 0.6410256410256411
+
+
+===== MiddlePhalanxOutlineCorrect_TRAIN.tsv ======
+--> Nombre de sample : 600
+--> Labels :
+    --> 0 : 212 samples
+    --> 1 : 388 samples
+--> Imbalance ratio : 0.5463917525773195
+
+
+======== InsectEPGRegularTrain_TRAIN.tsv =========
+--> Nombre de sample : 62
+--> Labels :
+    --> 1 : 22 samples
+    --> 2 : 30 samples
+    --> 3 : 10 samples
+--> Imbalance degree : 0.0
+
+
+================ FordA_TRAIN.tsv =================
+--> Nombre de sample : 3601
+--> Labels :
+    --> -1 : 1846 samples
+    --> 1 : 1755 samples
+--> Imbalance ratio : 0.9507042253521126
+
+
+================= UMD_TRAIN.tsv ==================
+--> Nombre de sample : 36
+--> Labels :
+    --> 1 : 12 samples
+    --> 2 : 12 samples
+    --> 3 : 12 samples
+--> Imbalance degree : 0.0
+
+
+========== DodgerLoopWeekend_TRAIN.tsv ===========
+--> Nombre de sample : 20
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+--> Imbalance ratio : 1.0
+
+
+=========== GestureMidAirD1_TRAIN.tsv ============
+--> Nombre de sample : 208
+--> Labels :
+    --> 1 : 8 samples
+    --> 2 : 8 samples
+    --> 3 : 8 samples
+    --> 4 : 8 samples
+    --> 5 : 8 samples
+    --> 6 : 8 samples
+    --> 7 : 8 samples
+    --> 8 : 8 samples
+    --> 9 : 8 samples
+    --> 10 : 8 samples
+    --> 11 : 8 samples
+    --> 12 : 8 samples
+    --> 13 : 8 samples
+    --> 14 : 8 samples
+    --> 15 : 8 samples
+    --> 16 : 8 samples
+    --> 17 : 8 samples
+    --> 18 : 8 samples
+    --> 19 : 8 samples
+    --> 20 : 8 samples
+    --> 21 : 8 samples
+    --> 22 : 8 samples
+    --> 23 : 8 samples
+    --> 24 : 8 samples
+    --> 25 : 8 samples
+    --> 26 : 8 samples
+--> Imbalance degree : 0.0
+
+
+========= ShakeGestureWiimoteZ_TRAIN.tsv =========
+--> Nombre de sample : 50
+--> Labels :
+    --> 1 : 5 samples
+    --> 2 : 5 samples
+    --> 3 : 5 samples
+    --> 4 : 5 samples
+    --> 5 : 5 samples
+    --> 6 : 5 samples
+    --> 7 : 5 samples
+    --> 8 : 5 samples
+    --> 9 : 5 samples
+    --> 10 : 5 samples
+--> Imbalance degree : 0.0
+
+
+========== AllGestureWiimoteZ_TRAIN.tsv ==========
+--> Nombre de sample : 300
+--> Labels :
+    --> 1 : 30 samples
+    --> 2 : 30 samples
+    --> 3 : 30 samples
+    --> 4 : 30 samples
+    --> 5 : 30 samples
+    --> 6 : 30 samples
+    --> 7 : 30 samples
+    --> 8 : 30 samples
+    --> 9 : 30 samples
+    --> 10 : 30 samples
+--> Imbalance degree : 0.0
+
+
+======== PickupGestureWiimoteZ_TRAIN.tsv =========
+--> Nombre de sample : 50
+--> Labels :
+    --> 1 : 5 samples
+    --> 2 : 5 samples
+    --> 3 : 5 samples
+    --> 4 : 5 samples
+    --> 5 : 5 samples
+    --> 6 : 5 samples
+    --> 7 : 5 samples
+    --> 8 : 5 samples
+    --> 9 : 5 samples
+    --> 10 : 5 samples
+--> Imbalance degree : 0.0
+
+
+============ DodgerLoopGame_TRAIN.tsv ============
+--> Nombre de sample : 20
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+--> Imbalance ratio : 1.0
+
+
+============ WormsTwoClass_TRAIN.tsv =============
+--> Nombre de sample : 181
+--> Labels :
+    --> 1 : 76 samples
+    --> 2 : 105 samples
+--> Imbalance ratio : 0.7238095238095238
+
+
+============ SmoothSubspace_TRAIN.tsv ============
+--> Nombre de sample : 150
+--> Labels :
+    --> 1 : 50 samples
+    --> 2 : 50 samples
+    --> 3 : 50 samples
+--> Imbalance degree : 0.0
+
+
+=============== OSULeaf_TRAIN.tsv ================
+--> Nombre de sample : 200
+--> Labels :
+    --> 1 : 34 samples
+    --> 2 : 29 samples
+    --> 3 : 33 samples
+    --> 4 : 53 samples
+    --> 5 : 36 samples
+    --> 6 : 15 samples
+--> Imbalance degree : 0.0
+
+
+================= Ham_TRAIN.tsv ==================
+--> Nombre de sample : 109
+--> Labels :
+    --> 1 : 52 samples
+    --> 2 : 57 samples
+--> Imbalance ratio : 0.9122807017543859
+
+
+======== SonyAIBORobotSurface1_TRAIN.tsv =========
+--> Nombre de sample : 20
+--> Labels :
+    --> 1 : 6 samples
+    --> 2 : 14 samples
+--> Imbalance ratio : 0.42857142857142855
+
+
+=========== ToeSegmentation1_TRAIN.tsv ===========
+--> Nombre de sample : 40
+--> Labels :
+    --> 0 : 20 samples
+    --> 1 : 20 samples
+--> Imbalance ratio : 1.0
+
+
+============== ScreenType_TRAIN.tsv ==============
+--> Nombre de sample : 375
+--> Labels :
+    --> 1 : 125 samples
+    --> 2 : 125 samples
+    --> 3 : 125 samples
+--> Imbalance degree : 0.0
+
+
+============ PigArtPressure_TRAIN.tsv ============
+--> Nombre de sample : 104
+--> Labels :
+    --> 1 : 2 samples
+    --> 2 : 2 samples
+    --> 3 : 2 samples
+    --> 4 : 2 samples
+    --> 5 : 2 samples
+    --> 6 : 2 samples
+    --> 7 : 2 samples
+    --> 8 : 2 samples
+    --> 9 : 2 samples
+    --> 10 : 2 samples
+    --> 11 : 2 samples
+    --> 12 : 2 samples
+    --> 13 : 2 samples
+    --> 14 : 2 samples
+    --> 15 : 2 samples
+    --> 16 : 2 samples
+    --> 17 : 2 samples
+    --> 18 : 2 samples
+    --> 19 : 2 samples
+    --> 20 : 2 samples
+    --> 21 : 2 samples
+    --> 22 : 2 samples
+    --> 23 : 2 samples
+    --> 24 : 2 samples
+    --> 25 : 2 samples
+    --> 26 : 2 samples
+    --> 27 : 2 samples
+    --> 28 : 2 samples
+    --> 29 : 2 samples
+    --> 30 : 2 samples
+    --> 31 : 2 samples
+    --> 32 : 2 samples
+    --> 33 : 2 samples
+    --> 34 : 2 samples
+    --> 35 : 2 samples
+    --> 36 : 2 samples
+    --> 37 : 2 samples
+    --> 38 : 2 samples
+    --> 39 : 2 samples
+    --> 40 : 2 samples
+    --> 41 : 2 samples
+    --> 42 : 2 samples
+    --> 43 : 2 samples
+    --> 44 : 2 samples
+    --> 45 : 2 samples
+    --> 46 : 2 samples
+    --> 47 : 2 samples
+    --> 48 : 2 samples
+    --> 49 : 2 samples
+    --> 50 : 2 samples
+    --> 51 : 2 samples
+    --> 52 : 2 samples
+--> Imbalance degree : 0.0
+
+
+======== SmallKitchenAppliances_TRAIN.tsv ========
+--> Nombre de sample : 375
+--> Labels :
+    --> 1 : 125 samples
+    --> 2 : 125 samples
+    --> 3 : 125 samples
+--> Imbalance degree : 0.0
+
+
+================= Crop_TRAIN.tsv =================
+--> Nombre de sample : 7200
+--> Labels :
+    --> 1 : 300 samples
+    --> 2 : 300 samples
+    --> 3 : 300 samples
+    --> 4 : 300 samples
+    --> 5 : 300 samples
+    --> 6 : 300 samples
+    --> 7 : 300 samples
+    --> 8 : 300 samples
+    --> 9 : 300 samples
+    --> 10 : 300 samples
+    --> 11 : 300 samples
+    --> 12 : 300 samples
+    --> 13 : 300 samples
+    --> 14 : 300 samples
+    --> 15 : 300 samples
+    --> 16 : 300 samples
+    --> 17 : 300 samples
+    --> 18 : 300 samples
+    --> 19 : 300 samples
+    --> 20 : 300 samples
+    --> 21 : 300 samples
+    --> 22 : 300 samples
+    --> 23 : 300 samples
+    --> 24 : 300 samples
+--> Imbalance degree : 0.0
+
+
+============== MoteStrain_TRAIN.tsv ==============
+--> Nombre de sample : 20
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+--> Imbalance ratio : 1.0
+
+
+============= ECGFiveDays_TRAIN.tsv ==============
+--> Nombre de sample : 23
+--> Labels :
+    --> 1 : 14 samples
+    --> 2 : 9 samples
+--> Imbalance ratio : 0.6428571428571429
+
+
+================= Wine_TRAIN.tsv =================
+--> Nombre de sample : 57
+--> Labels :
+    --> 1 : 30 samples
+    --> 2 : 27 samples
+--> Imbalance ratio : 0.9
+
+
+========= SemgHandMovementCh2_TRAIN.tsv ==========
+--> Nombre de sample : 450
+--> Labels :
+    --> 1 : 75 samples
+    --> 2 : 75 samples
+    --> 3 : 75 samples
+    --> 4 : 75 samples
+    --> 5 : 75 samples
+    --> 6 : 75 samples
+--> Imbalance degree : 0.0
+
+
+========== FreezerSmallTrain_TRAIN.tsv ===========
+--> Nombre de sample : 28
+--> Labels :
+    --> 1 : 14 samples
+    --> 2 : 14 samples
+--> Imbalance ratio : 1.0
+
+
+========= UWaveGestureLibraryZ_TRAIN.tsv =========
+--> Nombre de sample : 896
+--> Labels :
+    --> 1 : 122 samples
+    --> 2 : 108 samples
+    --> 3 : 106 samples
+    --> 4 : 110 samples
+    --> 5 : 127 samples
+    --> 6 : 111 samples
+    --> 7 : 112 samples
+    --> 8 : 100 samples
+--> Imbalance degree : 0.0
+
+
+============== TwoLeadECG_TRAIN.tsv ==============
+--> Nombre de sample : 23
+--> Labels :
+    --> 1 : 12 samples
+    --> 2 : 11 samples
+--> Imbalance ratio : 0.9166666666666666
+
+
+========== SemgHandSubjectCh2_TRAIN.tsv ==========
+--> Nombre de sample : 450
+--> Labels :
+    --> 1 : 90 samples
+    --> 2 : 90 samples
+    --> 3 : 90 samples
+    --> 4 : 90 samples
+    --> 5 : 90 samples
+--> Imbalance degree : 0.0
+
+
+===== MiddlePhalanxOutlineAgeGroup_TRAIN.tsv =====
+--> Nombre de sample : 400
+--> Labels :
+    --> 1 : 55 samples
+    --> 2 : 108 samples
+    --> 3 : 237 samples
+--> Imbalance degree : 0.0
+
+
+===== DistalPhalanxOutlineCorrect_TRAIN.tsv ======
+--> Nombre de sample : 600
+--> Labels :
+    --> 0 : 222 samples
+    --> 1 : 378 samples
+--> Imbalance ratio : 0.5873015873015873
+
+
+=========== DistalPhalanxTW_TRAIN.tsv ============
+--> Nombre de sample : 400
+--> Labels :
+    --> 3 : 29 samples
+    --> 4 : 28 samples
+    --> 5 : 82 samples
+    --> 6 : 30 samples
+    --> 7 : 18 samples
+    --> 8 : 213 samples
+--> Imbalance degree : 0.0
+
+
+=============== ECG5000_TRAIN.tsv ================
+--> Nombre de sample : 500
+--> Labels :
+    --> 1 : 292 samples
+    --> 2 : 177 samples
+    --> 3 : 10 samples
+    --> 4 : 19 samples
+    --> 5 : 2 samples
+--> Imbalance degree : 0.0
+
+
+============= HandOutlines_TRAIN.tsv =============
+--> Nombre de sample : 1000
+--> Labels :
+    --> 0 : 362 samples
+    --> 1 : 638 samples
+--> Imbalance ratio : 0.567398119122257
+
+
+======= GunPointMaleVersusFemale_TRAIN.tsv =======
+--> Nombre de sample : 135
+--> Labels :
+    --> 1 : 71 samples
+    --> 2 : 64 samples
+--> Imbalance ratio : 0.9014084507042254
+
+
+================ Coffee_TRAIN.tsv ================
+--> Nombre de sample : 28
+--> Labels :
+    --> 0 : 14 samples
+    --> 1 : 14 samples
+--> Imbalance ratio : 1.0
+
+
+================= Rock_TRAIN.tsv =================
+--> Nombre de sample : 20
+--> Labels :
+    --> 1 : 5 samples
+    --> 2 : 5 samples
+    --> 3 : 5 samples
+    --> 4 : 5 samples
+--> Imbalance degree : 0.0
+
+
+======== MixedShapesSmallTrain_TRAIN.tsv =========
+--> Nombre de sample : 100
+--> Labels :
+    --> 1 : 20 samples
+    --> 2 : 20 samples
+    --> 3 : 20 samples
+    --> 4 : 20 samples
+    --> 5 : 20 samples
+--> Imbalance degree : 0.0
+
+
+================ FordB_TRAIN.tsv =================
+--> Nombre de sample : 3636
+--> Labels :
+    --> -1 : 1860 samples
+    --> 1 : 1776 samples
+--> Imbalance ratio : 0.9548387096774194
+
+
+========= InsectWingbeatSound_TRAIN.tsv ==========
+--> Nombre de sample : 220
+--> Labels :
+    --> 1 : 20 samples
+    --> 2 : 20 samples
+    --> 3 : 20 samples
+    --> 4 : 20 samples
+    --> 5 : 20 samples
+    --> 6 : 20 samples
+    --> 7 : 20 samples
+    --> 8 : 20 samples
+    --> 9 : 20 samples
+    --> 10 : 20 samples
+    --> 11 : 20 samples
+--> Imbalance degree : 0.0
+
+
+============ MedicalImages_TRAIN.tsv =============
+--> Nombre de sample : 381
+--> Labels :
+    --> 1 : 35 samples
+    --> 2 : 15 samples
+    --> 3 : 25 samples
+    --> 4 : 16 samples
+    --> 5 : 10 samples
+    --> 6 : 7 samples
+    --> 7 : 18 samples
+    --> 8 : 6 samples
+    --> 9 : 46 samples
+    --> 10 : 203 samples
+--> Imbalance degree : 0.0
+
+
+============== ArrowHead_TRAIN.tsv ===============
+--> Nombre de sample : 36
+--> Labels :
+    --> 0 : 12 samples
+    --> 1 : 12 samples
+    --> 2 : 12 samples
+--> Imbalance degree : 0.0
+
+
+==== ProximalPhalanxOutlineAgeGroup_TRAIN.tsv ====
+--> Nombre de sample : 400
+--> Labels :
+    --> 1 : 72 samples
+    --> 2 : 139 samples
+    --> 3 : 189 samples
+--> Imbalance degree : 0.0
+
+
+============= TwoPatterns_TRAIN.tsv ==============
+--> Nombre de sample : 1000
+--> Labels :
+    --> 1 : 271 samples
+    --> 2 : 237 samples
+    --> 3 : 250 samples
+    --> 4 : 242 samples
+--> Imbalance degree : 0.0
+
+
+======== ChlorineConcentration_TRAIN.tsv =========
+--> Nombre de sample : 467
+--> Labels :
+    --> 1 : 114 samples
+    --> 2 : 91 samples
+    --> 3 : 262 samples
+--> Imbalance degree : 0.0
+
+
+================ Plane_TRAIN.tsv =================
+--> Nombre de sample : 105
+--> Labels :
+    --> 1 : 15 samples
+    --> 2 : 14 samples
+    --> 3 : 9 samples
+    --> 4 : 16 samples
+    --> 5 : 13 samples
+    --> 6 : 18 samples
+    --> 7 : 20 samples
+--> Imbalance degree : 0.0
+
+
+================ ACSF1_TRAIN.tsv =================
+--> Nombre de sample : 100
+--> Labels :
+    --> 0 : 10 samples
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+    --> 3 : 10 samples
+    --> 4 : 10 samples
+    --> 5 : 10 samples
+    --> 6 : 10 samples
+    --> 7 : 10 samples
+    --> 8 : 10 samples
+    --> 9 : 10 samples
+--> Imbalance degree : 0.0
+
+
+======= PhalangesOutlinesCorrect_TRAIN.tsv =======
+--> Nombre de sample : 1800
+--> Labels :
+    --> 0 : 628 samples
+    --> 1 : 1172 samples
+--> Imbalance ratio : 0.5358361774744027
+
+
+============= ShapeletSim_TRAIN.tsv ==============
+--> Nombre de sample : 20
+--> Labels :
+    --> 0 : 10 samples
+    --> 1 : 10 samples
+--> Imbalance ratio : 1.0
+
+
+===== DistalPhalanxOutlineAgeGroup_TRAIN.tsv =====
+--> Nombre de sample : 400
+--> Labels :
+    --> 1 : 30 samples
+    --> 2 : 113 samples
+    --> 3 : 257 samples
+--> Imbalance degree : 0.0
+
+
+========= InsectEPGSmallTrain_TRAIN.tsv ==========
+--> Nombre de sample : 17
+--> Labels :
+    --> 1 : 6 samples
+    --> 2 : 8 samples
+    --> 3 : 3 samples
+--> Imbalance degree : 0.0
+
+
+========= RefrigerationDevices_TRAIN.tsv =========
+--> Nombre de sample : 375
+--> Labels :
+    --> 1 : 125 samples
+    --> 2 : 125 samples
+    --> 3 : 125 samples
+--> Imbalance degree : 0.0
+
+
+======= MixedShapesRegularTrain_TRAIN.tsv ========
+--> Nombre de sample : 500
+--> Labels :
+    --> 1 : 100 samples
+    --> 2 : 100 samples
+    --> 3 : 100 samples
+    --> 4 : 100 samples
+    --> 5 : 100 samples
+--> Imbalance degree : 0.0
+
+
+=============== GunPoint_TRAIN.tsv ===============
+--> Nombre de sample : 50
+--> Labels :
+    --> 1 : 24 samples
+    --> 2 : 26 samples
+--> Imbalance ratio : 0.9230769230769231
+
+
+================ ECG200_TRAIN.tsv ================
+--> Nombre de sample : 100
+--> Labels :
+    --> -1 : 31 samples
+    --> 1 : 69 samples
+--> Imbalance ratio : 0.4492753623188406
+
+
+=========== ToeSegmentation2_TRAIN.tsv ===========
+--> Nombre de sample : 36
+--> Labels :
+    --> 0 : 18 samples
+    --> 1 : 18 samples
+--> Imbalance ratio : 1.0
+
+
+================ Fungi_TRAIN.tsv =================
+--> Nombre de sample : 18
+--> Labels :
+    --> 1 : 1 samples
+    --> 2 : 1 samples
+    --> 3 : 1 samples
+    --> 4 : 1 samples
+    --> 5 : 1 samples
+    --> 6 : 1 samples
+    --> 7 : 1 samples
+    --> 8 : 1 samples
+    --> 9 : 1 samples
+    --> 10 : 1 samples
+    --> 11 : 1 samples
+    --> 12 : 1 samples
+    --> 13 : 1 samples
+    --> 14 : 1 samples
+    --> 15 : 1 samples
+    --> 16 : 1 samples
+    --> 17 : 1 samples
+    --> 18 : 1 samples
+--> Imbalance degree : 0.0
+
+
+============= BirdChicken_TRAIN.tsv ==============
+--> Nombre de sample : 20
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+--> Imbalance ratio : 1.0
+
+
+========== SemgHandGenderCh2_TRAIN.tsv ===========
+--> Nombre de sample : 300
+--> Labels :
+    --> 1 : 150 samples
+    --> 2 : 150 samples
+--> Imbalance ratio : 1.0
+
+
+=============== OliveOil_TRAIN.tsv ===============
+--> Nombre de sample : 30
+--> Labels :
+    --> 1 : 5 samples
+    --> 2 : 8 samples
+    --> 3 : 4 samples
+    --> 4 : 13 samples
+--> Imbalance degree : 0.0
+
+
+================= BME_TRAIN.tsv ==================
+--> Nombre de sample : 30
+--> Labels :
+    --> 1 : 10 samples
+    --> 2 : 10 samples
+    --> 3 : 10 samples
+--> Imbalance degree : 0.0
+
+
+======== LargeKitchenAppliances_TRAIN.tsv ========
+--> Nombre de sample : 375
+--> Labels :
+    --> 1 : 125 samples
+    --> 2 : 125 samples
+    --> 3 : 125 samples
+--> Imbalance degree : 0.0
+
+
+======== SonyAIBORobotSurface2_TRAIN.tsv =========
+--> Nombre de sample : 27
+--> Labels :
+    --> 1 : 11 samples
+    --> 2 : 16 samples
+--> Imbalance ratio : 0.6875
+
+
+============== Lightning2_TRAIN.tsv ==============
+--> Nombre de sample : 60
+--> Labels :
+    --> -1 : 20 samples
+    --> 1 : 40 samples
+--> Imbalance ratio : 0.5
+
+
+============= EthanolLevel_TRAIN.tsv =============
+--> Nombre de sample : 504
+--> Labels :
+    --> 1 : 126 samples
+    --> 2 : 126 samples
+    --> 3 : 126 samples
+    --> 4 : 126 samples
+--> Imbalance degree : 0.0
+
+
+========= UWaveGestureLibraryX_TRAIN.tsv =========
+--> Nombre de sample : 896
+--> Labels :
+    --> 1 : 122 samples
+    --> 2 : 108 samples
+    --> 3 : 106 samples
+    --> 4 : 110 samples
+    --> 5 : 127 samples
+    --> 6 : 111 samples
+    --> 7 : 112 samples
+    --> 8 : 100 samples
+--> Imbalance degree : 0.0
+
+
+========= FreezerRegularTrain_TRAIN.tsv ==========
+--> Nombre de sample : 150
+--> Labels :
+    --> 1 : 75 samples
+    --> 2 : 75 samples
+--> Imbalance ratio : 1.0
+
+
+==== ProximalPhalanxOutlineCorrect_TRAIN.tsv =====
+--> Nombre de sample : 600
+--> Labels :
+    --> 0 : 194 samples
+    --> 1 : 406 samples
+--> Imbalance ratio : 0.47783251231527096
+
+
+========= UWaveGestureLibraryY_TRAIN.tsv =========
+--> Nombre de sample : 896
+--> Labels :
+    --> 1 : 122 samples
+    --> 2 : 108 samples
+    --> 3 : 106 samples
+    --> 4 : 110 samples
+    --> 5 : 127 samples
+    --> 6 : 111 samples
+    --> 7 : 112 samples
+    --> 8 : 100 samples
+--> Imbalance degree : 0.0
+
+
+=============== FaceAll_TRAIN.tsv ================
+--> Nombre de sample : 560
+--> Labels :
+    --> 1 : 40 samples
+    --> 2 : 40 samples
+    --> 3 : 40 samples
+    --> 4 : 40 samples
+    --> 5 : 40 samples
+    --> 6 : 40 samples
+    --> 7 : 40 samples
+    --> 8 : 40 samples
+    --> 9 : 40 samples
+    --> 10 : 40 samples
+    --> 11 : 40 samples
+    --> 12 : 40 samples
+    --> 13 : 40 samples
+    --> 14 : 40 samples
+--> Imbalance degree : 0.0
+
+
+=========== StarLightCurves_TRAIN.tsv ============
+--> Nombre de sample : 1000
+--> Labels :
+    --> 1 : 152 samples
+    --> 2 : 275 samples
+    --> 3 : 573 samples
+--> Imbalance degree : 0.0
+
+
+=========== ElectricDevices_TRAIN.tsv ============
+--> Nombre de sample : 8926
+--> Labels :
+    --> 1 : 727 samples
+    --> 2 : 2231 samples
+    --> 3 : 851 samples
+    --> 4 : 1474 samples
+    --> 5 : 2406 samples
+    --> 6 : 509 samples
+    --> 7 : 728 samples
+--> Imbalance degree : 0.0
+
+
+============= Earthquakes_TRAIN.tsv ==============
+--> Nombre de sample : 322
+--> Labels :
+    --> 0 : 264 samples
+    --> 1 : 58 samples
+--> Imbalance ratio : 0.2196969696969697
+
+
+============== PowerCons_TRAIN.tsv ===============
+--> Nombre de sample : 180
+--> Labels :
+    --> 1 : 90 samples
+    --> 2 : 90 samples
+--> Imbalance ratio : 1.0
+
+
+========= DiatomSizeReduction_TRAIN.tsv ==========
+--> Nombre de sample : 16
+--> Labels :
+    --> 1 : 1 samples
+    --> 2 : 6 samples
+    --> 3 : 5 samples
+    --> 4 : 4 samples
+--> Imbalance degree : 0.0
+
+
+============= CinCECGTorso_TRAIN.tsv =============
+--> Nombre de sample : 40
+--> Labels :
+    --> 1 : 5 samples
+    --> 2 : 13 samples
+    --> 3 : 12 samples
+    --> 4 : 10 samples
+--> Imbalance degree : 0.0
+
+
+================ PigCVP_TRAIN.tsv ================
+--> Nombre de sample : 104
+--> Labels :
+    --> 1 : 2 samples
+    --> 2 : 2 samples
+    --> 3 : 2 samples
+    --> 4 : 2 samples
+    --> 5 : 2 samples
+    --> 6 : 2 samples
+    --> 7 : 2 samples
+    --> 8 : 2 samples
+    --> 9 : 2 samples
+    --> 10 : 2 samples
+    --> 11 : 2 samples
+    --> 12 : 2 samples
+    --> 13 : 2 samples
+    --> 14 : 2 samples
+    --> 15 : 2 samples
+    --> 16 : 2 samples
+    --> 17 : 2 samples
+    --> 18 : 2 samples
+    --> 19 : 2 samples
+    --> 20 : 2 samples
+    --> 21 : 2 samples
+    --> 22 : 2 samples
+    --> 23 : 2 samples
+    --> 24 : 2 samples
+    --> 25 : 2 samples
+    --> 26 : 2 samples
+    --> 27 : 2 samples
+    --> 28 : 2 samples
+    --> 29 : 2 samples
+    --> 30 : 2 samples
+    --> 31 : 2 samples
+    --> 32 : 2 samples
+    --> 33 : 2 samples
+    --> 34 : 2 samples
+    --> 35 : 2 samples
+    --> 36 : 2 samples
+    --> 37 : 2 samples
+    --> 38 : 2 samples
+    --> 39 : 2 samples
+    --> 40 : 2 samples
+    --> 41 : 2 samples
+    --> 42 : 2 samples
+    --> 43 : 2 samples
+    --> 44 : 2 samples
+    --> 45 : 2 samples
+    --> 46 : 2 samples
+    --> 47 : 2 samples
+    --> 48 : 2 samples
+    --> 49 : 2 samples
+    --> 50 : 2 samples
+    --> 51 : 2 samples
+    --> 52 : 2 samples
+--> Imbalance degree : 0.0
+
+
+========== ProximalPhalanxTW_TRAIN.tsv ===========
+--> Nombre de sample : 400
+--> Labels :
+    --> 3 : 16 samples
+    --> 4 : 109 samples
+    --> 5 : 58 samples
+    --> 6 : 20 samples
+    --> 7 : 17 samples
+    --> 8 : 180 samples
+--> Imbalance degree : 0.0
+
+
+========= EOGHorizontalSignal_TRAIN.tsv ==========
+--> Nombre de sample : 362
+--> Labels :
+    --> 1 : 30 samples
+    --> 2 : 30 samples
+    --> 3 : 30 samples
+    --> 4 : 30 samples
+    --> 5 : 30 samples
+    --> 6 : 31 samples
+    --> 7 : 31 samples
+    --> 8 : 30 samples
+    --> 9 : 30 samples
+    --> 10 : 30 samples
+    --> 11 : 30 samples
+    --> 12 : 30 samples
+--> Imbalance degree : 0.6666666666666667
+
+
+========== EOGVerticalSignal_TRAIN.tsv ===========
+--> Nombre de sample : 362
+--> Labels :
+    --> 1 : 30 samples
+    --> 2 : 30 samples
+    --> 3 : 30 samples
+    --> 4 : 30 samples
+    --> 5 : 30 samples
+    --> 6 : 31 samples
+    --> 7 : 31 samples
+    --> 8 : 30 samples
+    --> 9 : 30 samples
+    --> 10 : 30 samples
+    --> 11 : 30 samples
+    --> 12 : 30 samples
+--> Imbalance degree : 0.6666666666666667
+
+
+============ DodgerLoopDay_TRAIN.tsv =============
+--> Nombre de sample : 78
+--> Labels :
+    --> 1 : 12 samples
+    --> 2 : 10 samples
+    --> 3 : 10 samples
+    --> 4 : 11 samples
+    --> 5 : 12 samples
+    --> 6 : 12 samples
+    --> 7 : 11 samples
+--> Imbalance degree : 1.1428571428571428
+
+
+================= Car_TRAIN.tsv ==================
+--> Nombre de sample : 60
+--> Labels :
+    --> 1 : 16 samples
+    --> 2 : 16 samples
+    --> 3 : 11 samples
+    --> 4 : 17 samples
+--> Imbalance degree : 1.25
+
+
+=============== FaceFour_TRAIN.tsv ===============
+--> Nombre de sample : 24
+--> Labels :
+    --> 1 : 8 samples
+    --> 2 : 8 samples
+    --> 3 : 3 samples
+    --> 4 : 5 samples
+--> Imbalance degree : 1.25
+
+
+=============== Symbols_TRAIN.tsv ================
+--> Nombre de sample : 25
+--> Labels :
+    --> 1 : 8 samples
+    --> 2 : 5 samples
+    --> 3 : 3 samples
+    --> 4 : 3 samples
+    --> 5 : 3 samples
+    --> 6 : 3 samples
+--> Imbalance degree : 1.5
+
+
+========= MelbournePedestrian_TRAIN.tsv ==========
+--> Nombre de sample : 1194
+--> Labels :
+    --> 1 : 120 samples
+    --> 2 : 120 samples
+    --> 3 : 120 samples
+    --> 4 : 120 samples
+    --> 5 : 120 samples
+    --> 6 : 120 samples
+    --> 7 : 120 samples
+    --> 8 : 115 samples
+    --> 9 : 119 samples
+    --> 10 : 120 samples
+--> Imbalance degree : 1.7000000000000002
+
+
+=============== Haptics_TRAIN.tsv ================
+--> Nombre de sample : 155
+--> Labels :
+    --> 1 : 18 samples
+    --> 2 : 34 samples
+    --> 3 : 34 samples
+    --> 4 : 36 samples
+    --> 5 : 33 samples
+--> Imbalance degree : 2.2
+
+
+============= InlineSkate_TRAIN.tsv ==============
+--> Nombre de sample : 100
+--> Labels :
+    --> 1 : 9 samples
+    --> 2 : 14 samples
+    --> 3 : 18 samples
+    --> 4 : 18 samples
+    --> 5 : 16 samples
+    --> 6 : 14 samples
+    --> 7 : 11 samples
+--> Imbalance degree : 2.2258769757263126
+
+
+================= Fish_TRAIN.tsv =================
+--> Nombre de sample : 175
+--> Labels :
+    --> 1 : 26 samples
+    --> 2 : 25 samples
+    --> 3 : 28 samples
+    --> 4 : 21 samples
+    --> 5 : 22 samples
+    --> 6 : 25 samples
+    --> 7 : 28 samples
+--> Imbalance degree : 2.2258769757263126
+
+
+=========== GesturePebbleZ2_TRAIN.tsv ============
+--> Nombre de sample : 146
+--> Labels :
+    --> 1 : 25 samples
+    --> 2 : 23 samples
+    --> 3 : 24 samples
+    --> 4 : 24 samples
+    --> 5 : 24 samples
+    --> 6 : 26 samples
+--> Imbalance degree : 2.3333333333333335
+
+
+=========== GesturePebbleZ1_TRAIN.tsv ============
+--> Nombre de sample : 132
+--> Labels :
+    --> 1 : 21 samples
+    --> 2 : 20 samples
+    --> 3 : 22 samples
+    --> 4 : 22 samples
+    --> 5 : 25 samples
+    --> 6 : 22 samples
+--> Imbalance degree : 2.3333333333333335
+
+
+============== Lightning7_TRAIN.tsv ==============
+--> Nombre de sample : 70
+--> Labels :
+    --> 0 : 8 samples
+    --> 1 : 8 samples
+    --> 2 : 8 samples
+    --> 3 : 12 samples
+    --> 4 : 5 samples
+    --> 5 : 19 samples
+    --> 6 : 10 samples
+--> Imbalance degree : 3.2857142857142856
+
+
+=============== CricketY_TRAIN.tsv ===============
+--> Nombre de sample : 390
+--> Labels :
+    --> 1 : 28 samples
+    --> 2 : 34 samples
+    --> 3 : 36 samples
+    --> 4 : 30 samples
+    --> 5 : 36 samples
+    --> 6 : 32 samples
+    --> 7 : 32 samples
+    --> 8 : 33 samples
+    --> 9 : 31 samples
+    --> 10 : 32 samples
+    --> 11 : 32 samples
+    --> 12 : 34 samples
+--> Imbalance degree : 3.355512150128359
+
+
+================ Mallat_TRAIN.tsv ================
+--> Nombre de sample : 55
+--> Labels :
+    --> 1 : 6 samples
+    --> 2 : 8 samples
+    --> 3 : 6 samples
+    --> 4 : 11 samples
+    --> 5 : 2 samples
+    --> 6 : 6 samples
+    --> 7 : 9 samples
+    --> 8 : 7 samples
+--> Imbalance degree : 4.25
+
+
+=============== CricketZ_TRAIN.tsv ===============
+--> Nombre de sample : 390
+--> Labels :
+    --> 1 : 32 samples
+    --> 2 : 27 samples
+    --> 3 : 25 samples
+    --> 4 : 32 samples
+    --> 5 : 29 samples
+    --> 6 : 36 samples
+    --> 7 : 41 samples
+    --> 8 : 37 samples
+    --> 9 : 31 samples
+    --> 10 : 31 samples
+    --> 11 : 33 samples
+    --> 12 : 36 samples
+--> Imbalance degree : 5.163663417676994
+
+
+================ PLAID_TRAIN.tsv =================
+--> Nombre de sample : 537
+--> Labels :
+    --> 0 : 33 samples
+    --> 1 : 88 samples
+    --> 2 : 57 samples
+    --> 3 : 19 samples
+    --> 4 : 78 samples
+    --> 5 : 18 samples
+    --> 6 : 57 samples
+    --> 7 : 86 samples
+    --> 8 : 69 samples
+    --> 9 : 19 samples
+    --> 10 : 13 samples
+--> Imbalance degree : 6.136363636363637
+
+
+============= SwedishLeaf_TRAIN.tsv ==============
+--> Nombre de sample : 500
+--> Labels :
+    --> 1 : 29 samples
+    --> 2 : 36 samples
+    --> 3 : 35 samples
+    --> 4 : 36 samples
+    --> 5 : 33 samples
+    --> 6 : 30 samples
+    --> 7 : 28 samples
+    --> 8 : 31 samples
+    --> 9 : 33 samples
+    --> 10 : 26 samples
+    --> 11 : 35 samples
+    --> 12 : 38 samples
+    --> 13 : 33 samples
+    --> 14 : 42 samples
+    --> 15 : 35 samples
+--> Imbalance degree : 6.227128381289749
+
+
+================ Adiac_TRAIN.tsv =================
+--> Nombre de sample : 390
+--> Labels :
+    --> 1 : 13 samples
+    --> 2 : 10 samples
+    --> 3 : 5 samples
+    --> 4 : 14 samples
+    --> 5 : 4 samples
+    --> 6 : 12 samples
+    --> 7 : 10 samples
+    --> 8 : 13 samples
+    --> 9 : 9 samples
+    --> 10 : 11 samples
+    --> 11 : 10 samples
+    --> 12 : 12 samples
+    --> 13 : 6 samples
+    --> 14 : 11 samples
+    --> 15 : 12 samples
+    --> 16 : 10 samples
+    --> 17 : 11 samples
+    --> 18 : 9 samples
+    --> 19 : 14 samples
+    --> 20 : 9 samples
+    --> 21 : 8 samples
+    --> 22 : 10 samples
+    --> 23 : 9 samples
+    --> 24 : 15 samples
+    --> 25 : 13 samples
+    --> 26 : 9 samples
+    --> 27 : 13 samples
+    --> 28 : 13 samples
+    --> 29 : 9 samples
+    --> 30 : 13 samples
+    --> 31 : 9 samples
+    --> 32 : 13 samples
+    --> 33 : 13 samples
+    --> 34 : 9 samples
+    --> 35 : 10 samples
+    --> 36 : 11 samples
+    --> 37 : 8 samples
+--> Imbalance degree : 6.347581498126591
+
+
+=============== CricketX_TRAIN.tsv ===============
+--> Nombre de sample : 390
+--> Labels :
+    --> 1 : 38 samples
+    --> 2 : 31 samples
+    --> 3 : 34 samples
+    --> 4 : 35 samples
+    --> 5 : 27 samples
+    --> 6 : 34 samples
+    --> 7 : 36 samples
+    --> 8 : 31 samples
+    --> 9 : 25 samples
+    --> 10 : 28 samples
+    --> 11 : 39 samples
+    --> 12 : 32 samples
+--> Imbalance degree : 7.1242259987499885
+
+
+============= WordSynonyms_TRAIN.tsv =============
+--> Nombre de sample : 267
+--> Labels :
+    --> 1 : 6 samples
+    --> 2 : 60 samples
+    --> 3 : 5 samples
+    --> 4 : 35 samples
+    --> 5 : 5 samples
+    --> 6 : 17 samples
+    --> 7 : 4 samples
+    --> 8 : 24 samples
+    --> 9 : 6 samples
+    --> 10 : 12 samples
+    --> 11 : 6 samples
+    --> 12 : 8 samples
+    --> 13 : 3 samples
+    --> 14 : 10 samples
+    --> 15 : 4 samples
+    --> 16 : 14 samples
+    --> 17 : 5 samples
+    --> 18 : 5 samples
+    --> 19 : 4 samples
+    --> 20 : 7 samples
+    --> 21 : 4 samples
+    --> 22 : 8 samples
+    --> 23 : 6 samples
+    --> 24 : 7 samples
+    --> 25 : 2 samples
+--> Imbalance degree : 8.266333124739175
+
+
+====== NonInvasiveFetalECGThorax1_TRAIN.tsv ======
+--> Nombre de sample : 1800
+--> Labels :
+    --> 1 : 36 samples
+    --> 2 : 52 samples
+    --> 3 : 45 samples
+    --> 4 : 40 samples
+    --> 5 : 48 samples
+    --> 6 : 44 samples
+    --> 7 : 36 samples
+    --> 8 : 50 samples
+    --> 9 : 46 samples
+    --> 10 : 56 samples
+    --> 11 : 36 samples
+    --> 12 : 39 samples
+    --> 13 : 46 samples
+    --> 14 : 42 samples
+    --> 15 : 40 samples
+    --> 16 : 39 samples
+    --> 17 : 52 samples
+    --> 18 : 45 samples
+    --> 19 : 40 samples
+    --> 20 : 49 samples
+    --> 21 : 43 samples
+    --> 22 : 40 samples
+    --> 23 : 35 samples
+    --> 24 : 41 samples
+    --> 25 : 41 samples
+    --> 26 : 37 samples
+    --> 27 : 47 samples
+    --> 28 : 40 samples
+    --> 29 : 47 samples
+    --> 30 : 40 samples
+    --> 31 : 43 samples
+    --> 32 : 41 samples
+    --> 33 : 37 samples
+    --> 34 : 52 samples
+    --> 35 : 45 samples
+    --> 36 : 40 samples
+    --> 37 : 37 samples
+    --> 38 : 41 samples
+    --> 39 : 43 samples
+    --> 40 : 45 samples
+    --> 41 : 39 samples
+    --> 42 : 45 samples
+--> Imbalance degree : 8.290111663022913
+
+
+====== NonInvasiveFetalECGThorax2_TRAIN.tsv ======
+--> Nombre de sample : 1800
+--> Labels :
+    --> 1 : 36 samples
+    --> 2 : 52 samples
+    --> 3 : 45 samples
+    --> 4 : 40 samples
+    --> 5 : 48 samples
+    --> 6 : 44 samples
+    --> 7 : 36 samples
+    --> 8 : 50 samples
+    --> 9 : 46 samples
+    --> 10 : 56 samples
+    --> 11 : 36 samples
+    --> 12 : 39 samples
+    --> 13 : 46 samples
+    --> 14 : 42 samples
+    --> 15 : 40 samples
+    --> 16 : 39 samples
+    --> 17 : 52 samples
+    --> 18 : 45 samples
+    --> 19 : 40 samples
+    --> 20 : 49 samples
+    --> 21 : 43 samples
+    --> 22 : 40 samples
+    --> 23 : 35 samples
+    --> 24 : 41 samples
+    --> 25 : 41 samples
+    --> 26 : 37 samples
+    --> 27 : 47 samples
+    --> 28 : 40 samples
+    --> 29 : 47 samples
+    --> 30 : 40 samples
+    --> 31 : 43 samples
+    --> 32 : 41 samples
+    --> 33 : 37 samples
+    --> 34 : 52 samples
+    --> 35 : 45 samples
+    --> 36 : 40 samples
+    --> 37 : 37 samples
+    --> 38 : 41 samples
+    --> 39 : 43 samples
+    --> 40 : 45 samples
+    --> 41 : 39 samples
+    --> 42 : 45 samples
+--> Imbalance degree : 8.290111663022913
+
+
+=============== Phoneme_TRAIN.tsv ================
+--> Nombre de sample : 214
+--> Labels :
+    --> 1 : 4 samples
+    --> 2 : 5 samples
+    --> 3 : 24 samples
+    --> 4 : 3 samples
+    --> 5 : 1 samples
+    --> 6 : 3 samples
+    --> 7 : 5 samples
+    --> 8 : 1 samples
+    --> 9 : 8 samples
+    --> 10 : 1 samples
+    --> 11 : 7 samples
+    --> 12 : 7 samples
+    --> 13 : 4 samples
+    --> 14 : 4 samples
+    --> 15 : 3 samples
+    --> 16 : 2 samples
+    --> 17 : 11 samples
+    --> 18 : 8 samples
+    --> 19 : 2 samples
+    --> 20 : 10 samples
+    --> 21 : 13 samples
+    --> 22 : 7 samples
+    --> 23 : 15 samples
+    --> 24 : 2 samples
+    --> 25 : 3 samples
+    --> 26 : 1 samples
+    --> 27 : 6 samples
+    --> 28 : 11 samples
+    --> 29 : 12 samples
+    --> 30 : 3 samples
+    --> 31 : 15 samples
+    --> 32 : 1 samples
+    --> 33 : 1 samples
+    --> 34 : 2 samples
+    --> 35 : 3 samples
+    --> 36 : 2 samples
+    --> 37 : 1 samples
+    --> 38 : 2 samples
+    --> 39 : 1 samples
+--> Imbalance degree : 8.308237882886724
+
+
+=============== FacesUCR_TRAIN.tsv ===============
+--> Nombre de sample : 200
+--> Labels :
+    --> 1 : 13 samples
+    --> 2 : 12 samples
+    --> 3 : 10 samples
+    --> 4 : 22 samples
+    --> 5 : 15 samples
+    --> 6 : 13 samples
+    --> 7 : 14 samples
+    --> 8 : 27 samples
+    --> 9 : 12 samples
+    --> 10 : 8 samples
+    --> 11 : 4 samples
+    --> 12 : 11 samples
+    --> 13 : 33 samples
+    --> 14 : 6 samples
+--> Imbalance degree : 9.105506992268
+
+
+============== FiftyWords_TRAIN.tsv ==============
+--> Nombre de sample : 450
+--> Labels :
+    --> 1 : 52 samples
+    --> 2 : 49 samples
+    --> 3 : 33 samples
+    --> 4 : 20 samples
+    --> 5 : 13 samples
+    --> 6 : 15 samples
+    --> 7 : 16 samples
+    --> 8 : 11 samples
+    --> 9 : 11 samples
+    --> 10 : 10 samples
+    --> 11 : 10 samples
+    --> 12 : 13 samples
+    --> 13 : 14 samples
+    --> 14 : 8 samples
+    --> 15 : 7 samples
+    --> 16 : 6 samples
+    --> 17 : 7 samples
+    --> 18 : 8 samples
+    --> 19 : 9 samples
+    --> 20 : 7 samples
+    --> 21 : 7 samples
+    --> 22 : 5 samples
+    --> 23 : 6 samples
+    --> 24 : 4 samples
+    --> 25 : 2 samples
+    --> 26 : 6 samples
+    --> 27 : 4 samples
+    --> 28 : 6 samples
+    --> 29 : 4 samples
+    --> 30 : 6 samples
+    --> 31 : 3 samples
+    --> 32 : 7 samples
+    --> 33 : 5 samples
+    --> 34 : 3 samples
+    --> 35 : 6 samples
+    --> 36 : 6 samples
+    --> 37 : 5 samples
+    --> 38 : 4 samples
+    --> 39 : 4 samples
+    --> 40 : 4 samples
+    --> 41 : 1 samples
+    --> 42 : 2 samples
+    --> 43 : 4 samples
+    --> 44 : 6 samples
+    --> 45 : 4 samples
+    --> 46 : 4 samples
+    --> 47 : 4 samples
+    --> 48 : 5 samples
+    --> 49 : 2 samples
+    --> 50 : 2 samples
+--> Imbalance degree : 13.285356919363403
