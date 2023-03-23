@@ -1,56 +1,27 @@
 from tools import *
-from sklearn.ensemble import RandomForestClassifier
-from tensorflow.keras.layers import Dense, Activation, Dropout
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.optimizers import Adam
 from get_info import print_title
 from sklearn.metrics import f1_score, matthews_corrcoef, accuracy_score
 from imblearn.metrics import geometric_mean_score
-import pickle
-import random as rd
 import seaborn as sns
-
-
-def get_model(model_name, data):
-    """
-        model_name : "RF" (Random Forest), "NN" (Simple fully connected layer)
-    """
-
-    if model_name == "RF" :
-        random_state = rd.randint(1,100)
-        return  RandomForestClassifier(n_estimators = 130,
-                                       max_depth = 50, #Set to 50 instead of None to prevent from overfitting
-                                       random_state = random_state) , {}
-    elif model_name == "NN" :
-        nb_timestamp = len(data.columns) - 1
-
-        model = Sequential()
-        
-        model.add(Dense(64,  input_dim=nb_timestamp))
-        model.add(Activation("relu"))
-        model.add(Dropout(rate = 0.10)) #Reduce overfitting
-        model.add(Dense(1))
-        model.add(Activation("softmax"))
-
-        model.compile(loss='mean_absolute_error', optimizer= Adam(learning_rate = 0.001), metrics=['mean_absolute_error'])
-
-        kwargs = {"epochs" : 100, "batch_size" : 32, "verbose" : 0}
-
-        return model, kwargs
-
+from models import get_model
+from scipy.stats import ttest_ind
 
 #Train and calculate the score
 def train(model, new_data, data_test, **kwargs) :
 
-    X, y = np.array(new_data.drop([0], axis = 1)), np.array(new_data[0])
+    mdl, model_name = model
+
+    X, y = np.array(new_data.drop([0], axis = 1), dtype = 'float'), np.array(new_data[0])
 
     print("    --> Fitting model...")
-    model.fit(X,y, **kwargs)
+    mdl.fit(X, y, **kwargs)
 
     print("    --> Scores calculation...")
-    X_test, y_test = np.array(data_test.drop([0], axis = 1)), np.array(data_test[0])
-    y_pred = model.predict(X_test)
-    y_pred = np.array([round(y) for y in y_pred], dtype = 'int')
+    X_test, y_test = np.array(data_test.drop([0], axis = 1), dtype = 'float'), np.array(data_test[0])
+    y_pred = mdl.predict(X_test)
+
+    if model_name == "NN" :
+        y_pred = np.array([round(y[0]) for y in y_pred], dtype = 'int')
 
     return { "MCC" : matthews_corrcoef(y_test, y_pred), 
             "F1" : f1_score(y_test, y_pred, average = "weighted"), 
@@ -59,13 +30,19 @@ def train(model, new_data, data_test, **kwargs) :
 
 
 
-def make_score_test(data, data_test, model_name = "RF", nb_iteration = 5):
+def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iteration = 5):
     """
-        model_name : "RF" (Random Forest), "NN" (Simple fully connected layer)
+        model_name : "RF" (Random Forest), "NN" (Simple fully connected layer), "DTW_NEIGBOURS" ()
         nb_iteration : Nombre d'entrainements par transformation (une moyenne, c'est quand même plus fiable)
+
+        scores_matrix : de la forme
+                    Index        MCC    F1_score   G-mean   Acc   Model   Transformation   Dataset
+                    Default_0     *        *          *      *     RF        Default        Wafer
+                    ROS_0         *        *          *      *     RF          ROS          Wafer
+    
     """
 
-    scores_matrix = pd.DataFrame(columns=['MCC','F1','G-mean','Acc', 'Model', "Transformation"])
+    scores_matrix = pd.DataFrame(columns=['MCC','F1','G-mean','Acc', 'Model', "Transformation", "Dataset"])
 
 
     #Get info on labels and their count
@@ -91,6 +68,7 @@ def make_score_test(data, data_test, model_name = "RF", nb_iteration = 5):
         scores = train(model, data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "Default"
+        scores["Dataset"] = dataset_name
         scores_matrix.loc["Detault_{}".format(i+1)] = scores
 
         print("--> ROS")
@@ -98,6 +76,7 @@ def make_score_test(data, data_test, model_name = "RF", nb_iteration = 5):
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "ROS"
+        scores["Dataset"] = dataset_name
         scores_matrix.loc["ROS_{}".format(i+1)] = scores
 
         print("--> Jittering")
@@ -105,6 +84,7 @@ def make_score_test(data, data_test, model_name = "RF", nb_iteration = 5):
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "Jit"
+        scores["Dataset"] = dataset_name
         scores_matrix.loc["Jit_{}".format(i+1)] = scores
 
 
@@ -113,6 +93,7 @@ def make_score_test(data, data_test, model_name = "RF", nb_iteration = 5):
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "TW"
+        scores["Dataset"] = dataset_name
         scores_matrix.loc["TW_{}".format(i+1)] = scores
 
 
@@ -122,6 +103,7 @@ def make_score_test(data, data_test, model_name = "RF", nb_iteration = 5):
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "Basic"
+        scores["Dataset"] = dataset_name
         scores_matrix.loc["Basic_{}".format(i+1)] = scores
 
 
@@ -131,14 +113,12 @@ def make_score_test(data, data_test, model_name = "RF", nb_iteration = 5):
             scores = train(model, new_data, data_test, **kwargs) 
             scores["Model"] = model_name
             scores["Transformation"] = "Ada"
+            scores["Dataset"] = dataset_name
             scores_matrix.loc["Ada_{}".format(i+1)] = scores
         except Exception as e :
             print("    /!\/!\/!\ Asadyn failed /!\/!\/!\ :")
             print("    " + str(e))
 
-
-    with open('scores.pickle', 'wb') as handle:
-        pickle.dump(scores_matrix, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return scores_matrix
 
@@ -148,20 +128,37 @@ def make_final_tab(scores_matrix):
     all_trans = scores_matrix["Transformation"].unique()
     all_metrics = ["MCC", "F1", "G-mean", "Acc"]
 
-    final_tab = pd.DataFrame(columns= all_metrics)
+    final_tab_mean = pd.DataFrame(columns= all_metrics)
+    final_tab_p_value = pd.DataFrame()
 
     for trans in all_trans :
-        sub_score_trans = scores_matrix[scores_matrix["Transformation"] == trans].drop(["Model", "Transformation"], axis = 1)
-        final_tab.loc[trans] = sub_score_trans.mean(axis = 0)
+        sub_score_trans = scores_matrix[scores_matrix["Transformation"] == trans].drop(["Model", "Transformation", "Dataset"], axis = 1)
+        final_tab_mean.loc[trans] = sub_score_trans.mean(axis = 0)
+        
+        #Calcul de la p-valeur
+        if trans != "Default" :
+            for metric in all_metrics :
+                default_values = np.array( scores_matrix[scores_matrix["Transformation"] == "Default"].drop(["Model", "Transformation", "Dataset"], axis = 1)[[metric]])
+                default_values = np.squeeze(default_values)
+
+                trans_values = np.array( scores_matrix[scores_matrix["Transformation"] == trans].drop(["Model", "Transformation", "Dataset"], axis = 1)[[metric]])
+                trans_values = np.squeeze(trans_values)
+
+                test = ttest_ind(default_values, trans_values, equal_var = False)
+                t_stat, pvalue = ttest_ind(default_values, trans_values, equal_var = False)
+
+                final_tab_p_value.loc[trans, metric] = pvalue
 
 
+    
     for metric in all_metrics :
+        model_name = list( scores_matrix["Model"].unique() )[0]
+        dataset_name = list( scores_matrix["Dataset"].unique() )[0]
         plt.figure(figsize=(10, 10), dpi=80) 
         sns.violinplot(data=scores_matrix, x=metric, y="Transformation").set(title=metric)
+        plt.savefig("results/{}_{}_{}.png".format(model_name, metric, dataset_name))
     
-    plt.show()
-    
-    return final_tab
+    return final_tab_mean, final_tab_p_value
 
     
 
@@ -175,7 +172,6 @@ if __name__ == "__main__" :
     data_test = pd.read_csv(dataset_folder + "/{}/{}_TEST.tsv".format(dataset, dataset) ,sep='\t', header =None)
     score_matrix = make_score_test(data, data_test, model_name = "RF", nb_iteration = 20)
 
-    final_tab = make_final_tab(score_matrix)
-
-    print(final_tab)
+    final_tab_mean, final_tab_p_value = make_final_tab(score_matrix)
+    
 

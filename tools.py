@@ -7,7 +7,6 @@ from tsaug import TimeWarp, Crop, Quantize, Drift, Reverse, AddNoise
 import random as rd
 from imblearn.over_sampling import SMOTE, ADASYN
 
-
 def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3) :
     """
         name_trans = "Basic" (Basic Smote), "Ada"  (Adasyn)
