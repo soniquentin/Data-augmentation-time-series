@@ -16,45 +16,44 @@ class Dtw_neigbours :
     def __init__(self) :
         pass
 
-    def fit(self, X, y):
+    def fit(self, X, y, k_neighbors = 5):
         self.train_data = X
         self.train_label = y
         self.nb_train = len(X)
+        self.k_neighbors = k_neighbors
     
     def predict(self, X_test) :
 
-        def thread_run(num, total_treads, nb_test) :
-            for i in range(nb_test) :
-                if i%total_treads == num :
-                    
-                    j_min = 0
-                    dist_min, _ = fastdtw(X_test[i], self.train_data[0])
-                    
-                    for j in range(1, self.nb_train):
-                        dist, _ = fastdtw(X_test[i], self.train_data[j])
-
-                        if dist < dist_min :
-                            dist_min = dist
-                            j_min = j
-
-                    final_prediction.append( (i, self.train_label[j_min]) )
-
-                    if i%(5*total_treads) == num :
-                        print("Thread {} : {}/{}".format(num, i, nb_test))
-
-
         final_prediction = []
 
-        total_treads = 20
-        threads = [Thread(target=thread_run, args=(i,total_treads,len(X_test))) for i in range(total_treads)]
+        for i in tqdm( range(len(X_test)) ) :
+            dist_0, _ = fastdtw(X_test[i], self.train_data[0])
+            dist_list = [( self.train_label[0] ,dist_0 )]
 
-        for thread in threads :
-            thread.start()
+            for j in range(1, self.nb_train):
+                dist, _ = fastdtw(X_test[i], self.train_data[j])
 
-        for thread in threads :
-            thread.join()
+                previous_length = len(dist_list)
+                ind_in_dist_list = None
+                for k in range(previous_length) :
+                    a,b = dist_list[k]
+                    if dist < b :
+                        ind_in_dist_list = k
+                        break
+                
+                if ind_in_dist_list != None :
+                    dist_list = dist_list[:ind_in_dist_list] + [( self.train_label[j] , dist)] + dist_list[ind_in_dist_list:]
+                    dist_list = dist_list[:min(self.k_neighbors, previous_length + 1)]
 
-        
+            count_list = {}
+            for neighbors, _ in dist_list :
+                if neighbors in count_list :
+                    count_list[neighbors] += 1
+                else :
+                    count_list[neighbors] = 1
+
+            final_prediction.append( max(count_list, key=count_list.get) )
+
         return np.array(final_prediction)
 
 
@@ -77,7 +76,7 @@ def get_model(model_name, data):
         model.add(Dense(64,  input_dim=nb_timestamp, kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
         model.add(Activation("relu"))
         model.add(Dropout(rate = 0.10)) #Reduce overfitting
-        model.add(Dense(1, kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
+        model.add(Dense(len(data[0].unique()), kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
         model.add(Activation("softmax"))
 
         model.compile(loss='mean_absolute_error', optimizer= Adam(learning_rate = 0.001), metrics=['mean_absolute_error'])
@@ -85,7 +84,7 @@ def get_model(model_name, data):
         kwargs = {"epochs" : 100, "batch_size" : 32, "verbose" : 0}
 
         return (model, "NN"), kwargs
-    
+
     elif model_name == "DTW_NEIGBOURS" :
         return (Dtw_neigbours(), "DTW_NEIGBOURS"), {}
     

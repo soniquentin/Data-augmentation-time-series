@@ -7,7 +7,7 @@ from tsaug import TimeWarp, Crop, Quantize, Drift, Reverse, AddNoise
 import random as rd
 from imblearn.over_sampling import SMOTE, ADASYN
 
-def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3) :
+def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_strategy = None) :
     """
         name_trans = "Basic" (Basic Smote), "Ada"  (Adasyn)
     """
@@ -19,10 +19,10 @@ def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3) :
     y = np.array(y)
     
     if name_trans == "Basic" :
-        smote = SMOTE(sampling_strategy=1,  k_neighbors=k_neighbors)
+        smote = SMOTE(sampling_strategy= sampling_strategy ,  k_neighbors=k_neighbors)
         x, y = smote.fit_resample(x, y)
     elif name_trans == "Ada" :
-        adasyn = ADASYN(sampling_strategy=1, n_neighbors=k_neighbors)
+        adasyn = ADASYN(sampling_strategy= sampling_strategy, n_neighbors=k_neighbors)
         x, y = adasyn.fit_resample(x, y)
     
     new_samples = pd.DataFrame(x, columns = [i+1 for i in range(len(x[0]))])
@@ -82,7 +82,8 @@ def timeseries_trans(data, name_trans, minor_class, major_class) :
         cnt_maj = data[data[0] == l_major].shape[0]
         cnt_min = data[data[0] == l_minor].shape[0]
 
-    return data.reset_index().drop(["index"], axis = 1)
+    data_to_return = data.reset_index().drop(["index"], axis = 1)
+    return data_to_return[data_to_return[0] == l_minor]
 
 
 if __name__ == "__main__" :

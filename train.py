@@ -5,13 +5,21 @@ from imblearn.metrics import geometric_mean_score
 import seaborn as sns
 from models import get_model
 from scipy.stats import ttest_ind
+from tqdm import tqdm
 
 #Train and calculate the score
 def train(model, new_data, data_test, **kwargs) :
 
     mdl, model_name = model
-
-    X, y = np.array(new_data.drop([0], axis = 1), dtype = 'float'), np.array(new_data[0])
+    if model_name == "NN" :
+        X, y_temp = np.array(new_data.drop([0], axis = 1), dtype = 'float'), np.array(new_data[0])
+        unique_labels = np.sort( new_data[0].unique() )
+        y = np.zeros( (len(y_temp) , len(unique_labels) ))
+        for i in range(len(y_temp)) :
+            ind = np.where(unique_labels == y_temp[i])[0][0]
+            y[i,ind] = 1
+    else :
+        X, y = np.array(new_data.drop([0], axis = 1), dtype = 'float'), np.array(new_data[0])
 
     print("    --> Fitting model...")
     mdl.fit(X, y, **kwargs)
@@ -21,12 +29,13 @@ def train(model, new_data, data_test, **kwargs) :
     y_pred = mdl.predict(X_test)
 
     if model_name == "NN" :
-        y_pred = np.array([round(y[0]) for y in y_pred], dtype = 'int')
+        y_pred = np.array([unique_labels[np.argmax(y)] for y in y_pred], dtype = 'int')
 
     return { "MCC" : matthews_corrcoef(y_test, y_pred), 
             "F1" : f1_score(y_test, y_pred, average = "weighted"), 
             "G-mean" : geometric_mean_score(y_test, y_pred, average = "weighted"), 
             "Acc" :  accuracy_score(y_test, y_pred)}
+
 
 
 
@@ -48,21 +57,17 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
     #Get info on labels and their count
     #====>>> /!\/!\/!\ WORKS ONLY FOR BINARY CLASSFICATION !/!\/!\/!\ <<<====
     unique_labels = np.sort( data[0].unique() )
+    count_label = np.array( [ len(data[data[0] == label].index) for label in unique_labels ] )
+    data_per_class = [data[data[0] == label] for label in unique_labels]
 
-    label1, label2 = unique_labels[0],unique_labels[1]
-    count1, count2 = len( data[data[0] == label1].index), len( data[data[0] == label2].index)
+    indice_max = np.argmax(count_label)
+    max_label_count, label_max = np.max(count_label), unique_labels[indice_max]
+    new_data = data_per_class[indice_max].copy()
     
-    if count1 > count2 :
-        minor_class = (label2, count2)
-        major_class = (label1, count1)
-    else :
-        major_class = (label2, count2)
-        minor_class = (label1, count1)
-
-    
-    for i in range(nb_iteration) :
+    for i in tqdm( range(nb_iteration) ) :
         print_title(" TRAINING of {} (iteration {}/{}) ".format(model_name, i+1, nb_iteration))
         model, kwargs = get_model(model_name = model_name, data = data)
+
 
         print("--> Default")
         scores = train(model, data, data_test, **kwargs)
@@ -72,7 +77,10 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores_matrix.loc["Detault_{}".format(i+1)] = scores
 
         print("--> ROS")
-        new_data = timeseries_trans(data, name_trans = "ROS", minor_class = minor_class, major_class = major_class)
+        for j in range(len(unique_labels)) :
+            if unique_labels[j] != label_max :
+                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "ROS", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count))
+                new_data = pd.concat([new_data,data_minor], axis=0)
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "ROS"
@@ -80,7 +88,11 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores_matrix.loc["ROS_{}".format(i+1)] = scores
 
         print("--> Jittering")
-        new_data = timeseries_trans(data, name_trans = "Jit", minor_class = minor_class, major_class = major_class)
+        new_data = data_per_class[indice_max].copy()
+        for j in range(len(unique_labels)) :
+            if unique_labels[j] != label_max :
+                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "Jit", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count))
+                new_data = pd.concat([new_data,data_minor], axis=0)
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "Jit"
@@ -89,7 +101,11 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
 
 
         print("--> TimeWarping")
-        new_data = timeseries_trans(data, name_trans = "TW", minor_class = (1, 3), major_class = (0 , 5))
+        new_data = data_per_class[indice_max].copy()
+        for j in range(len(unique_labels)) :
+            if unique_labels[j] != label_max :
+                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "TW", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count))
+                new_data = pd.concat([new_data,data_minor], axis=0)
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "TW"
@@ -97,9 +113,12 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores_matrix.loc["TW_{}".format(i+1)] = scores
 
 
+
+        sampling_strategy = {unique_labels[i] : count_label[i] for i in range(len(unique_labels))}
+
+
         print("--> Basic Smote")
-        new_data = timeseries_smote(data, name_trans = "Basic", k_neighbors = 2)
-        X, y = np.array(new_data.drop([0], axis = 1)), np.array(new_data[0])
+        new_data = timeseries_smote(data , name_trans = "Basic", sampling_strategy = sampling_strategy)
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "Basic"
@@ -109,7 +128,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
 
         print("--> Basic Adasyn")
         try :
-            new_data = timeseries_smote(data, name_trans = "Ada", k_neighbors = 2)
+            new_data = timeseries_smote(data , name_trans = "Ada", sampling_strategy = sampling_strategy)
             scores = train(model, new_data, data_test, **kwargs) 
             scores["Model"] = model_name
             scores["Transformation"] = "Ada"
@@ -119,8 +138,11 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
             print("    /!\/!\/!\ Asadyn failed /!\/!\/!\ :")
             print("    " + str(e))
 
+    pd.set_option('display.max_rows', None)
 
     return scores_matrix
+
+
 
 
 def make_final_tab(scores_matrix):
@@ -160,7 +182,6 @@ def make_final_tab(scores_matrix):
     
     return final_tab_mean, final_tab_p_value
 
-    
 
 
 if __name__ == "__main__" :

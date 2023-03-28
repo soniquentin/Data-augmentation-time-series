@@ -11,9 +11,9 @@ warnings.simplefilter(action='ignore', category=RuntimeWarning)
 
 
 ### Listes pour le multitest
-MULTI_TEST_DATASETS = ["Strawberry", "Wafer", "MiddlePhalanxOutlineCorrect", "WormsTwoClass", "DistalPhalanxOutlineCorrect", "HandOutlines", "PhalangesOutlinesCorrect","ProximalPhalanxOutlineCorrect","Earthquakes"]
-MULTI_TEST_MODELS = ["RF","NN","TS-RF"] #["RF","NN","DTW_NEIGBOURS","TS-RF"]
-ITERATIONS = [20, 20, 20]
+MULTI_TEST_DATASETS = ["ECGFiveDays", "Wafer", "Earthquakes", "Lightning2", "NonInvasiveFetalECGThorax2"]
+MULTI_TEST_MODELS = ["NN","RF","TS-RF", "DTW_NEIGBOURS"] #["RF","NN","DTW_NEIGBOURS","TS-RF"]
+ITERATIONS = [20,20,20,5]
 
 
 #Pour cacher les prints
