@@ -22,7 +22,7 @@ def get_datasets_infos():
     
 
     for file_path, file_name in tqdm(all_files) :
-        dict_dataset = {}
+        dict_dataset = {"filepath" : file_path}
 
 
         data = pd.read_csv(file_path,sep='\t', header =None)

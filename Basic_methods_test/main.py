@@ -1,10 +1,11 @@
 import sys
-from get_info import get_info
+from get_info import get_info, get_datasets_infos
 from tools import *
 from train import *
 import pandas as pd
 import os, sys
 import time
+import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
@@ -35,6 +36,7 @@ Run command : python main.py <OPTION>
     --get_info_dataset : affiche infos des fichiers d'entrainement (nb de samples, compte pour chaque label, imbalence degree).
     --make_tab <DATASET_NAME> <MODEL>("RF","NN","DTW_NEIGBOURS","TS-RF") <NB_ITERATION> : Construit les tableaux pour un dataset et un model donné
     --multi_test : make_tab itéré sur différents datasets et différents model (modifier les listes dans le fichier main.py)
+    --draw_example_minority <DATASET_NAME> : plot min(3,cnt_minority) exemples de la time series de la classe minoritaire du dataset
             """
     print(usage)
     exit()
@@ -72,6 +74,29 @@ def multi_test_section():
             print("  --> Done ! (duration : {} s)".format(time.time() - t_i))
 
 
+def draw_example_minority_section(dataset_name):
+    dict_info = get_datasets_infos()
+    for k in dict_info :
+        if dataset_name in k : 
+            path_file = dict_info[k]["filepath"]
+            data = pd.read_csv(path_file,sep='\t', header =None) 
+            unique_labels = np.sort( data[0].unique() )
+            count_label = np.array( [ len(data[data[0] == label].index) for label in unique_labels ] )
+            indice_min = np.argmin(count_label)
+            min_label_count, label_min = np.min(count_label), unique_labels[indice_min]
+
+            data_min = np.array( data[data[0] == label_min] )[:,1:]
+
+            to_display = min(3,min_label_count)
+
+            fig, axs = plt.subplots(to_display)
+            for i in range(to_display) :
+                axs[i].plot(data_min[i])
+            plt.show()
+
+
+
+
 if __name__ == "__main__" :
 
     try :
@@ -91,6 +116,12 @@ if __name__ == "__main__" :
         make_tab_section(dataset_name, model_name, nb_iteration)
     elif "--multi_test" in option :
         multi_test_section()
+    elif "--draw_example_minority" :
+        try :
+            dataset_name = sys.argv[2]
+        except Exception as e:
+            raise_usage()  
+        draw_example_minority_section(dataset_name)
     else :
         raise_usage()
 
