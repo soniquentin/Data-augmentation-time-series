@@ -43,7 +43,7 @@ Run command : python main.py <OPTION>
 
 
 def make_tab_section(dataset_name, model_name, nb_iteration):
-    dataset_folder = "./datasets"
+    dataset_folder = "../datasets"
 
     data = pd.read_csv(dataset_folder + "/{}/{}_TRAIN.tsv".format(dataset_name, dataset_name) ,sep='\t', header =None)
     data_test = pd.read_csv(dataset_folder + "/{}/{}_TEST.tsv".format(dataset_name, dataset_name) ,sep='\t', header =None)

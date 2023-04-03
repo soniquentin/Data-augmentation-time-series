@@ -1,0 +1,129 @@
+Name,Type,N samples,Length timeseries,ID (multi),IR (binary),Label Count,Path
+Haptics_TRAIN.tsv,Motion,155,1093,2.2,,"{1: 18, 5: 33, 2: 34, 3: 34, 4: 36}",../datasets/Haptics/Haptics_TRAIN.tsv
+SyntheticControl_TRAIN.tsv,Simulated,300,61,0.0,,"{1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50}",../datasets/SyntheticControl/SyntheticControl_TRAIN.tsv
+Worms_TRAIN.tsv,Motion,181,901,2.2,,"{5: 17, 3: 25, 2: 31, 4: 32, 1: 76}",../datasets/Worms/Worms_TRAIN.tsv
+Computers_TRAIN.tsv,Device,250,721,,1.0,"{1: 125, 2: 125}",../datasets/Computers/Computers_TRAIN.tsv
+HouseTwenty_TRAIN.tsv,Device,40,2001,,1.0,"{1: 20, 2: 20}",../datasets/HouseTwenty/HouseTwenty_TRAIN.tsv
+GestureMidAirD3_TRAIN.tsv,Trajectory,208,361,0.0,,"{1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8, 7: 8, 8: 8, 9: 8, 10: 8, 11: 8, 12: 8, 13: 8, 14: 8, 15: 8, 16: 8, 17: 8, 18: 8, 19: 8, 20: 8, 21: 8, 22: 8, 23: 8, 24: 8, 25: 8, 26: 8}",../datasets/Missing_value_and_variable_length_datasets_adjusted/GestureMidAirD3/GestureMidAirD3_TRAIN.tsv
+Chinatown_TRAIN.tsv,Traffic,20,25,,1.0,"{1: 10, 2: 10}",../datasets/Chinatown/Chinatown_TRAIN.tsv
+UWaveGestureLibraryAll_TRAIN.tsv,Motion,896,946,0.21650635094610965,,"{8: 100, 3: 106, 2: 108, 4: 110, 6: 111, 7: 112, 1: 122, 5: 127}",../datasets/UWaveGestureLibraryAll/UWaveGestureLibraryAll_TRAIN.tsv
+Strawberry_TRAIN.tsv,Spectro,613,236,,0.5558375634517766,"{1: 219, 2: 394}",../datasets/Strawberry/Strawberry_TRAIN.tsv
+Car_TRAIN.tsv,Sensor,60,578,1.25,,"{3: 11, 1: 16, 2: 16, 4: 17}",../datasets/Car/Car_TRAIN.tsv
+GunPointAgeSpan_TRAIN.tsv,Motion,135,151,,0.9852941176470589,"{2: 67, 1: 68}",../datasets/GunPointAgeSpan/GunPointAgeSpan_TRAIN.tsv
+GestureMidAirD2_TRAIN.tsv,Trajectory,208,361,0.0,,"{1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8, 7: 8, 8: 8, 9: 8, 10: 8, 11: 8, 12: 8, 13: 8, 14: 8, 15: 8, 16: 8, 17: 8, 18: 8, 19: 8, 20: 8, 21: 8, 22: 8, 23: 8, 24: 8, 25: 8, 26: 8}",../datasets/Missing_value_and_variable_length_datasets_adjusted/GestureMidAirD2/GestureMidAirD2_TRAIN.tsv
+BeetleFly_TRAIN.tsv,Image,20,513,,1.0,"{1: 10, 2: 10}",../datasets/BeetleFly/BeetleFly_TRAIN.tsv
+Wafer_TRAIN.tsv,Sensor,1000,153,,0.10741971207087486,"{-1: 97, 1: 903}",../datasets/Wafer/Wafer_TRAIN.tsv
+CBF_TRAIN.tsv,Simulated,30,129,0.3333333333333333,,"{3: 8, 1: 10, 2: 12}",../datasets/CBF/CBF_TRAIN.tsv
+Adiac_TRAIN.tsv,Image,390,177,6.347581498126591,,"{5: 4, 3: 5, 13: 6, 21: 8, 37: 8, 9: 9, 18: 9, 20: 9, 23: 9, 26: 9, 29: 9, 31: 9, 34: 9, 2: 10, 7: 10, 11: 10, 16: 10, 22: 10, 35: 10, 10: 11, 14: 11, 17: 11, 36: 11, 6: 12, 12: 12, 15: 12, 1: 13, 8: 13, 25: 13, 27: 13, 28: 13, 30: 13, 32: 13, 33: 13, 4: 14, 19: 14, 24: 15}",../datasets/Adiac/Adiac_TRAIN.tsv
+ItalyPowerDemand_TRAIN.tsv,Sensor,67,25,,0.9705882352941176,"{2: 33, 1: 34}",../datasets/ItalyPowerDemand/ItalyPowerDemand_TRAIN.tsv
+Yoga_TRAIN.tsv,Image,300,427,,0.8404907975460123,"{1: 137, 2: 163}",../datasets/Yoga/Yoga_TRAIN.tsv
+AllGestureWiimoteY_TRAIN.tsv,Sensor,300,501,0.0,,"{1: 30, 2: 30, 3: 30, 4: 30, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30}",../datasets/Missing_value_and_variable_length_datasets_adjusted/AllGestureWiimoteY/AllGestureWiimoteY_TRAIN.tsv
+Trace_TRAIN.tsv,Sensor,100,276,0.5,,"{2: 21, 3: 22, 1: 26, 4: 31}",../datasets/Trace/Trace_TRAIN.tsv
+PigAirwayPressure_TRAIN.tsv,Hemodynamics,104,2001,0.0,,"{1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2, 33: 2, 34: 2, 35: 2, 36: 2, 37: 2, 38: 2, 39: 2, 40: 2, 41: 2, 42: 2, 43: 2, 44: 2, 45: 2, 46: 2, 47: 2, 48: 2, 49: 2, 50: 2, 51: 2, 52: 2}",../datasets/PigAirwayPressure/PigAirwayPressure_TRAIN.tsv
+ShapesAll_TRAIN.tsv,Image,600,513,0.0,,"{1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10, 9: 10, 10: 10, 11: 10, 12: 10, 13: 10, 14: 10, 15: 10, 16: 10, 17: 10, 18: 10, 19: 10, 20: 10, 21: 10, 22: 10, 23: 10, 24: 10, 25: 10, 26: 10, 27: 10, 28: 10, 29: 10, 30: 10, 31: 10, 32: 10, 33: 10, 34: 10, 35: 10, 36: 10, 37: 10, 38: 10, 39: 10, 40: 10, 41: 10, 42: 10, 43: 10, 44: 10, 45: 10, 46: 10, 47: 10, 48: 10, 49: 10, 50: 10, 51: 10, 52: 10, 53: 10, 54: 10, 55: 10, 56: 10, 57: 10, 58: 10, 59: 10, 60: 10}",../datasets/ShapesAll/ShapesAll_TRAIN.tsv
+Beef_TRAIN.tsv,Spectro,30,471,0.0,,"{1: 6, 2: 6, 3: 6, 4: 6, 5: 6}",../datasets/Beef/Beef_TRAIN.tsv
+GesturePebbleZ2_TRAIN.tsv,Sensor,146,456,2.3333333333333335,,"{2: 23, 3: 24, 4: 24, 5: 24, 1: 25, 6: 26}",../datasets/Missing_value_and_variable_length_datasets_adjusted/GesturePebbleZ2/GesturePebbleZ2_TRAIN.tsv
+Mallat_TRAIN.tsv,Simulated,55,1025,4.25,,"{5: 2, 1: 6, 3: 6, 6: 6, 8: 7, 2: 8, 7: 9, 4: 11}",../datasets/Mallat/Mallat_TRAIN.tsv
+GunPointOldVersusYoung_TRAIN.tsv,Motion,136,151,,0.9154929577464789,"{1: 65, 2: 71}",../datasets/GunPointOldVersusYoung/GunPointOldVersusYoung_TRAIN.tsv
+MiddlePhalanxTW_TRAIN.tsv,Image,399,81,0.0,,"{7: 25, 6: 30, 5: 43, 3: 57, 4: 84, 8: 160}",../datasets/MiddlePhalanxTW/MiddlePhalanxTW_TRAIN.tsv
+AllGestureWiimoteX_TRAIN.tsv,Sensor,300,501,0.0,,"{1: 30, 2: 30, 3: 30, 4: 30, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30}",../datasets/Missing_value_and_variable_length_datasets_adjusted/AllGestureWiimoteX/AllGestureWiimoteX_TRAIN.tsv
+Meat_TRAIN.tsv,Spectro,60,449,0.0,,"{1: 20, 2: 20, 3: 20}",../datasets/Meat/Meat_TRAIN.tsv
+Herring_TRAIN.tsv,Image,64,513,,0.6410256410256411,"{2: 25, 1: 39}",../datasets/Herring/Herring_TRAIN.tsv
+MiddlePhalanxOutlineCorrect_TRAIN.tsv,Image,600,81,,0.5463917525773195,"{0: 212, 1: 388}",../datasets/MiddlePhalanxOutlineCorrect/MiddlePhalanxOutlineCorrect_TRAIN.tsv
+InsectEPGRegularTrain_TRAIN.tsv,EPG,62,602,0.0,,"{3: 10, 1: 22, 2: 30}",../datasets/InsectEPGRegularTrain/InsectEPGRegularTrain_TRAIN.tsv
+FordA_TRAIN.tsv,Sensor,3601,501,,0.9507042253521126,"{1: 1755, -1: 1846}",../datasets/FordA/FordA_TRAIN.tsv
+SwedishLeaf_TRAIN.tsv,Image,500,129,6.227128381289749,,"{10: 26, 7: 28, 1: 29, 6: 30, 8: 31, 5: 33, 9: 33, 13: 33, 3: 35, 11: 35, 15: 35, 2: 36, 4: 36, 12: 38, 14: 42}",../datasets/SwedishLeaf/SwedishLeaf_TRAIN.tsv
+InlineSkate_TRAIN.tsv,Motion,100,1883,2.2258769757263126,,"{1: 9, 7: 11, 2: 14, 6: 14, 5: 16, 3: 18, 4: 18}",../datasets/InlineSkate/InlineSkate_TRAIN.tsv
+DodgerLoopDay_TRAIN.tsv,Sensor,78,289,1.1428571428571428,,"{2: 10, 3: 10, 4: 11, 7: 11, 1: 12, 5: 12, 6: 12}",../datasets/Missing_value_and_variable_length_datasets_adjusted/DodgerLoopDay/DodgerLoopDay_TRAIN.tsv
+UMD_TRAIN.tsv,Simulated,36,151,0.0,,"{1: 12, 2: 12, 3: 12}",../datasets/UMD/UMD_TRAIN.tsv
+CricketY_TRAIN.tsv,Motion,390,301,3.355512150128359,,"{1: 28, 4: 30, 9: 31, 6: 32, 7: 32, 10: 32, 11: 32, 8: 33, 2: 34, 12: 34, 3: 36, 5: 36}",../datasets/CricketY/CricketY_TRAIN.tsv
+MelbournePedestrian_TRAIN.tsv,Traffic,1194,25,1.7000000000000002,,"{8: 115, 9: 119, 1: 120, 2: 120, 3: 120, 4: 120, 5: 120, 6: 120, 7: 120, 10: 120}",../datasets/MelbournePedestrian/MelbournePedestrian_TRAIN.tsv
+DodgerLoopWeekend_TRAIN.tsv,Sensor,20,289,,1.0,"{1: 10, 2: 10}",../datasets/DodgerLoopWeekend/DodgerLoopWeekend_TRAIN.tsv
+GestureMidAirD1_TRAIN.tsv,Trajectory,208,361,0.0,,"{1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8, 7: 8, 8: 8, 9: 8, 10: 8, 11: 8, 12: 8, 13: 8, 14: 8, 15: 8, 16: 8, 17: 8, 18: 8, 19: 8, 20: 8, 21: 8, 22: 8, 23: 8, 24: 8, 25: 8, 26: 8}",../datasets/GestureMidAirD1/GestureMidAirD1_TRAIN.tsv
+ShakeGestureWiimoteZ_TRAIN.tsv,Sensor,50,386,0.0,,"{1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5, 7: 5, 8: 5, 9: 5, 10: 5}",../datasets/ShakeGestureWiimoteZ/ShakeGestureWiimoteZ_TRAIN.tsv
+GesturePebbleZ1_TRAIN.tsv,Sensor,132,456,2.3333333333333335,,"{2: 20, 1: 21, 3: 22, 4: 22, 6: 22, 5: 25}",../datasets/GesturePebbleZ1/GesturePebbleZ1_TRAIN.tsv
+AllGestureWiimoteZ_TRAIN.tsv,Sensor,300,501,0.0,,"{1: 30, 2: 30, 3: 30, 4: 30, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30}",../datasets/AllGestureWiimoteZ/AllGestureWiimoteZ_TRAIN.tsv
+PickupGestureWiimoteZ_TRAIN.tsv,Sensor,50,362,0.0,,"{1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5, 7: 5, 8: 5, 9: 5, 10: 5}",../datasets/PickupGestureWiimoteZ/PickupGestureWiimoteZ_TRAIN.tsv
+PLAID_TRAIN.tsv,Device,537,1345,6.136363636363637,,"{10: 13, 5: 18, 3: 19, 9: 19, 0: 33, 2: 57, 6: 57, 8: 69, 4: 78, 7: 86, 1: 88}",../datasets/PLAID/PLAID_TRAIN.tsv
+DodgerLoopGame_TRAIN.tsv,Sensor,20,289,,1.0,"{1: 10, 2: 10}",../datasets/DodgerLoopGame/DodgerLoopGame_TRAIN.tsv
+WormsTwoClass_TRAIN.tsv,Motion,181,901,,0.7238095238095238,"{1: 76, 2: 105}",../datasets/WormsTwoClass/WormsTwoClass_TRAIN.tsv
+SmoothSubspace_TRAIN.tsv,Simulated,150,16,0.0,,"{1: 50, 2: 50, 3: 50}",../datasets/SmoothSubspace/SmoothSubspace_TRAIN.tsv
+OSULeaf_TRAIN.tsv,Image,200,428,2.3333333333333335,,"{6: 15, 2: 29, 3: 33, 1: 34, 5: 36, 4: 53}",../datasets/OSULeaf/OSULeaf_TRAIN.tsv
+Ham_TRAIN.tsv,Spectro,109,432,,0.9122807017543859,"{1: 52, 2: 57}",../datasets/Ham/Ham_TRAIN.tsv
+CricketX_TRAIN.tsv,Motion,390,301,7.1242259987499885,,"{9: 25, 5: 27, 10: 28, 2: 31, 8: 31, 12: 32, 3: 34, 6: 34, 4: 35, 7: 36, 1: 38, 11: 39}",../datasets/CricketX/CricketX_TRAIN.tsv
+SonyAIBORobotSurface1_TRAIN.tsv,Sensor,20,71,,0.42857142857142855,"{1: 6, 2: 14}",../datasets/SonyAIBORobotSurface1/SonyAIBORobotSurface1_TRAIN.tsv
+ToeSegmentation1_TRAIN.tsv,Motion,40,278,,1.0,"{0: 20, 1: 20}",../datasets/ToeSegmentation1/ToeSegmentation1_TRAIN.tsv
+ScreenType_TRAIN.tsv,Device,375,721,0.0,,"{1: 125, 2: 125, 3: 125}",../datasets/ScreenType/ScreenType_TRAIN.tsv
+PigArtPressure_TRAIN.tsv,Hemodynamics,104,2001,0.0,,"{1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2, 33: 2, 34: 2, 35: 2, 36: 2, 37: 2, 38: 2, 39: 2, 40: 2, 41: 2, 42: 2, 43: 2, 44: 2, 45: 2, 46: 2, 47: 2, 48: 2, 49: 2, 50: 2, 51: 2, 52: 2}",../datasets/PigArtPressure/PigArtPressure_TRAIN.tsv
+SmallKitchenAppliances_TRAIN.tsv,Device,375,721,0.0,,"{1: 125, 2: 125, 3: 125}",../datasets/SmallKitchenAppliances/SmallKitchenAppliances_TRAIN.tsv
+Crop_TRAIN.tsv,Image,7200,47,0.0,,"{1: 300, 2: 300, 3: 300, 4: 300, 5: 300, 6: 300, 7: 300, 8: 300, 9: 300, 10: 300, 11: 300, 12: 300, 13: 300, 14: 300, 15: 300, 16: 300, 17: 300, 18: 300, 19: 300, 20: 300, 21: 300, 22: 300, 23: 300, 24: 300}",../datasets/Crop/Crop_TRAIN.tsv
+MoteStrain_TRAIN.tsv,Sensor,20,85,,1.0,"{1: 10, 2: 10}",../datasets/MoteStrain/MoteStrain_TRAIN.tsv
+ECGFiveDays_TRAIN.tsv,ECG,23,137,,0.6428571428571429,"{2: 9, 1: 14}",../datasets/ECGFiveDays/ECGFiveDays_TRAIN.tsv
+Wine_TRAIN.tsv,Spectro,57,235,,0.9,"{2: 27, 1: 30}",../datasets/Wine/Wine_TRAIN.tsv
+SemgHandMovementCh2_TRAIN.tsv,Spectrum,450,1501,0.0,,"{1: 75, 2: 75, 3: 75, 4: 75, 5: 75, 6: 75}",../datasets/SemgHandMovementCh2/SemgHandMovementCh2_TRAIN.tsv
+FreezerSmallTrain_TRAIN.tsv,Sensor,28,302,,1.0,"{1: 14, 2: 14}",../datasets/FreezerSmallTrain/FreezerSmallTrain_TRAIN.tsv
+UWaveGestureLibraryZ_TRAIN.tsv,Motion,896,316,0.21650635094610965,,"{8: 100, 3: 106, 2: 108, 4: 110, 6: 111, 7: 112, 1: 122, 5: 127}",../datasets/UWaveGestureLibraryZ/UWaveGestureLibraryZ_TRAIN.tsv
+NonInvasiveFetalECGThorax1_TRAIN.tsv,ECG,1800,751,8.290111663022913,,"{23: 35, 1: 36, 7: 36, 11: 36, 26: 37, 33: 37, 37: 37, 12: 39, 16: 39, 41: 39, 4: 40, 15: 40, 19: 40, 22: 40, 28: 40, 30: 40, 36: 40, 24: 41, 25: 41, 32: 41, 38: 41, 14: 42, 21: 43, 31: 43, 39: 43, 6: 44, 3: 45, 18: 45, 35: 45, 40: 45, 42: 45, 9: 46, 13: 46, 27: 47, 29: 47, 5: 48, 20: 49, 8: 50, 2: 52, 17: 52, 34: 52, 10: 56}",../datasets/NonInvasiveFetalECGThorax1/NonInvasiveFetalECGThorax1_TRAIN.tsv
+TwoLeadECG_TRAIN.tsv,ECG,23,83,,0.9166666666666666,"{2: 11, 1: 12}",../datasets/TwoLeadECG/TwoLeadECG_TRAIN.tsv
+Lightning7_TRAIN.tsv,Sensor,70,320,3.2857142857142856,,"{4: 5, 0: 8, 1: 8, 2: 8, 6: 10, 3: 12, 5: 19}",../datasets/Lightning7/Lightning7_TRAIN.tsv
+Phoneme_TRAIN.tsv,Sensor,214,1025,8.308237882886724,,"{5: 1, 8: 1, 10: 1, 26: 1, 32: 1, 33: 1, 37: 1, 39: 1, 16: 2, 19: 2, 24: 2, 34: 2, 36: 2, 38: 2, 4: 3, 6: 3, 15: 3, 25: 3, 30: 3, 35: 3, 1: 4, 13: 4, 14: 4, 2: 5, 7: 5, 27: 6, 11: 7, 12: 7, 22: 7, 9: 8, 18: 8, 20: 10, 17: 11, 28: 11, 29: 12, 21: 13, 23: 15, 31: 15, 3: 24}",../datasets/Phoneme/Phoneme_TRAIN.tsv
+SemgHandSubjectCh2_TRAIN.tsv,Spectrum,450,1501,0.0,,"{1: 90, 2: 90, 3: 90, 4: 90, 5: 90}",../datasets/SemgHandSubjectCh2/SemgHandSubjectCh2_TRAIN.tsv
+MiddlePhalanxOutlineAgeGroup_TRAIN.tsv,Image,400,81,0.0,,"{1: 55, 2: 108, 3: 237}",../datasets/MiddlePhalanxOutlineAgeGroup/MiddlePhalanxOutlineAgeGroup_TRAIN.tsv
+DistalPhalanxOutlineCorrect_TRAIN.tsv,Image,600,81,,0.5873015873015873,"{0: 222, 1: 378}",../datasets/DistalPhalanxOutlineCorrect/DistalPhalanxOutlineCorrect_TRAIN.tsv
+DistalPhalanxTW_TRAIN.tsv,Image,400,81,3.1666666666666665,,"{7: 18, 4: 28, 3: 29, 6: 30, 5: 82, 8: 213}",../datasets/DistalPhalanxTW/DistalPhalanxTW_TRAIN.tsv
+FacesUCR_TRAIN.tsv,Image,200,132,9.105506992268,,"{11: 4, 14: 6, 10: 8, 3: 10, 12: 11, 2: 12, 9: 12, 1: 13, 6: 13, 7: 14, 5: 15, 4: 22, 8: 27, 13: 33}",../datasets/FacesUCR/FacesUCR_TRAIN.tsv
+ECG5000_TRAIN.tsv,ECG,500,141,2.2,,"{5: 2, 3: 10, 4: 19, 2: 177, 1: 292}",../datasets/ECG5000/ECG5000_TRAIN.tsv
+HandOutlines_TRAIN.tsv,Image,1000,2710,,0.567398119122257,"{0: 362, 1: 638}",../datasets/HandOutlines/HandOutlines_TRAIN.tsv
+GunPointMaleVersusFemale_TRAIN.tsv,Motion,135,151,,0.9014084507042254,"{2: 64, 1: 71}",../datasets/GunPointMaleVersusFemale/GunPointMaleVersusFemale_TRAIN.tsv
+Coffee_TRAIN.tsv,Spectro,28,287,,1.0,"{0: 14, 1: 14}",../datasets/Coffee/Coffee_TRAIN.tsv
+Rock_TRAIN.tsv,Spectrum,20,2845,0.0,,"{1: 5, 2: 5, 3: 5, 4: 5}",../datasets/Rock/Rock_TRAIN.tsv
+MixedShapesSmallTrain_TRAIN.tsv,Image,100,1025,0.0,,"{1: 20, 2: 20, 3: 20, 4: 20, 5: 20}",../datasets/MixedShapesSmallTrain/MixedShapesSmallTrain_TRAIN.tsv
+FordB_TRAIN.tsv,Sensor,3636,501,,0.9548387096774194,"{1: 1776, -1: 1860}",../datasets/FordB/FordB_TRAIN.tsv
+FiftyWords_TRAIN.tsv,Image,450,271,13.285356919363403,,"{41: 1, 25: 2, 42: 2, 49: 2, 50: 2, 31: 3, 34: 3, 24: 4, 27: 4, 29: 4, 38: 4, 39: 4, 40: 4, 43: 4, 45: 4, 46: 4, 47: 4, 22: 5, 33: 5, 37: 5, 48: 5, 16: 6, 23: 6, 26: 6, 28: 6, 30: 6, 35: 6, 36: 6, 44: 6, 15: 7, 17: 7, 20: 7, 21: 7, 32: 7, 14: 8, 18: 8, 19: 9, 10: 10, 11: 10, 8: 11, 9: 11, 5: 13, 12: 13, 13: 14, 6: 15, 7: 16, 4: 20, 3: 33, 2: 49, 1: 52}",../datasets/FiftyWords/FiftyWords_TRAIN.tsv
+InsectWingbeatSound_TRAIN.tsv,Sensor,220,257,0.0,,"{1: 20, 2: 20, 3: 20, 4: 20, 5: 20, 6: 20, 7: 20, 8: 20, 9: 20, 10: 20, 11: 20}",../datasets/InsectWingbeatSound/InsectWingbeatSound_TRAIN.tsv
+MedicalImages_TRAIN.tsv,Image,381,100,3.363318042491699,,"{8: 6, 6: 7, 5: 10, 2: 15, 4: 16, 7: 18, 3: 25, 1: 35, 9: 46, 10: 203}",../datasets/MedicalImages/MedicalImages_TRAIN.tsv
+Symbols_TRAIN.tsv,Image,25,399,1.5,,"{3: 3, 4: 3, 5: 3, 6: 3, 2: 5, 1: 8}",../datasets/Symbols/Symbols_TRAIN.tsv
+ArrowHead_TRAIN.tsv,Image,36,252,0.0,,"{0: 12, 1: 12, 2: 12}",../datasets/ArrowHead/ArrowHead_TRAIN.tsv
+ProximalPhalanxOutlineAgeGroup_TRAIN.tsv,Image,400,81,0.0,,"{1: 72, 2: 139, 3: 189}",../datasets/ProximalPhalanxOutlineAgeGroup/ProximalPhalanxOutlineAgeGroup_TRAIN.tsv
+EOGHorizontalSignal_TRAIN.tsv,EOG,362,1251,0.6666666666666667,,"{1: 30, 2: 30, 3: 30, 4: 30, 5: 30, 8: 30, 9: 30, 10: 30, 11: 30, 12: 30, 6: 31, 7: 31}",../datasets/EOGHorizontalSignal/EOGHorizontalSignal_TRAIN.tsv
+TwoPatterns_TRAIN.tsv,Simulated,1000,129,0.0,,"{2: 237, 4: 242, 3: 250, 1: 271}",../datasets/TwoPatterns/TwoPatterns_TRAIN.tsv
+ChlorineConcentration_TRAIN.tsv,Sensor,467,167,0.0,,"{2: 91, 1: 114, 3: 262}",../datasets/ChlorineConcentration/ChlorineConcentration_TRAIN.tsv
+Plane_TRAIN.tsv,Sensor,105,145,1.5714285714285716,,"{3: 9, 5: 13, 2: 14, 1: 15, 4: 16, 6: 18, 7: 20}",../datasets/Plane/Plane_TRAIN.tsv
+ACSF1_TRAIN.tsv,Device,100,1461,0.0,,"{0: 10, 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10, 9: 10}",../datasets/ACSF1/ACSF1_TRAIN.tsv
+PhalangesOutlinesCorrect_TRAIN.tsv,Image,1800,81,,0.5358361774744027,"{0: 628, 1: 1172}",../datasets/PhalangesOutlinesCorrect/PhalangesOutlinesCorrect_TRAIN.tsv
+ShapeletSim_TRAIN.tsv,Simulated,20,501,,1.0,"{0: 10, 1: 10}",../datasets/ShapeletSim/ShapeletSim_TRAIN.tsv
+DistalPhalanxOutlineAgeGroup_TRAIN.tsv,Image,400,81,0.0,,"{1: 30, 2: 113, 3: 257}",../datasets/DistalPhalanxOutlineAgeGroup/DistalPhalanxOutlineAgeGroup_TRAIN.tsv
+InsectEPGSmallTrain_TRAIN.tsv,EPG,17,602,0.0,,"{3: 3, 1: 6, 2: 8}",../datasets/InsectEPGSmallTrain/InsectEPGSmallTrain_TRAIN.tsv
+EOGVerticalSignal_TRAIN.tsv,EOG,362,1251,0.6666666666666667,,"{1: 30, 2: 30, 3: 30, 4: 30, 5: 30, 8: 30, 9: 30, 10: 30, 11: 30, 12: 30, 6: 31, 7: 31}",../datasets/EOGVerticalSignal/EOGVerticalSignal_TRAIN.tsv
+CricketZ_TRAIN.tsv,Motion,390,301,5.163663417676994,,"{3: 25, 2: 27, 5: 29, 9: 31, 10: 31, 1: 32, 4: 32, 11: 33, 6: 36, 12: 36, 8: 37, 7: 41}",../datasets/CricketZ/CricketZ_TRAIN.tsv
+FaceFour_TRAIN.tsv,Image,24,351,1.25,,"{3: 3, 4: 5, 1: 8, 2: 8}",../datasets/FaceFour/FaceFour_TRAIN.tsv
+RefrigerationDevices_TRAIN.tsv,Device,375,721,0.0,,"{1: 125, 2: 125, 3: 125}",../datasets/RefrigerationDevices/RefrigerationDevices_TRAIN.tsv
+MixedShapesRegularTrain_TRAIN.tsv,Image,500,1025,0.0,,"{1: 100, 2: 100, 3: 100, 4: 100, 5: 100}",../datasets/MixedShapesRegularTrain/MixedShapesRegularTrain_TRAIN.tsv
+GunPoint_TRAIN.tsv,Motion,50,151,,0.9230769230769231,"{1: 24, 2: 26}",../datasets/GunPoint/GunPoint_TRAIN.tsv
+ECG200_TRAIN.tsv,ECG,100,97,,0.4492753623188406,"{-1: 31, 1: 69}",../datasets/ECG200/ECG200_TRAIN.tsv
+ToeSegmentation2_TRAIN.tsv,Motion,36,344,,1.0,"{0: 18, 1: 18}",../datasets/ToeSegmentation2/ToeSegmentation2_TRAIN.tsv
+WordSynonyms_TRAIN.tsv,Image,267,271,8.266333124739175,,"{25: 2, 13: 3, 7: 4, 15: 4, 19: 4, 21: 4, 3: 5, 5: 5, 17: 5, 18: 5, 1: 6, 9: 6, 11: 6, 23: 6, 20: 7, 24: 7, 12: 8, 22: 8, 14: 10, 10: 12, 16: 14, 6: 17, 8: 24, 4: 35, 2: 60}",../datasets/WordSynonyms/WordSynonyms_TRAIN.tsv
+Fungi_TRAIN.tsv,HRM,18,202,0.0,,"{1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1}",../datasets/Fungi/Fungi_TRAIN.tsv
+BirdChicken_TRAIN.tsv,Image,20,513,,1.0,"{1: 10, 2: 10}",../datasets/BirdChicken/BirdChicken_TRAIN.tsv
+SemgHandGenderCh2_TRAIN.tsv,Spectrum,300,1501,,1.0,"{1: 150, 2: 150}",../datasets/SemgHandGenderCh2/SemgHandGenderCh2_TRAIN.tsv
+OliveOil_TRAIN.tsv,Spectro,30,571,0.5,,"{3: 4, 1: 5, 2: 8, 4: 13}",../datasets/OliveOil/OliveOil_TRAIN.tsv
+BME_TRAIN.tsv,Simulated,30,129,0.0,,"{1: 10, 2: 10, 3: 10}",../datasets/BME/BME_TRAIN.tsv
+LargeKitchenAppliances_TRAIN.tsv,Device,375,721,0.0,,"{1: 125, 2: 125, 3: 125}",../datasets/LargeKitchenAppliances/LargeKitchenAppliances_TRAIN.tsv
+SonyAIBORobotSurface2_TRAIN.tsv,Sensor,27,66,,0.6875,"{1: 11, 2: 16}",../datasets/SonyAIBORobotSurface2/SonyAIBORobotSurface2_TRAIN.tsv
+Lightning2_TRAIN.tsv,Sensor,60,638,,0.5,"{-1: 20, 1: 40}",../datasets/Lightning2/Lightning2_TRAIN.tsv
+EthanolLevel_TRAIN.tsv,Spectro,504,1752,0.0,,"{1: 126, 2: 126, 3: 126, 4: 126}",../datasets/EthanolLevel/EthanolLevel_TRAIN.tsv
+UWaveGestureLibraryX_TRAIN.tsv,Motion,896,316,0.21650635094610965,,"{8: 100, 3: 106, 2: 108, 4: 110, 6: 111, 7: 112, 1: 122, 5: 127}",../datasets/UWaveGestureLibraryX/UWaveGestureLibraryX_TRAIN.tsv
+FreezerRegularTrain_TRAIN.tsv,Sensor,150,302,,1.0,"{1: 75, 2: 75}",../datasets/FreezerRegularTrain/FreezerRegularTrain_TRAIN.tsv
+Fish_TRAIN.tsv,Image,175,464,2.2258769757263126,,"{4: 21, 5: 22, 2: 25, 6: 25, 1: 26, 3: 28, 7: 28}",../datasets/Fish/Fish_TRAIN.tsv
+ProximalPhalanxOutlineCorrect_TRAIN.tsv,Image,600,81,,0.47783251231527096,"{0: 194, 1: 406}",../datasets/ProximalPhalanxOutlineCorrect/ProximalPhalanxOutlineCorrect_TRAIN.tsv
+NonInvasiveFetalECGThorax2_TRAIN.tsv,ECG,1800,751,8.290111663022913,,"{23: 35, 1: 36, 7: 36, 11: 36, 26: 37, 33: 37, 37: 37, 12: 39, 16: 39, 41: 39, 4: 40, 15: 40, 19: 40, 22: 40, 28: 40, 30: 40, 36: 40, 24: 41, 25: 41, 32: 41, 38: 41, 14: 42, 21: 43, 31: 43, 39: 43, 6: 44, 3: 45, 18: 45, 35: 45, 40: 45, 42: 45, 9: 46, 13: 46, 27: 47, 29: 47, 5: 48, 20: 49, 8: 50, 2: 52, 17: 52, 34: 52, 10: 56}",../datasets/NonInvasiveFetalECGThorax2/NonInvasiveFetalECGThorax2_TRAIN.tsv
+UWaveGestureLibraryY_TRAIN.tsv,Motion,896,316,0.21650635094610965,,"{8: 100, 3: 106, 2: 108, 4: 110, 6: 111, 7: 112, 1: 122, 5: 127}",../datasets/UWaveGestureLibraryY/UWaveGestureLibraryY_TRAIN.tsv
+FaceAll_TRAIN.tsv,Image,560,132,0.0,,"{1: 40, 2: 40, 3: 40, 4: 40, 5: 40, 6: 40, 7: 40, 8: 40, 9: 40, 10: 40, 11: 40, 12: 40, 13: 40, 14: 40}",../datasets/FaceAll/FaceAll_TRAIN.tsv
+StarLightCurves_TRAIN.tsv,Sensor,1000,1025,0.0,,"{1: 152, 2: 275, 3: 573}",../datasets/StarLightCurves/StarLightCurves_TRAIN.tsv
+ElectricDevices_TRAIN.tsv,Device,8926,97,4.142857142857143,,"{6: 509, 1: 727, 7: 728, 3: 851, 4: 1474, 2: 2231, 5: 2406}",../datasets/ElectricDevices/ElectricDevices_TRAIN.tsv
+Earthquakes_TRAIN.tsv,Sensor,322,513,,0.2196969696969697,"{1: 58, 0: 264}",../datasets/Earthquakes/Earthquakes_TRAIN.tsv
+PowerCons_TRAIN.tsv,Power,180,145,,1.0,"{1: 90, 2: 90}",../datasets/PowerCons/PowerCons_TRAIN.tsv
+DiatomSizeReduction_TRAIN.tsv,Image,16,346,0.0,,"{1: 1, 4: 4, 3: 5, 2: 6}",../datasets/DiatomSizeReduction/DiatomSizeReduction_TRAIN.tsv
+CinCECGTorso_TRAIN.tsv,Sensor,40,1640,0.5,,"{1: 5, 4: 10, 3: 12, 2: 13}",../datasets/CinCECGTorso/CinCECGTorso_TRAIN.tsv
+PigCVP_TRAIN.tsv,Hemodynamics,104,2001,0.0,,"{1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2, 24: 2, 25: 2, 26: 2, 27: 2, 28: 2, 29: 2, 30: 2, 31: 2, 32: 2, 33: 2, 34: 2, 35: 2, 36: 2, 37: 2, 38: 2, 39: 2, 40: 2, 41: 2, 42: 2, 43: 2, 44: 2, 45: 2, 46: 2, 47: 2, 48: 2, 49: 2, 50: 2, 51: 2, 52: 2}",../datasets/PigCVP/PigCVP_TRAIN.tsv
+ProximalPhalanxTW_TRAIN.tsv,Image,400,81,3.1666666666666665,,"{3: 16, 7: 17, 6: 20, 5: 58, 4: 109, 8: 180}",../datasets/ProximalPhalanxTW/ProximalPhalanxTW_TRAIN.tsv
