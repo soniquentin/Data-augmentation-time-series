@@ -1,12 +1,11 @@
-
+ 
 import pandas as pd
 import os
 from tqdm import tqdm
 import numpy as np
-from imbalance_degree import imbalance_degree
-
-def print_title(s) :
-    print(f'\n\n{s:=^50}')
+from res.imbalance_degree import imbalance_degree
+import csv
+from numpy import genfromtxt
 
 
 def get_datasets_infos():
@@ -31,6 +30,8 @@ def get_datasets_infos():
         #Nombre de series :
         dict_dataset["n_samples"] = len(data.index)
 
+        dict_dataset["length"] = len(data.columns) - 1
+
         #Labels et leur compte :
         unique_labels = np.sort( data[0].unique() )
         label_dict = {}
@@ -41,39 +42,40 @@ def get_datasets_infos():
         #Imbalance degree
         classes_count = np.array(list( label_dict.values() ))
         im_deg = imbalance_degree(classes_count, "EU")
+        if im_deg == 0 : #On divise par 10, peut-être que c'est parce que les nombre sont trop grands
+            classes_count //= 10
+            im_deg = imbalance_degree(classes_count, "EU")
         dict_dataset["ID"] = im_deg
 
         #Imbalance ratio (si possible)
         dict_dataset["IR"] = None
         if len(label_dict) == 2 :
             dict_dataset["IR"] = min(label_dict.values())/max(label_dict.values())
+            dict_dataset["ID"] = None
 
 
         dict_infos[file_name] = dict_dataset
 
 
-    return {k: v for k, v in sorted(dict_infos.items(), key=lambda item: item[1]["ID"])}
+    return dict_infos
 
 
-def print_dataset_info(ds_info) :
+def make_csv(ds_info) :
 
-    for k,v in ds_info.items() :
+    with open('infos.csv', 'w') as f:
+        
+        data = np.array( pd.read_csv("res/DataSummary.csv" ,sep=',') )
+        type_dict = { f'{info[2]}_TRAIN.tsv' :  info[1] for info in data}
 
-        print_title(" " + k + " ") 
-        print("--> Nombre de sample :", v["n_samples"])
+        writer = csv.writer(f)
+        writer.writerow(["Name", "Type", "N samples", "Length timeseries", "ID (multi)", "IR (binary)","Label Count", "Path" ])
 
-        print("--> Labels :")
-        for label, cnt_label in v["labels"].items() : 
-            print("    --> {} : {} samples".format( label, cnt_label ))
-
-        if v["IR"] == None :
-            print("--> Imbalance degree :", v["ID"])
-        else :
-            print("--> Imbalance ratio :", v["IR"])
+        for k,v in ds_info.items() :
+            label_count_sorted = {k: v for k, v in sorted(v["labels"].items(), key=lambda item: item[1])}
+            writer.writerow([k, type_dict[k] ,v["n_samples"], v["length"], v["ID"], v["IR"], label_count_sorted, v["filepath"]])
 
 
-def get_info(): 
-    dataset_infos = get_datasets_infos()
-    print_dataset_info(dataset_infos)
 
-    
+if __name__ == "__main__" :
+    dict_dataset = get_datasets_infos()
+    make_csv(dict_dataset)

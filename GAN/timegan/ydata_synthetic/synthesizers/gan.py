@@ -10,7 +10,7 @@ from pandas.api.types import is_float_dtype, is_integer_dtype
 from pandas import DataFrame
 from pandas import concat
 
-from joblib import dump, load
+import joblib
 
 import tensorflow as tf
 
@@ -181,7 +181,7 @@ class BaseModel():
         if self.__MODEL__=='WGAN' or self.__MODEL__=='WGAN_GP' or self.__MODEL__=='CWGAN_GP':
             del self.critic
         make_keras_picklable()
-        dump(self, path)
+        joblib.dump(self, path)
 
     @staticmethod
     def load(path):
@@ -199,7 +199,7 @@ class BaseModel():
             except (ValueError, RuntimeError):
                 # Invalid device or cannot modify virtual devices once initialized.
                 pass
-        synth = load(path)
+        synth = joblib.load(path)
         return synth
 
 

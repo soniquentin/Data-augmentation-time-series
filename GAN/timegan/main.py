@@ -8,7 +8,7 @@ from tensorflow.keras.optimizers.legacy import RMSprop
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import os.path
-from ydata_synthetic.synthesizers import ModelParameters
+from ydata_synthetic.synthesizers import ModelParameters, gan
 from ydata_synthetic.preprocessing.timeseries import processed_stock
 from ydata_synthetic.synthesizers.timeseries import TimeGAN
 
@@ -54,18 +54,19 @@ if __name__ == "__main__" :
                            layers_dim=128)
 
     synth = TimeGAN(model_parameters=gan_args, hidden_dim=24, seq_len=data.shape[-1], n_seq=1, gamma=1)
-    synth.train(data, train_steps=15000)
-    synth.save('synthesizer_stock.pkl')
+    synth.train(data, train_steps=10000)
+    synth.save('generator.pkl')
 
+    synth = gan.load('generator.pkl')
 
-    synth_data = synth.sample(3)
+    synth_data = synth.sample(5)
 
-    fig, axs = plt.subplots(3)
-    for j in range(3) :
+    fig, axs = plt.subplots(5)
+    for j in range(5) :
         axs[j].plot(np.array(synth_data[j,:,0]))
     
-    fig2, axs2 = plt.subplots(3)
-    for j in range(3) :
+    fig2, axs2 = plt.subplots(5)
+    for j in range(5) :
         axs2[j].plot(np.array(data[j,:])) 
     
     plt.show()
