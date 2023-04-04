@@ -47,6 +47,8 @@ def load_dataset() :
 
 if __name__ == "__main__" :
     data = load_dataset()
+    nb_steps = 10000
+
 
     gan_args = ModelParameters(batch_size=64,
                            lr=0.001,
@@ -54,10 +56,10 @@ if __name__ == "__main__" :
                            layers_dim=128)
 
     synth = TimeGAN(model_parameters=gan_args, hidden_dim=24, seq_len=data.shape[-1], n_seq=1, gamma=1)
-    synth.train(data, train_steps=10000)
-    synth.save('generator.pkl')
+    synth.train(data, train_steps=nb_steps)
+    synth.save(f'models/generator_{nb_steps}.pkl')
 
-    synth = gan.load('generator.pkl')
+    synth = gan.load(f'models/generator_{nb_steps}.pkl')
 
     synth_data = synth.sample(5)
 
