@@ -6,6 +6,19 @@ import tsaug
 from tsaug import TimeWarp, Crop, Quantize, Drift, Reverse, AddNoise
 import random as rd
 from imblearn.over_sampling import SMOTE, ADASYN
+import pickle
+
+import sys
+import os
+from pathlib import Path
+#Rajoute le dossier Basic_methods_test/ dans sys.path pour pouvoir importer les fonctions
+parent_path = str(Path(os.getcwd()).parent.absolute())
+sys.path.append(parent_path + "/GAN/timegan")
+from ydata_synthetic.synthesizers import ModelParameters, gan
+from ydata_synthetic.preprocessing.timeseries import processed_stock
+from ydata_synthetic.synthesizers.timeseries import TimeGAN
+
+
 
 def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_strategy = None) :
     """
@@ -86,6 +99,72 @@ def timeseries_trans(data, name_trans, minor_class, major_class) :
     return data_to_return[data_to_return[0] == l_minor]
 
 
+
+def gan_augmentation(data, dataset_name, sampling_strategy = None):
+
+    datafinal = data.copy()
+
+    for label in sampling_strategy :
+
+        dataset_folder = f"{parent_path}/GAN/timegan/models/{dataset_name}"
+        if not os.path.exists(dataset_folder) :
+            os.makedirs(dataset_folder)
+
+        current_label_nb = len(data[data[0] == label].index)
+        if current_label_nb != sampling_strategy[label] : #ce label n'est pas déjà à son nombre final
+
+            if not os.path.exists(f"{dataset_folder}/{label}.pkl") :  #Un modèle n'a pas été entrainé 
+                print(f"Train GAN for label {label}...")
+                data_label = np.array( data[data[0] == label] )[:,1:]
+                mini, maxi = np.min(data_label), np.max(data_label)
+                data_label = (data_label - mini)/(maxi - mini) #Normalize
+
+                nb_steps = 200
+                gan_args = ModelParameters(batch_size=64,
+                                        lr=0.001,
+                                        noise_dim=100,
+                                        layers_dim=128)
+
+                synth = TimeGAN(model_parameters=gan_args, hidden_dim=24, seq_len=data_label.shape[-1], n_seq=1, gamma=1)
+                synth.train(data_label, train_steps=nb_steps)
+                synth.save(f"{dataset_folder}/{label}.pkl")
+
+                #Sauvegarde le min et max
+                with open(f"{dataset_folder}/{label}_maxmin.pkl", 'wb') as f:
+                    pickle.dump({'maxi': maxi, 'mini' : mini}, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+                #Sauvegarde des exemples de générations
+                synth_data = synth.sample(5)
+                fig, axs = plt.subplots(5, sharey=True)
+                for j in range(5) :
+                    axs[j].plot(np.array(synth_data[j,:,0]))
+                plt.savefig(f"{dataset_folder}/exemples_{label}_generated.png", dpi=200)
+                
+                fig2, axs2 = plt.subplots(5, sharey=True)
+                for j in range(5) :
+                    axs2[j].plot(np.array(data_label[j,:]))
+                plt.savefig(f"{dataset_folder}/exemples_{label}.png", dpi=200)
+                
+
+            with open(f"{dataset_folder}/{label}_maxmin.pkl", 'rb') as f:
+
+                maxmin = pickle.load(f)
+                maxi, mini = maxmin['maxi'], maxmin['mini']
+
+                synth = gan.load(f"{dataset_folder}/{label}.pkl")
+                synth_data = synth.sample( sampling_strategy[label] - current_label_nb )
+                new_data = np.array(synth_data[:sampling_strategy[label] - current_label_nb,:,0])
+
+                new_samples = pd.DataFrame(new_data*(maxi - mini) + mini, columns = [i+1 for i in range(len(data.columns) - 1)])
+                new_samples[0] = label
+
+                datafinal = pd.concat([datafinal,new_samples], axis=0)
+
+
+    return datafinal
+        
+
+
 if __name__ == "__main__" :
 
     #dataset_folder = "./datasets"
@@ -113,11 +192,17 @@ if __name__ == "__main__" :
     new_data = timeseries_trans(data, name_trans = "Jit", minor_class = (1, 3), major_class = (0 , 5))
     print(new_data[new_data[0] == 1])
 
-    print("\n\nTEST BASIC SMOTE")
-    new_data = timeseries_smote(data, name_trans = "Basic", k_neighbors = 2)
-    print(new_data[new_data[0] == 1])
-
     print("\n\nTEST RANDOM")
     new_data = timeseries_trans(data, name_trans = "ROS", minor_class = (1, 3), major_class = (0 , 5))
     print(new_data[new_data[0] == 1])
+
+    sampling_strategy = {0 : 5, 1 : 5}
+
+    print("\n\nTEST BASIC SMOTE")
+    new_data = timeseries_smote(data, name_trans = "Basic", k_neighbors = 2, sampling_strategy = sampling_strategy)
+    print(new_data[new_data[0] == 1])
+
+    print("\n\nGAN")
+    new_data = gan_augmentation(data, "TEST", sampling_strategy = sampling_strategy)
+    print(new_data)
     

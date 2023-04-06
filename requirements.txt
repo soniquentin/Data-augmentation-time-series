@@ -18,3 +18,6 @@ tsaug==0.2.1
 opencv-python==4.7.0.72
 typeguard==3.0.2
 seaborn==0.12.2
+pyts==0.12.0
+fastdtw==0.3.4
+imblearn==0.0

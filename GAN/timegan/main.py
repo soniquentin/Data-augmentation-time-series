@@ -39,10 +39,7 @@ def load_dataset() :
     print(f"Longueur des timesseries : {len(A[0])}\n")
 
     return A
-
-
-
-
+    
 
 
 if __name__ == "__main__" :
