@@ -119,7 +119,7 @@ def gan_augmentation(data, dataset_name, sampling_strategy = None):
                 mini, maxi = np.min(data_label), np.max(data_label)
                 data_label = (data_label - mini)/(maxi - mini) #Normalize
 
-                nb_steps = 200
+                nb_steps = 2000
                 gan_args = ModelParameters(batch_size=64,
                                         lr=0.001,
                                         noise_dim=100,

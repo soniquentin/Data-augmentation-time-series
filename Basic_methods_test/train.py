@@ -7,12 +7,13 @@ from models import get_model
 from scipy.stats import ttest_ind
 from tqdm import tqdm
 import warnings
+from rocket.rocket_functions import apply_kernels
 
 #Train and calculate the score
 def train(model, new_data, data_test, **kwargs) :
 
     mdl, model_name = model
-    if model_name == "NN" :
+    if model_name == "NN" : #Faut modifier un peu les target
         X, y_temp = np.array(new_data.drop([0], axis = 1), dtype = 'float'), np.array(new_data[0])
         unique_labels = np.sort( new_data[0].unique() )
         y = np.zeros( (len(y_temp) , len(unique_labels) ))
@@ -21,12 +22,19 @@ def train(model, new_data, data_test, **kwargs) :
             y[i,ind] = 1
     else :
         X, y = np.array(new_data.drop([0], axis = 1), dtype = 'float'), np.array(new_data[0])
+    
+    if model_name == "KERNEL" : #Faut transformer X
+        mdl, kernels = mdl
+        X = apply_kernels(X, kernels)
 
     print("    --> Fitting model...")
     mdl.fit(X, y, **kwargs)
 
     print("    --> Scores calculation...")
     X_test, y_test = np.array(data_test.drop([0], axis = 1), dtype = 'float'), np.array(data_test[0])
+    if model_name == "KERNEL" : #Faut transformer X
+        X_test = apply_kernels(X_test, kernels)
+
     y_pred = mdl.predict(X_test)
 
     if model_name == "NN" :
@@ -138,7 +146,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         except Exception as e :
             warnings.warn(f"    /!\/!\/!\ Asadyn failed /!\/!\/!\ : {e}")
 
-
+        """
         print("--> GAN")
         new_data = gan_augmentation(data, dataset_name, sampling_strategy = sampling_strategy)
         scores = train(model, new_data, data_test, **kwargs)
@@ -146,6 +154,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores["Transformation"] = "GAN"
         scores["Dataset"] = dataset_name
         scores_matrix.loc["GAN{}".format(i+1)] = scores
+        """
 
 
 

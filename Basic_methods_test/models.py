@@ -9,53 +9,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 import random as rd
 from pyts.classification import TimeSeriesForest
-
-
-class Dtw_neigbours :
-
-    def __init__(self) :
-        pass
-
-    def fit(self, X, y, k_neighbors = 5):
-        self.train_data = X
-        self.train_label = y
-        self.nb_train = len(X)
-        self.k_neighbors = k_neighbors
-    
-    def predict(self, X_test) :
-
-        final_prediction = []
-
-        for i in tqdm( range(len(X_test)) ) :
-            dist_0, _ = fastdtw(X_test[i], self.train_data[0])
-            dist_list = [( self.train_label[0] ,dist_0 )]
-
-            for j in range(1, self.nb_train):
-                dist, _ = fastdtw(X_test[i], self.train_data[j])
-
-                previous_length = len(dist_list)
-                ind_in_dist_list = None
-                for k in range(previous_length) :
-                    a,b = dist_list[k]
-                    if dist < b :
-                        ind_in_dist_list = k
-                        break
-                
-                if ind_in_dist_list != None :
-                    dist_list = dist_list[:ind_in_dist_list] + [( self.train_label[j] , dist)] + dist_list[ind_in_dist_list:]
-                    dist_list = dist_list[:min(self.k_neighbors, previous_length + 1)]
-
-            count_list = {}
-            for neighbors, _ in dist_list :
-                if neighbors in count_list :
-                    count_list[neighbors] += 1
-                else :
-                    count_list[neighbors] = 1
-
-            final_prediction.append( max(count_list, key=count_list.get) )
-
-        return np.array(final_prediction)
-
+from sklearn.neighbors import KNeighborsClassifier
+from pyts.classification import LearningShapelets
+from rocket.rocket_functions import generate_kernels
+from sklearn.linear_model import RidgeClassifierCV
 
 
 def get_model(model_name, data):
@@ -86,7 +43,12 @@ def get_model(model_name, data):
         return (model, "NN"), kwargs
 
     elif model_name == "DTW_NEIGBOURS" :
-        return (Dtw_neigbours(), "DTW_NEIGBOURS"), {}
+
+        def DTW_FAST(x,y) :
+            dist, _ = fastdtw(x, y)
+            return dist
+
+        return (KNeighborsClassifier(n_neighbors = 3, metric = DTW_FAST), "DTW_NEIGBOURS"), {}
     
     elif model_name == "TS-RF" :
         random_state = rd.randint(1,100)
@@ -95,10 +57,44 @@ def get_model(model_name, data):
                                        n_windows = 10,
                                        random_state = random_state), "TS-RF") , {}
 
+    elif model_name == "SHAPELET" :
+        random_state = rd.randint(1,100)
+        return ( LearningShapelets(random_state=random_state, tol=0.01) , "SHAPELET"), {}
 
+    elif model_name == "KERNEL" :
+        nb_timestamp = len(data.columns) - 1
+        kernels = generate_kernels(nb_timestamp, 10000)
+        return ( (RidgeClassifierCV(alphas = np.logspace(-3, 3, 10)),kernels), "KERNEL") , {}
     
 if __name__ == "__main__" :
-    x = np.array([1, 2, 3, 4, 5], dtype='float')
-    y = np.array([2, 3, 4], dtype='float')
 
-    print( fastdtw(x, y) ) 
+
+
+    import pandas as pd
+    from sklearn.metrics import accuracy_score
+    import time
+
+    path = "../datasets/ECGFiveDays/ECGFiveDays_TRAIN.tsv"
+    path_test = "../datasets/ECGFiveDays/ECGFiveDays_TEST.tsv"
+    data = pd.read_csv(path ,sep='\t', header =None)
+    X_train, y_train = np.array( data.drop([0], axis = 1) ),  np.array(data[0])
+    data_test = pd.read_csv(path_test ,sep='\t', header =None)
+    X_test, y_test = np.array( data_test.drop([0], axis = 1) ), np.array(data_test[0])
+
+    
+    kernels = generate_kernels(X_train.shape[-1], 10000)
+    # transform training set and train classifier
+    X_training_transform = apply_kernels(X_train, kernels)
+    classifier = RidgeClassifierCV(alphas = np.logspace(-3, 3, 10))
+    classifier.fit(X_training_transform, y_train)
+
+    # transform test set and predict
+    X_test_transform = apply_kernels(X_test, kernels)
+    predictions = classifier.predict(X_test_transform)
+
+    print(predictions)
+    print(y_test)
+    print(accuracy_score(predictions,y_test))
+
+
+
