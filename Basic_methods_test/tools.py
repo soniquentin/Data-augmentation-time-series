@@ -7,6 +7,8 @@ from tsaug import TimeWarp, Crop, Quantize, Drift, Reverse, AddNoise
 import random as rd
 from imblearn.over_sampling import SMOTE, ADASYN
 import pickle
+from sklearn.manifold import TSNE
+import seaborn as sns
 
 import sys
 import os
@@ -41,7 +43,7 @@ def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_stra
     new_samples = pd.DataFrame(x, columns = [i+1 for i in range(len(x[0]))])
     new_samples[0] = pd.DataFrame(y)
 
-    return new_samples
+    return new_samples.reset_index().drop(["index"], axis = 1)
 
 
 
@@ -72,7 +74,7 @@ def timeseries_trans(data, name_trans, minor_class, major_class) :
             if name_trans == "TW" :
                 X_aug = TimeWarp(n_speed_change = 1, seed = rd.randint(1,200)).augment(X)
             elif name_trans == "Jit" :
-                X_aug = AddNoise(scale=0.01).augment(X)
+                X_aug = AddNoise(scale=0.1*np.std(X)).augment(X)
 
             new_samples.append(X_aug)
 
@@ -96,6 +98,7 @@ def timeseries_trans(data, name_trans, minor_class, major_class) :
         cnt_min = data[data[0] == l_minor].shape[0]
 
     data_to_return = data.reset_index().drop(["index"], axis = 1)
+
     return data_to_return[data_to_return[0] == l_minor]
 
 
