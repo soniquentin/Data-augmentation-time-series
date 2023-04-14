@@ -12,6 +12,8 @@ import seaborn as sns
 sns.set_theme(style="whitegrid")
 import warnings
 warnings.filterwarnings('ignore')
+from scipy import stats
+import itertools
 
 
 
@@ -41,7 +43,7 @@ DATASETS_TO_TEST = [
 "HouseTwenty",
 "TwoLeadECG",
 "BeetleFly",
-"BirdChicken",
+"BirdChicken”,
 "GunPointAgeSpan",
 "ToeSegmentation1",
 "GunPoint",
@@ -63,16 +65,25 @@ DATASETS_TO_TEST = [
 "Chinatown"
                     ]
 
-    #(Model, nb_iterations)
-MODELS_TO_TEST = [("NN",20),
-                  ("RF",20),
-                  ("TS-RF",20),
+#(Model, nb_iterations)
+MODELS_TO_TEST = [("NN",3),
+                  ("RF",3),
+                  ("TS-RF",3),
                   #("DTW_NEIGBOURS",5),
-                  ("KERNEL",20),
-                  ("SHAPELET",20)
+                  #("KERNEL",10),
+                  #("SHAPELET",10)
                   ]
 
 summary_metric = "F1"
+
+#Les caractéristiques de dataset dont il faut analyser l'influence (correspond au nom des colonnes dans info.csv)
+DATASET_CHARACTERISTICS = [
+                           "Length",
+                           "Dataset size",
+                           "Avg label size",
+                           "Dataset variance",
+                           "Intra-class variance",
+                          ]
 ## ===================================== ##
 
 
@@ -93,13 +104,23 @@ class HiddenPrints:
 
 if __name__ == "__main__" :
 
-    for dataset_name in DATASETS_TO_TEST :
+    delta_metric = {} #Dictionnaire {dataset_name : {model : {DA : Delta_Acc}} } qui va contenir Delta_Acc ou Delta_F1 (i.e Delta_summary_metric)
+    charac_lists = { c : {} for c in DATASET_CHARACTERISTICS} #Dictionnaire {characteristiques : {dataset : valeur}}. Va permettre de récupérer dans la foulée les charactéristiques des datasets dans le fichier info.csv
 
-        #Retrouve le chemin du dataset
-        infos = pd.read_csv("infos.csv".format(dataset_name, dataset_name) ,sep=',')
+    #Ouvre le fichier d'info
+    infos = pd.read_csv("infos.csv",sep=',')
+
+    for dataset_name in DATASETS_TO_TEST :
+        
+        #Initialise le dictionnaire (qui est la valeur associée à la clé dataset_name dans delta_metric)
+        delta_metric[dataset_name] = {}
+
+        #Retrouve le chemin du dataset et en profite pour pour importer les characteristiques des datasets
         for index, row in infos.iterrows():
             if f"{dataset_name}_TRAIN.tsv" == row["Name"] :
                 file_parent = str(Path(row["Filepath"]).parent.absolute())
+                for c in DATASET_CHARACTERISTICS : 
+                    charac_lists[c][dataset_name] = row[c]
                 break
 
         #Datafinal bilan (pour le bar chart final)
@@ -115,8 +136,7 @@ if __name__ == "__main__" :
             #Verbose
             print(f"****** [{dataset_name}] testing on {model} *******")
 
-            with HiddenPrints() :
-                
+            with HiddenPrints() :   
                 #Entraine et fais les tests
                 data = pd.read_csv(file_parent + f"/{dataset_name}_TRAIN.tsv" ,sep='\t', header =None)
                 data_test = pd.read_csv(file_parent + f"/{dataset_name}_TEST.tsv",sep='\t', header =None)
@@ -133,16 +153,58 @@ if __name__ == "__main__" :
                 #Concatène le dataframe de score pour le rendu du bar chart final
                 data_final = pd.concat([data_final,score_matrix])
 
+                #Ajoute les moyennes dans delta_metric
+                delta_metric[dataset_name][model] = {}
+                default_score = final_tab_mean.loc["Default"][summary_metric]
+                for index, row in final_tab_mean.iterrows():
+                    if index != "Default" :
+                        delta_metric[dataset_name][model][index] = row[summary_metric] - default_score
+
+
         #Construit la group bar chart bilan
-        plt.figure(figsize=(30, 10), dpi=200) 
+        plt.figure(figsize=(30, 10)) 
         g = sns.catplot(
             data=data_final, kind="bar",
             x="Model", y=summary_metric, hue="Transformation",
-            errorbar="sd", palette="dark", alpha=.6, height=6
+            errorbar="sd", palette="dark", alpha=.6, height=6, legend_out = True
         )
 
         g.despine(left=True)
         g.set_axis_labels("Classifier model", f"{summary_metric}")
         g.legend.set_title(f"{dataset_name}")
 
-        plt.savefig(dataset_folder + f"/summary_barchart.png")
+        plt.savefig(dataset_folder + f"/summary_barchart.png", dpi=200)
+        
+
+    #Construit le graphes de Spearman’s Rank Correlation Coefficients à l'aide de delta_metric
+    nb_caracs = len(DATASET_CHARACTERISTICS)
+    fig, axs = plt.subplots(nb_caracs, sharey=True)
+    for j in range(nb_caracs):
+
+        data_to_plot = pd.DataFrame(columns= ["Model", "Transformation", "Delta_acc"])
+
+        c = DATASET_CHARACTERISTICS[j]
+        list_carac_through_dataset = list(charac_lists[c].values()) #La liste des valeurs de tous les datasets pour cette caractéristiques
+
+        #Récupère la liste de tous les models surlesquels on a fait les tests ainsi que toutes les transformations
+        all_models = list(delta_metric[DATASETS_TO_TEST[0]].keys())
+        all_transfo = list(delta_metric[DATASETS_TO_TEST[0]][all_models[0]].keys())
+
+        index_number = 0
+        for model, transfo in itertools.product(all_models, all_transfo) :
+            list_deltametric_through_dataset = [dataset_delta_metric[model][transfo] for dataset_delta_metric in delta_metric.values()]
+            data_to_plot.loc[index_number] = [model, transfo, stats.spearmanr(list_deltametric_through_dataset,list_carac_through_dataset).statistic]
+            index_number += 1
+            
+        g = sns.catplot(
+            data=data_to_plot, kind="bar",
+            x="Model", y="Delta_acc", hue="Transformation",
+            errorbar="sd", palette="dark", alpha=.6, height=6, ax = axs[j],
+            legend_out = True
+        )
+
+        g.despine(left=True)
+        g.set_axis_labels("Classifier model", f"Spearman's Rank Correlation (Delta {summary_metric})")
+        g.legend.set_title(f"{dataset_name}")
+
+    plt.savefig("tests/impact_characteristics.png", dpi = 200)

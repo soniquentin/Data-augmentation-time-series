@@ -69,7 +69,6 @@ def get_model(model_name, data):
 if __name__ == "__main__" :
 
 
-
     import pandas as pd
     from sklearn.metrics import accuracy_score
     import time

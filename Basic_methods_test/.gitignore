@@ -1,5 +1,5 @@
 datasets/*
-!dataset/.gitkeep
+!datasets/.gitkeep
 
 results/*
 !results/.gitkeep

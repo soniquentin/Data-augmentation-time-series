@@ -20,11 +20,12 @@ def plot_tsne(new_data, method, dataset_name,count_label, unique_labels) :
     nb_data = len(new_data)
 
     new_data["Synthesized"] = ["Orginal" if i < np.sum(count_label) else "Synthesized" for i in range(nb_data)] ##Toutes les données synthétisées ont été concaténées à la fin
+    new_data["Size"] = [1 if i < np.sum(count_label) else 0.5 for i in range(nb_data)] #Taille de chaque point
     tsne = TSNE(n_components = 2, perplexity = min(nb_data//20, 40))
-    data_transformed = tsne.fit_transform(new_data.drop([0, "Synthesized"], axis = 1))
+    data_transformed = tsne.fit_transform(new_data.drop([0, "Synthesized", "Size"], axis = 1))
     colours = sns.color_palette("hls", len(unique_labels))
     new_data.rename(columns = {0:'label'}, inplace = True)
-    sns.scatterplot(x=data_transformed[:,0], y=data_transformed[:,1], hue = new_data["label"], style = new_data["Synthesized"],legend='full', palette=colours)
+    sns.scatterplot(x=data_transformed[:,0], y=data_transformed[:,1], hue = new_data["label"], style = new_data["Synthesized"], size = new_data["Size"], legend='full', palette=colours, alpha = 0.5)
     
     #Save plot
     TSNE_plot_folder = f"tests/{dataset_name}/plot_TSNE"
@@ -32,7 +33,6 @@ def plot_tsne(new_data, method, dataset_name,count_label, unique_labels) :
         os.makedirs(TSNE_plot_folder)
     
     plt.savefig(f"{TSNE_plot_folder}/{method}.png", dpi = 200) #Normalement, si on lance depuis Dataset_analysis/, ça devrait sauvegarder dans Dataset_analysis/tests
-
 
 #Train and calculate the score
 def train(model, new_data, data_test, **kwargs) :
