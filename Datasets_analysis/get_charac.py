@@ -10,7 +10,7 @@ from numpy import genfromtxt
 
 def calc_variances_normalized(data, file_name) -> (float, float) :
     """
-    Au lieu d'utiliser une variance, on va utiliser un coefficient de variation i.e on divise les écart-types par les moyennes
+    On normalise toutes les données avant d'appliquer la variance
     """
 
     def aux(data_aux) :     

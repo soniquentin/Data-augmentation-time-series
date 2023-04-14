@@ -73,28 +73,30 @@ if __name__ == "__main__" :
     import pandas as pd
     from sklearn.metrics import accuracy_score
     import time
+    from sklearn.manifold import TSNE
+    import seaborn as sns
+    import matplotlib.pyplot as plt
 
-    path = "../datasets/ECGFiveDays/ECGFiveDays_TRAIN.tsv"
-    path_test = "../datasets/ECGFiveDays/ECGFiveDays_TEST.tsv"
+    path = "../datasets/Wafer/Wafer_TRAIN.tsv"
+    path_test = "../datasets/Wafer/Wafer_TEST.tsv"
     data = pd.read_csv(path ,sep='\t', header =None)
+    """
     X_train, y_train = np.array( data.drop([0], axis = 1) ),  np.array(data[0])
     data_test = pd.read_csv(path_test ,sep='\t', header =None)
     X_test, y_test = np.array( data_test.drop([0], axis = 1) ), np.array(data_test[0])
+    """
 
-    
-    kernels = generate_kernels(X_train.shape[-1], 10000)
-    # transform training set and train classifier
-    X_training_transform = apply_kernels(X_train, kernels)
-    classifier = RidgeClassifierCV(alphas = np.logspace(-3, 3, 10))
-    classifier.fit(X_training_transform, y_train)
+    def DTW_FAST(x,y) :
+        dist, _ = fastdtw(x, y)
+        return dist  
 
-    # transform test set and predict
-    X_test_transform = apply_kernels(X_test, kernels)
-    predictions = classifier.predict(X_test_transform)
+    tsne = TSNE(n_components = 2, perplexity = 100,  metric = DTW_FAST)
 
-    print(predictions)
-    print(y_test)
-    print(accuracy_score(predictions,y_test))
+    data_transformed = tsne.fit_transform(data.drop([0], axis = 1))
+    colours = sns.color_palette("hls", len(np.unique(data[0])))
+    sns.scatterplot(x=data_transformed[:,0], y=data_transformed[:,1], hue = data[0], legend='full', palette=colours)
+    plt.show()
+
 
 
 
