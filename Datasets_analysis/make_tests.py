@@ -14,6 +14,8 @@ import warnings
 warnings.filterwarnings('ignore')
 from scipy import stats
 import itertools
+import matplotlib.pyplot as plt
+import pickle
 
 
 
@@ -43,7 +45,7 @@ DATASETS_TO_TEST = [
 "HouseTwenty",
 "TwoLeadECG",
 "BeetleFly",
-"BirdChicken”,
+"BirdChicken",
 "GunPointAgeSpan",
 "ToeSegmentation1",
 "GunPoint",
@@ -66,12 +68,12 @@ DATASETS_TO_TEST = [
                     ]
 
 #(Model, nb_iterations)
-MODELS_TO_TEST = [("NN",3),
-                  ("RF",3),
-                  ("TS-RF",3),
-                  #("DTW_NEIGBOURS",5),
-                  #("KERNEL",10),
-                  #("SHAPELET",10)
+MODELS_TO_TEST = [("NN",20),
+                  ("RF",20),
+                  ("TS-RF",20),
+                  #("DTW_NEIGBOURS",3),
+                  ("KERNEL",20),
+                  ("SHAPELET",20)
                   ]
 
 summary_metric = "F1"
@@ -111,6 +113,13 @@ if __name__ == "__main__" :
     infos = pd.read_csv("infos.csv",sep=',')
 
     for dataset_name in DATASETS_TO_TEST :
+
+        #Sauvegarde delta_metric temp et charac_lists temp
+        with open('tmp/delta_metric.pickle', 'wb') as handle:
+            pickle.dump(delta_metric, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        with open('tmp/charac_lists.pickle', 'wb') as handle:
+            pickle.dump(charac_lists, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
         
         #Initialise le dictionnaire (qui est la valeur associée à la clé dataset_name dans delta_metric)
         delta_metric[dataset_name] = {}
@@ -132,9 +141,6 @@ if __name__ == "__main__" :
             os.makedirs(dataset_folder)
 
         for model, nb_iteration in MODELS_TO_TEST :
-
-            #Verbose
-            print(f"****** [{dataset_name}] testing on {model} *******")
 
             with HiddenPrints() :   
                 #Entraine et fais les tests
@@ -174,11 +180,11 @@ if __name__ == "__main__" :
         g.legend.set_title(f"{dataset_name}")
 
         plt.savefig(dataset_folder + f"/summary_barchart.png", dpi=200)
+        plt.close("all")
         
-
+    
     #Construit le graphes de Spearman’s Rank Correlation Coefficients à l'aide de delta_metric
     nb_caracs = len(DATASET_CHARACTERISTICS)
-    fig, axs = plt.subplots(nb_caracs, sharey=True)
     for j in range(nb_caracs):
 
         data_to_plot = pd.DataFrame(columns= ["Model", "Transformation", "Delta_acc"])
@@ -199,12 +205,15 @@ if __name__ == "__main__" :
         g = sns.catplot(
             data=data_to_plot, kind="bar",
             x="Model", y="Delta_acc", hue="Transformation",
-            errorbar="sd", palette="dark", alpha=.6, height=6, ax = axs[j],
+            errorbar="sd", palette="dark", alpha=.6, height=6,
             legend_out = True
         )
 
         g.despine(left=True)
-        g.set_axis_labels("Classifier model", f"Spearman's Rank Correlation (Delta {summary_metric})")
-        g.legend.set_title(f"{dataset_name}")
+        g.set_axis_labels("Classifier model", f"Spearman's Rank Correlation")
+        g.legend.set_title(f"{c} ({summary_metric})")
 
-    plt.savefig("tests/impact_characteristics.png", dpi = 200)
+    
+        plt.savefig(f"tests/impact_{c}.png", dpi = 200) 
+    
+    plt.close("all")

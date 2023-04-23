@@ -8,7 +8,7 @@ from scipy.stats import ttest_ind
 from tqdm import tqdm
 import warnings
 from rocket.rocket_functions import apply_kernels
-
+import time
 
 def plot_tsne(new_data, method, dataset_name,count_label, unique_labels) :
     """
@@ -97,7 +97,17 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
     indice_max = np.argmax(count_label)
     max_label_count, label_max = np.max(count_label), unique_labels[indice_max]
     
-    for i in tqdm( range(nb_iteration) ) :
+    t_i = time.time()
+    pbar = tqdm( range(nb_iteration) )
+    for i in pbar :
+
+        if time.time() - t_i >= 3*3600 : #Si ça prend trop de temps
+            break
+
+        #tqdm write message
+        user_msg = f" [{dataset_name}] testing on {model_name} "
+        pbar.set_description(f'{user_msg:*^50}')
+
         print_title(" TRAINING of {} (iteration {}/{}) ".format(model_name, i+1, nb_iteration))
 
         model, kwargs = get_model(model_name = model_name, data = data)
@@ -182,10 +192,8 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
             #Plot TNSE
             if i == 0 :
                 plot_tsne(new_data, method = "Ada", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
-
         except Exception as e :
             warnings.warn(f"    /!\/!\/!\ Asadyn failed /!\/!\/!\ : {e}")
-
 
         """
         print("--> GAN")
@@ -196,6 +204,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores["Dataset"] = dataset_name
         scores_matrix.loc["GAN{}".format(i+1)] = scores
         """
+
 
 
 

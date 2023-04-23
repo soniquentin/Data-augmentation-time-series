@@ -69,11 +69,23 @@ def calc_IR_ID(data,file_name) -> (float,float) :
 
 
 def calc_smoothness_each_label(data,file_name) -> dict :
+
+    def aux(data_aux) :     
+        new_data = np.array(data)[:,1:]
+        upper_quantile = np.nanquantile(new_data, 0.9)
+        lower_quantile = np.nanquantile(new_data, 0.1)
+
+        new_data = (data - lower_quantile)/(upper_quantile - lower_quantile)
+
     unique_labels = np.sort( data[0].unique() )
     label_dict = {}
     for label in unique_labels :
         data_label = np.array( data[data[0] == label] )[:,1:]
-        individual_smoothness = np.sum( np.diff( np.diff(data_label) )**2, axis = 1)
+
+        #Normalize min = 0, max = 1 for each timeseries (1 is the max of the timeseries)
+        data_label = (data_label - np.min(data_label, axis = 1).reshape(data_label.shape[0],1))/(np.max(data_label, axis = 1).reshape(data_label.shape[0],1) - np.min(data_label, axis = 1).reshape(data_label.shape[0],1) )
+
+        individual_smoothness = np.std(  np.diff(data_label) , axis = 1)
         label_dict[label] = individual_smoothness.mean()
 
     return label_dict
