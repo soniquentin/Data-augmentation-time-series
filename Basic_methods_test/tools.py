@@ -19,6 +19,8 @@ sys.path.append(parent_path + "/GAN/timegan")
 from ydata_synthetic.synthesizers import ModelParameters, gan
 from ydata_synthetic.preprocessing.timeseries import processed_stock
 from ydata_synthetic.synthesizers.timeseries import TimeGAN
+sys.path.append(parent_path + "/twd_smote")
+
 
 
 
@@ -122,14 +124,14 @@ def gan_augmentation(data, dataset_name, sampling_strategy = None):
                 mini, maxi = np.min(data_label), np.max(data_label)
                 data_label = (data_label - mini)/(maxi - mini) #Normalize
 
-                nb_steps = 2000
+                nb_steps = 100
                 gan_args = ModelParameters(batch_size=64,
                                         lr=0.001,
                                         noise_dim=100,
                                         layers_dim=128)
 
                 synth = TimeGAN(model_parameters=gan_args, hidden_dim=24, seq_len=data_label.shape[-1], n_seq=1, gamma=1)
-                synth.train(data_label, train_steps=nb_steps)
+                synth.train(np.reshape(data_label,(data_label.shape[0], data_label.shape[-1], 1)), train_steps=nb_steps)
                 synth.save(f"{dataset_folder}/{label}.pkl")
 
                 #Sauvegarde le min et max

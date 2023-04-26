@@ -163,7 +163,7 @@ class BaseModel():
         """
         steps = n_samples // self.batch_size + 1
         data = []
-        for _ in tqdm.trange(steps, desc='Synthetic data generation'):
+        for _ in range(steps) :
             z = random.uniform([self.batch_size, self.noise_dim], dtype=tf.dtypes.float32)
             records = self.generator(z, training=False).numpy()
             data.append(records)

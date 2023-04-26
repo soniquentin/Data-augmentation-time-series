@@ -14,7 +14,6 @@ from pyts.classification import LearningShapelets
 from rocket.rocket_functions import generate_kernels
 from sklearn.linear_model import RidgeClassifierCV
 
-
 def get_model(model_name, data):
     """
         model_name : "RF" (Random Forest), "NN" (Simple fully connected layer)

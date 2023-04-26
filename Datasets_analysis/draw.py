@@ -148,6 +148,7 @@ def m_section(dataset_name, nb_plot = 1):
             x,y = periodogram(label_samples[random_index])
             plt.plot(x,y, color = color)
             plt.title(f"Periodogram of {dataset_name} n°{random_index} ({label})")
+            plt.xticks([ round(0.05*i,2) for i in range(11)], [round(0.05*i,2) for i in range(11)])
             plt.savefig(f"{dataset_folder}/label_{label}_{k}_periodogram.png", dpi = 300)
             plt.close()
 
