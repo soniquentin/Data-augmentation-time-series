@@ -68,12 +68,12 @@ DATASETS_TO_TEST = [
                     ]
 
 #(Model, nb_iterations)
-MODELS_TO_TEST = [("NN",20),
-                  ("RF",20),
-                  ("TS-RF",20),
+MODELS_TO_TEST = [("NN",20)
+                  #("RF",20),
+                  #("TS-RF",20),
                   #("DTW_NEIGBOURS",3),
-                  ("KERNEL",20),
-                  ("SHAPELET",20)
+                  #("KERNEL",20),
+                  #("SHAPELET",20)
                   ]
 
 summary_metric = "F1"
@@ -115,9 +115,9 @@ if __name__ == "__main__" :
     for dataset_name in DATASETS_TO_TEST :
 
         #Sauvegarde delta_metric temp et charac_lists temp
-        with open('tmp/delta_metric.pickle', 'wb') as handle:
+        with open('tmp/none.pickle', 'wb') as handle:
             pickle.dump(delta_metric, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        with open('tmp/charac_lists.pickle', 'wb') as handle:
+        with open('tmp/none.pickle', 'wb') as handle:
             pickle.dump(charac_lists, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         
