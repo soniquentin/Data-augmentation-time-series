@@ -1,4 +1,3 @@
-yes Y | conda install pandas
 pip install tsaug
 python -m pip install -U matplotlib
 pip install imblearn

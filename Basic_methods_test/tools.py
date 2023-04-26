@@ -19,6 +19,8 @@ sys.path.append(parent_path + "/GAN/timegan")
 from ydata_synthetic.synthesizers import ModelParameters, gan
 from ydata_synthetic.preprocessing.timeseries import processed_stock
 from ydata_synthetic.synthesizers.timeseries import TimeGAN
+sys.path.append(parent_path + "/twd_smote")
+
 
 
 
