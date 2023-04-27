@@ -68,8 +68,8 @@ DATASETS_TO_TEST = [
                     ]
 
 #(Model, nb_iterations)
-MODELS_TO_TEST = [("NN",20)
-                  #("RF",20),
+MODELS_TO_TEST = [("NN",20),
+                  ("RF",20)
                   #("TS-RF",20),
                   #("DTW_NEIGBOURS",3),
                   #("KERNEL",20),
