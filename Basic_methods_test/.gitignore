@@ -3,3 +3,5 @@ datasets/*
 
 results/*
 !results/.gitkeep
+
+__pycache__/

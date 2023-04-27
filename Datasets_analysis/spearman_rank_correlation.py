@@ -1,5 +1,5 @@
 """
-Effectue les tests en utilisant les fonctions de dans Basic_methods_test/
+Trace la spearman's rank correlation à partir des fichier pickle dans tmp généré pendant make_tests.py
 """
 import sys
 import os
@@ -16,106 +16,24 @@ from scipy import stats
 import itertools
 import matplotlib.pyplot as plt
 import pickle
-
-
-
-## ========== INFO TO MODIFY =========== ##
-DATASETS_TO_TEST = [
-"ECGFiveDays",
-"SonyAIBORobotSurface1",
-"Wafer",
-"Earthquakes",
-"ProximalPhalanxOutlineCorrect",
-"ECG200",
-"Lightning2",
-"PhalangesOutlinesCorrect",
-"Strawberry",
-"MiddlePhalanxOutlineCorrect",
-"HandOutlines",
-"DistalPhalanxOutlineCorrect",
-"Herring",
-"Wine",
-"WormsTwoClass",
-"Yoga",
-"GunPointOldVersusYoung",
-"GunPointMaleVersusFemale",
-"FordA",
-"FordB",
-"Computers",
-"HouseTwenty",
-"TwoLeadECG",
-"BeetleFly",
-"BirdChicken",
-"GunPointAgeSpan",
-"ToeSegmentation1",
-"GunPoint",
-"ToeSegmentation2",
-"PowerCons",
-"ItalyPowerDemand",
-"DodgerLoopWeekend",
-"DodgerLoopGame",
-"MoteStrain",
-"FreezerSmallTrain",
-"DodgerLoopWeekend",
-"DodgerLoopGame",
-"SonyAIBORobotSurface2",
-"FreezerRegularTrain",
-"ShapeletSim",
-"Ham",
-"Coffee",
-"SemgHandGenderCh2",
-"Chinatown"
-                    ]
-
-#(Model, nb_iterations)
-MODELS_TO_TEST = [("NN",20),
-                  ("RF",20),
-                  ("TS-RF",20),
-                  #("DTW_NEIGBOURS",3),
-                  ("KERNEL",20),
-                  ("SHAPELET",20)
-                  ]
-
-summary_metric = "F1"
-
-#Les caractéristiques de dataset dont il faut analyser l'influence (correspond au nom des colonnes dans info.csv)
-DATASET_CHARACTERISTICS = [
-                           "Length",
-                           "Dataset size",
-                           "Avg label size",
-                           "Dataset variance",
-                           "Intra-class variance",
-                          ]
-## ===================================== ##
-
-
-
-
-#Pour cacher les prints
-class HiddenPrints:
-    def __enter__(self):
-        self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, 'w')
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        sys.stdout.close()
-        sys.stdout = self._original_stdout
-
+from params import *
+from math import ceil
 
 
 
 if __name__ == "__main__" :
+    range_picke_file = int(ceil(len(DATASETS_TO_TEST)/group_size))
 
-    
-    f = open("tmp/charac_lists1.pickle",'rb')
+
+    f = open(f"tmp/charac_lists1.pickle",'rb')
     charac_lists = pickle.load(f)
     f.close()
 
-    f = open("tmp/delta_metric1.pickle",'rb')
+    f = open(f"tmp/delta_metric1.pickle",'rb')
     delta_metric = pickle.load(f)
     f.close()
 
-    for i in range(2,6) :
+    for i in range(2,range_picke_file+1) :
         f = open(f"tmp/charac_lists{i}.pickle",'rb')
         new_charac = pickle.load(f)
         for c in charac_lists :
@@ -133,9 +51,6 @@ if __name__ == "__main__" :
         for k_p, v_p in v.items():
             if "Ada" not in v_p : 
                 v_p["Ada"] = v_p["Basic"]
-
-
-
 
 
 
