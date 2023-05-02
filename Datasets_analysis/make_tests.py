@@ -31,7 +31,7 @@ class HiddenPrints:
         sys.stdout = self._original_stdout
 
 
-def usage():
+def raise_usage():
     msg = """
 python make_tests.py <ID_GROUP>
 
@@ -59,24 +59,28 @@ if __name__ == "__main__" :
         DATASETS_TO_TEST = DATASETS_TO_TEST[(id_group - 1)*group_size: id_group*group_size]
 
 
-    delta_metric = {} #Dictionnaire {dataset_name : {model : {DA : Delta_Acc}} } qui va contenir Delta_Acc ou Delta_F1 (i.e Delta_summary_metric)
+    delta_metric = [{} for i in range(len(summary_metric))] #Liste Dictionnaire {dataset_name : {model : {DA : Delta_Acc}} } qui va contenir Delta_Acc ou Delta_F1 (i.e Delta_summary_metric)
     charac_lists = { c : {} for c in DATASET_CHARACTERISTICS} #Dictionnaire {characteristiques : {dataset : valeur}}. Va permettre de récupérer dans la foulée les charactéristiques des datasets dans le fichier info.csv
 
     #Ouvre le fichier d'info
     infos = pd.read_csv("infos.csv",sep=',')
 
-    print(DATASETS_TO_TEST)
+    print(f"\n\n\nDatasets testés : {DATASETS_TO_TEST}\n\n\n")
     for dataset_name in DATASETS_TO_TEST :
 
         #Sauvegarde delta_metric temp et charac_lists temp
-        with open(f"tmp/delta_metric{id_group}.pickle", 'wb') as handle:
-            pickle.dump(delta_metric, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        for i in range(len(summary_metric)) :
+
+            with open(f"tmp/delta_metric{id_group}_{summary_metric[i]}.pickle", 'wb') as handle:
+                pickle.dump(delta_metric[i], handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+            #Initialise le dictionnaire (qui est la valeur associée à la clé dataset_name dans delta_metric)
+            delta_metric[i][dataset_name] = {}
+
         with open(f'tmp/charac_lists{id_group}.pickle', 'wb') as handle:
             pickle.dump(charac_lists, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         
-        #Initialise le dictionnaire (qui est la valeur associée à la clé dataset_name dans delta_metric)
-        delta_metric[dataset_name] = {}
 
         #Retrouve le chemin du dataset et en profite pour pour importer les characteristiques des datasets
         for index, row in infos.iterrows():
@@ -114,25 +118,26 @@ if __name__ == "__main__" :
                 data_final = pd.concat([data_final,score_matrix])
 
                 #Ajoute les moyennes dans delta_metric
-                delta_metric[dataset_name][model] = {}
-                default_score = final_tab_mean.loc["Default"][summary_metric]
-                for index, row in final_tab_mean.iterrows():
-                    if index != "Default" :
-                        delta_metric[dataset_name][model][index] = row[summary_metric] - default_score
+                for i in range(len(summary_metric)) :
+                    delta_metric[i][dataset_name][model] = {}
+                    default_score = final_tab_mean.loc["Default"][summary_metric[i]]
+                    for index, row in final_tab_mean.iterrows():
+                        if index != "Default" :
+                            delta_metric[i][dataset_name][model][index] = row[summary_metric[i]] - default_score
 
-
+        for metric_name in summary_metric :
         #Construit la group bar chart bilan
-        plt.figure(figsize=(30, 10)) 
-        g = sns.catplot(
-            data=data_final, kind="bar",
-            x="Model", y=summary_metric, hue="Transformation",
-            errorbar="sd", palette="dark", alpha=.6, height=6, legend_out = True
-        )
+            plt.figure(figsize=(30, 10)) 
+            g = sns.catplot(
+                data=data_final, kind="bar",
+                x="Model", y=metric_name, hue="Transformation",
+                errorbar="sd", palette="dark", alpha=.6, height=6, legend_out = True
+            )
 
-        g.despine(left=True)
-        g.set_axis_labels("Classifier model", f"{summary_metric}")
-        g.legend.set_title(f"{dataset_name}")
+            g.despine(left=True)
+            g.set_axis_labels("Classifier model", f"{metric_name}")
+            g.legend.set_title(f"{dataset_name}")
 
-        plt.savefig(dataset_folder + f"/summary_barchart.png", dpi=200)
-        plt.close("all")
-        
+            plt.savefig(dataset_folder + f"/summary_barchart_{metric_name}.png", dpi=200)
+            plt.close("all")
+            

@@ -3,3 +3,6 @@ __pycache__/
 datasets/
 get.sh
 push.sh
+creation/
+Examples/*
+!Examples/.gitkeep

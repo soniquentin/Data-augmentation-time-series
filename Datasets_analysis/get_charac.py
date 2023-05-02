@@ -108,8 +108,11 @@ def get_datasets_infos(caract_list):
         dict_dataset = {"Name" : file_name}
 
         summary_data = np.array( pd.read_csv("res/DataSummary.csv" ,sep=',') )
-        type_dict = { f'{info[2]}_TRAIN.tsv' :  info[1] for info in summary_data}
-        dict_dataset["Type"] = type_dict[file_name]
+        type_dict = { f'{info[2]}_TRAIN.tsv' :  info[1] for info in summary_data} #Dictionnaire {"Car_TRAIN.tsv" : "Spectro"}
+        try : 
+            dict_dataset["Type"] = type_dict[file_name]
+        except KeyError :
+            dict_dataset["Type"] = "Homemade"
 
 
         data = pd.read_csv(file_path,sep='\t', header =None)

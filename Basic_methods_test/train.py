@@ -125,7 +125,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         new_data = data_per_class[indice_max].copy()
         for j in range(len(unique_labels)) :
             if unique_labels[j] != label_max :
-                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "ROS", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count))
+                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "ROS", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count), dataset_name = dataset_name)
                 new_data = pd.concat([new_data,data_minor], axis=0)
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
@@ -138,7 +138,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         new_data = data_per_class[indice_max].copy()
         for j in range(len(unique_labels)) :
             if unique_labels[j] != label_max :
-                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "Jit", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count))
+                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "Jit", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count), dataset_name = dataset_name)
                 new_data = pd.concat([new_data,data_minor], axis=0)
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
@@ -154,7 +154,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         new_data = data_per_class[indice_max].copy()
         for j in range(len(unique_labels)) :
             if unique_labels[j] != label_max :
-                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "TW", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count))
+                data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "TW", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count), dataset_name = dataset_name)
                 new_data = pd.concat([new_data,data_minor], axis=0)
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
@@ -170,7 +170,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         sampling_strategy = {unique_labels[i] : np.max(count_label) for i in range(len(unique_labels))}
 
         print("--> Basic Smote")
-        new_data = timeseries_smote(data , name_trans = "Basic", sampling_strategy = sampling_strategy)
+        new_data = timeseries_smote(data , name_trans = "Basic", sampling_strategy = sampling_strategy, dataset_name = dataset_name)
         scores = train(model, new_data, data_test, **kwargs)
         scores["Model"] = model_name
         scores["Transformation"] = "Basic"
@@ -183,7 +183,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
 
         print("--> Basic Adasyn")
         try :
-            new_data = timeseries_smote(data , name_trans = "Ada", sampling_strategy = sampling_strategy)
+            new_data = timeseries_smote(data , name_trans = "Ada", sampling_strategy = sampling_strategy, dataset_name = dataset_name)
             scores = train(model, new_data, data_test, **kwargs) 
             scores["Model"] = model_name
             scores["Transformation"] = "Ada"
@@ -194,7 +194,6 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
                 plot_tsne(new_data, method = "Ada", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
         except Exception as e :
             warnings.warn(f"    /!\/!\/!\ Asadyn failed /!\/!\/!\ : {e}")
-
 
         print("--> GAN")
         new_data = gan_augmentation(data, dataset_name, sampling_strategy = sampling_strategy)
@@ -212,7 +211,6 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores["Transformation"] = "DTW-SMOTE"
         scores["Dataset"] = dataset_name
         scores_matrix.loc["DTW-SMOTE{}".format(i+1)] = scores
-
 
 
     #pd.set_option('display.max_rows', None)

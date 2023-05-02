@@ -1,3 +1,4 @@
+"""
 DATASETS_TO_TEST = [
 "ECGFiveDays",
 "SonyAIBORobotSurface1",
@@ -44,9 +45,12 @@ DATASETS_TO_TEST = [
 "SemgHandGenderCh2",
 "Chinatown"
                     ]
+"""
+
+DATASETS_TO_TEST = ["Homemade1"]
 
 #Taille des groupes pour l'entrainement
-group_size = 8
+group_size = 3
 
 #(Model, nb_iterations)
 MODELS_TO_TEST = [("NN",20),
@@ -57,7 +61,7 @@ MODELS_TO_TEST = [("NN",20),
                   ("SHAPELET",20)
                   ]
 
-summary_metric = "F1"
+summary_metric = ["F1", "G-mean", "Acc", "MCC"]
 
 #Les caractéristiques de dataset dont il faut analyser l'influence (correspond au nom des colonnes dans info.csv)
 DATASET_CHARACTERISTICS = [

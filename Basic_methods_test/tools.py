@@ -24,9 +24,41 @@ sys.path.append(parent_path + "/dtw_smote")
 from dtw_smote import new_samples
 
 
+def plot_examples(data_label, new_data, dataset_name, label, da_method) :
+    """
+        Plot des examples de generations
+        data_label : numpy array des vraies données
+        new_data : numpy array de données synthétisées
+        dataset_name : nom de dataset
+        label : label qui sont générées (entier)
+        da_method : nom de la méthode de DA utilisée
+    """
+    
+    #Créer un dossier pour le model pour sauvegarder les exemples et la k_matrice
+    dataset_folder = f"{parent_path}/Examples/{dataset_name}"
+    if not os.path.exists(dataset_folder) :
+        os.makedirs(dataset_folder)
+
+    #Plot quelques exemples
+    nb_to_plot = min(5, new_data.shape[0])
+    if nb_to_plot > 1 : 
+        fig, axs = plt.subplots(nb_to_plot, sharey=True)
+        for j in range(nb_to_plot) :
+            if da_method == "GAN" :
+                axs[j].plot(np.array(new_data[j,:,0]))
+            else : 
+                axs[j].plot(np.array(new_data[j,:]))
+    else :
+        plt.plot(new_data[0])
+    plt.savefig(f"{dataset_folder}/{label}_{da_method}.png", dpi=200)
+    
+    fig2, axs2 = plt.subplots(5, sharey=True)
+    for j in range(5) :
+        axs2[j].plot(np.array(data_label[j,:]))
+    plt.savefig(f"{dataset_folder}/{label}.png", dpi=200)
 
 
-def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_strategy = None) :
+def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_strategy = None, dataset_name = None) :
     """
         name_trans = "Basic" (Basic Smote), "Ada"  (Adasyn)
     """
@@ -36,6 +68,7 @@ def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_stra
 
     x = np.array(x)
     y = np.array(y)
+    nb_real_samples = x.shape[0]
     
     if name_trans == "Basic" :
         smote = SMOTE(sampling_strategy= sampling_strategy ,  k_neighbors=k_neighbors)
@@ -43,6 +76,14 @@ def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_stra
     elif name_trans == "Ada" :
         adasyn = ADASYN(sampling_strategy= sampling_strategy, n_neighbors=k_neighbors)
         x, y = adasyn.fit_resample(x, y)
+
+    #Plot examples
+    real_x = x[:nb_real_samples]
+    real_y = y[:nb_real_samples]
+    synthetic_x = x[nb_real_samples:]
+    synthetic_y = y[nb_real_samples:]
+    for label in np.unique(synthetic_y) :
+        plot_examples(real_x[real_y == label], new_data = synthetic_x[synthetic_y == label] , dataset_name = dataset_name, label = label, da_method = name_trans)
     
     new_samples = pd.DataFrame(x, columns = [i+1 for i in range(len(x[0]))])
     new_samples[0] = pd.DataFrame(y)
@@ -52,7 +93,7 @@ def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_stra
 
 
 
-def timeseries_trans(data, name_trans, minor_class, major_class) :
+def timeseries_trans(data, name_trans, minor_class, major_class, dataset_name) :
     """
         name_trans = "TW" (timewarping) ; "Jit" (jittering) ; "ROS" (Random OverSampling)
         minor_class = (label, count)
@@ -66,6 +107,7 @@ def timeseries_trans(data, name_trans, minor_class, major_class) :
     data_minor = data[data[0] == l_minor]
     data_minor = data_minor.drop([0], axis = 1) #On retire les labels
 
+    plot_examples_bool = True
 
     while cnt_maj -  cnt_min > 0 :
 
@@ -89,6 +131,10 @@ def timeseries_trans(data, name_trans, minor_class, major_class) :
         else :
             data_minor.head(nb_sample_to_create).apply(transfo, axis=1)
             new_samples = np.array(new_samples)
+            if plot_examples_bool :
+                plot_examples_bool = False
+                plot_examples(data_label = np.array(data_minor), new_data = new_samples, dataset_name = dataset_name, label = l_minor, da_method = name_trans)
+
 
         new_samples = pd.DataFrame(new_samples, columns = [i+1 for i in range(len(data_minor.columns))])
         new_samples[0] = l_minor
@@ -120,11 +166,12 @@ def gan_augmentation(data, dataset_name, sampling_strategy = None):
         current_label_nb = len(data[data[0] == label].index)
         if current_label_nb != sampling_strategy[label] : #ce label n'est pas déjà à son nombre final
 
+            data_label = np.array( data[data[0] == label] )[:,1:]
+            mini, maxi = np.min(data_label), np.max(data_label)
+            data_label = (data_label - mini)/(maxi - mini) #Normalize
+
             if not os.path.exists(f"{dataset_folder}/{label}.pkl") :  #Un modèle n'a pas été entrainé 
                 print(f"Train GAN for label {label}...")
-                data_label = np.array( data[data[0] == label] )[:,1:]
-                mini, maxi = np.min(data_label), np.max(data_label)
-                data_label = (data_label - mini)/(maxi - mini) #Normalize
 
                 nb_steps = 2500
                 gan_args = ModelParameters(batch_size=64,
@@ -140,18 +187,6 @@ def gan_augmentation(data, dataset_name, sampling_strategy = None):
                 with open(f"{dataset_folder}/{label}_maxmin.pkl", 'wb') as f:
                     pickle.dump({'maxi': maxi, 'mini' : mini}, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-                #Sauvegarde des exemples de générations
-                synth_data = synth.sample(5)
-                fig, axs = plt.subplots(5, sharey=True)
-                for j in range(5) :
-                    axs[j].plot(np.array(synth_data[j,:,0]))
-                plt.savefig(f"{dataset_folder}/exemples_{label}_generated.png", dpi=200)
-                
-                fig2, axs2 = plt.subplots(5, sharey=True)
-                for j in range(5) :
-                    axs2[j].plot(np.array(data_label[j,:]))
-                plt.savefig(f"{dataset_folder}/exemples_{label}.png", dpi=200)
-                
 
             with open(f"{dataset_folder}/{label}_maxmin.pkl", 'rb') as f:
 
@@ -159,6 +194,12 @@ def gan_augmentation(data, dataset_name, sampling_strategy = None):
                 maxi, mini = maxmin['maxi'], maxmin['mini']
 
                 synth = gan.load(f"{dataset_folder}/{label}.pkl")
+
+                #Plot des examples
+                synth_data = synth.sample(5)
+                plot_examples(data_label = data_label, new_data = synth_data, dataset_name = dataset_name, label = label, da_method = "GAN")
+
+
                 synth_data = synth.sample( sampling_strategy[label] - current_label_nb )
                 new_data = np.array(synth_data[:sampling_strategy[label] - current_label_nb,:,0])
 
@@ -190,29 +231,21 @@ def dtw_smote(data, dataset_name, sampling_strategy = None) :
 
             if not os.path.exists(f"{dataset_folder}/k_matrix_{label}.pkl") :  #Si la k_matrix n'existe pas déjà
 
-                new_data, k_matrix = new_samples(data = data_label, n_new = sampling_strategy[label] - current_label_nb, k_neighbors = 3)
+                new_data, k_matrix = new_samples(data = data_label, n_new = max( sampling_strategy[label] - current_label_nb , 5), k_neighbors = 3)
 
                 #On sauvegarde la k_matrix
                 joblib.dump(k_matrix, f"{dataset_folder}/k_matrix_{label}.pkl")
 
             else :
                 k_matrix = joblib.load(f"{dataset_folder}/k_matrix_{label}.pkl")
-                new_data, _ = new_samples(data = data_label, n_new = sampling_strategy[label] - current_label_nb, k_neighbors = 3, k_matrix = k_matrix)
-
-            #Plot quelques exemples
-            fig, axs = plt.subplots(5, sharey=True)
-            for j in range(5) :
-                axs[j].plot(np.array(new_data[j,:]))
-            plt.savefig(f"{dataset_folder}/exemples_{label}_generated.png", dpi=200)
+                new_data, _ = new_samples(data = data_label, n_new = max( sampling_strategy[label] - current_label_nb , 5), k_neighbors = 3, k_matrix = k_matrix)
             
-            fig2, axs2 = plt.subplots(5, sharey=True)
-            for j in range(5) :
-                axs2[j].plot(np.array(data_label[j,:]))
-            plt.savefig(f"{dataset_folder}/exemples_{label}.png", dpi=200)
+            #Plot des examples
+            plot_examples(data_label = data_label, new_data = new_data, dataset_name = dataset_name, label = label, da_method = "DTW-SMOTE")
 
 
             #Formate les nouvelles données
-            new_data = pd.DataFrame(new_data, columns = [i+1 for i in range(len(data.columns) - 1)])
+            new_data = pd.DataFrame(new_data[:sampling_strategy[label] - current_label_nb], columns = [i+1 for i in range(len(data.columns) - 1)])
             new_data[0] = label
             
             #Concatène les nouvelles données aux données existantes

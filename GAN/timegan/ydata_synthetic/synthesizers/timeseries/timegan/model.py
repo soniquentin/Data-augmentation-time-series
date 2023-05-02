@@ -273,7 +273,7 @@ class TimeGAN(BaseModel):
     def sample(self, n_samples):
         steps = n_samples // self.batch_size + 1
         data = []
-        for _ in trange(steps, desc='Synthetic data generation'):
+        for _ in range(steps):
             Z_ = next(self.get_batch_noise())
             records = self.generator(Z_)
             data.append(records)
