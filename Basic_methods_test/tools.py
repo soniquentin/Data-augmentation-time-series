@@ -52,9 +52,14 @@ def plot_examples(data_label, new_data, dataset_name, label, da_method) :
         plt.plot(new_data[0])
     plt.savefig(f"{dataset_folder}/{label}_{da_method}.png", dpi=200)
     
-    fig2, axs2 = plt.subplots(5, sharey=True)
-    for j in range(5) :
-        axs2[j].plot(np.array(data_label[j,:]))
+    #Plot les vraies données
+    nb_to_plot = min(5, data_label.shape[0])
+    if nb_to_plot > 1 : 
+        fig, axs = plt.subplots(nb_to_plot, sharey=True)
+        for j in range(nb_to_plot) :
+            axs[j].plot(np.array(data_label[j,:]))
+    else :
+        plt.plot(np.array(data_label[0]))
     plt.savefig(f"{dataset_folder}/{label}.png", dpi=200)
 
 
@@ -69,6 +74,11 @@ def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_stra
     x = np.array(x)
     y = np.array(y)
     nb_real_samples = x.shape[0]
+
+    #Dictionnary with count of each label in y
+    count_dict = {}
+    for label in np.unique(y) :
+        count_dict[label] = len(y[y == label])
     
     if name_trans == "Basic" :
         smote = SMOTE(sampling_strategy= sampling_strategy ,  k_neighbors=k_neighbors)
@@ -154,6 +164,13 @@ def timeseries_trans(data, name_trans, minor_class, major_class, dataset_name) :
 
 
 def gan_augmentation(data, dataset_name, sampling_strategy = None):
+    """
+        data = pd.DataFrame
+        dataset_name = "ECG5000" or "GunPoint"
+        sampling_strategy = {label : nb_sample}
+
+        Return : pd.DataFrame
+    """
 
     datafinal = data.copy()
 
@@ -214,6 +231,13 @@ def gan_augmentation(data, dataset_name, sampling_strategy = None):
 
 
 def dtw_smote(data, dataset_name, sampling_strategy = None) :
+    """
+        data = pd.DataFrame
+        dataset_name = "ECG5000" or "GunPoint"
+        sampling_strategy = {label : nb_sample}
+
+        Return : pd.DataFrame
+    """
 
     datafinal = data.copy()
 

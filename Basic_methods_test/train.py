@@ -221,6 +221,16 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
 
 
 def make_final_tab(scores_matrix, save_plot_path = "results"):
+    """
+        Fonction qui permet de créer le tableau final des résultats
+        Entrée :
+            - scores_matrix : DataFrame contenant les résultats de toutes les expériences
+            - save_plot_path : chemin où sauvegarder les plots
+
+        Sortie :
+            - final_tab_mean : DataFrame contenant les moyennes des scores pour chaque transformation
+            - final_tab_p_value : DataFrame contenant les p-valeurs pour chaque transformation    
+    """
 
     all_trans = scores_matrix["Transformation"].unique()
     all_metrics = ["MCC", "F1", "G-mean", "Acc"]

@@ -17,6 +17,7 @@ import itertools
 import matplotlib.pyplot as plt
 import pickle
 from params import *
+import traceback
 
 
 
@@ -29,6 +30,23 @@ class HiddenPrints:
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()
         sys.stdout = self._original_stdout
+
+
+
+def log_error(dataset_name, info, id_group):
+    """
+        Ecrit l'erreur dans le fichier log.txt
+    """
+
+    #Si une erreur est levée, on l'écrit dans le fichier log.txt
+    if os.path.exists("tests/log.txt") :
+        with open(f"tests/log.txt", "a") as f :
+            f.write(f"\n\n\n===={dataset_name} (group {id_group}): {info}====\n")
+            f.write(traceback.format_exc())
+    else :
+        with open(f"tests/log.txt", "w") as f :
+            f.write(f"===={dataset_name} : {info}====\n")
+            f.write(traceback.format_exc())
 
 
 def raise_usage():
@@ -60,15 +78,14 @@ if __name__ == "__main__" :
 
 
     delta_metric = [{} for i in range(len(summary_metric))] #Liste Dictionnaire {dataset_name : {model : {DA : Delta_Acc}} } qui va contenir Delta_Acc ou Delta_F1 (i.e Delta_summary_metric)
-    charac_lists = { c : {} for c in DATASET_CHARACTERISTICS} #Dictionnaire {characteristiques : {dataset : valeur}}. Va permettre de récupérer dans la foulée les charactéristiques des datasets dans le fichier info.csv
-
+    
     #Ouvre le fichier d'info
     infos = pd.read_csv("infos.csv",sep=',')
 
     print(f"\n\n\nDatasets testés : {DATASETS_TO_TEST}\n\n\n")
     for dataset_name in DATASETS_TO_TEST :
 
-        #Sauvegarde delta_metric temp et charac_lists temp
+        #Sauvegarde delta_metric temp et temp
         for i in range(len(summary_metric)) :
 
             with open(f"tmp/delta_metric{id_group}_{summary_metric[i]}.pickle", 'wb') as handle:
@@ -76,19 +93,12 @@ if __name__ == "__main__" :
 
             #Initialise le dictionnaire (qui est la valeur associée à la clé dataset_name dans delta_metric)
             delta_metric[i][dataset_name] = {}
-
-        with open(f'tmp/charac_lists{id_group}.pickle', 'wb') as handle:
-            pickle.dump(charac_lists, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
         
 
-        #Retrouve le chemin du dataset et en profite pour pour importer les characteristiques des datasets
+        #Retrouve le chemin du dataset
         for index, row in infos.iterrows():
             if f"{dataset_name}_TRAIN.tsv" == row["Name"] :
                 file_parent = str(Path(row["Filepath"]).parent.absolute())
-                for c in DATASET_CHARACTERISTICS : 
-                    charac_lists[c][dataset_name] = row[c]
-                break
 
         #Datafinal bilan (pour le bar chart final)
         data_final = pd.DataFrame()
@@ -99,45 +109,51 @@ if __name__ == "__main__" :
             os.makedirs(dataset_folder)
 
         for model, nb_iteration in MODELS_TO_TEST :
+            
+            try : 
+                with HiddenPrints() :   
+                    #Entraine et fais les tests
+                    data = pd.read_csv(file_parent + f"/{dataset_name}_TRAIN.tsv" ,sep='\t', header =None)
+                    data_test = pd.read_csv(file_parent + f"/{dataset_name}_TEST.tsv",sep='\t', header =None)
+                    score_matrix = make_score_test(data, data_test, dataset_name, model_name = model, nb_iteration = nb_iteration)
+                    
+                    #Transforme les résultats des tests en tableaux (mean et p-value) et sauvegarde les plots + les tableaux
+                    model_foler = f"tests/{dataset_name}/{model}"
+                    if not os.path.exists(model_foler) :
+                        os.makedirs(model_foler)
+                    final_tab_mean, final_tab_p_value = make_final_tab(score_matrix, save_plot_path = model_foler)
+                    final_tab_mean.to_csv(model_foler + f"/Mean.csv", sep='\t')
+                    final_tab_p_value.to_csv(model_foler + f"/Pvalues.csv", sep='\t')
 
-            with HiddenPrints() :   
-                #Entraine et fais les tests
-                data = pd.read_csv(file_parent + f"/{dataset_name}_TRAIN.tsv" ,sep='\t', header =None)
-                data_test = pd.read_csv(file_parent + f"/{dataset_name}_TEST.tsv",sep='\t', header =None)
-                score_matrix = make_score_test(data, data_test, dataset_name, model_name = model, nb_iteration = nb_iteration)
-                
-                #Transforme les résultats des tests en tableaux (mean et p-value) et sauvegarde les plots + les tableaux
-                model_foler = f"tests/{dataset_name}/{model}"
-                if not os.path.exists(model_foler) :
-                    os.makedirs(model_foler)
-                final_tab_mean, final_tab_p_value = make_final_tab(score_matrix, save_plot_path = model_foler)
-                final_tab_mean.to_csv(model_foler + f"/Mean.csv", sep='\t')
-                final_tab_p_value.to_csv(model_foler + f"/Pvalues.csv", sep='\t')
+                    #Concatène le dataframe de score pour le rendu du bar chart final
+                    data_final = pd.concat([data_final,score_matrix])
 
-                #Concatène le dataframe de score pour le rendu du bar chart final
-                data_final = pd.concat([data_final,score_matrix])
+                    #Ajoute les moyennes dans delta_metric
+                    for i in range(len(summary_metric)) :
+                        delta_metric[i][dataset_name][model] = {}
+                        default_score = final_tab_mean.loc["Default"][summary_metric[i]]
+                        for index, row in final_tab_mean.iterrows():
+                            if index != "Default" :
+                                delta_metric[i][dataset_name][model][index] = row[summary_metric[i]] - default_score
+            except Exception :
+                log_error(dataset_name, model, id_group)
 
-                #Ajoute les moyennes dans delta_metric
-                for i in range(len(summary_metric)) :
-                    delta_metric[i][dataset_name][model] = {}
-                    default_score = final_tab_mean.loc["Default"][summary_metric[i]]
-                    for index, row in final_tab_mean.iterrows():
-                        if index != "Default" :
-                            delta_metric[i][dataset_name][model][index] = row[summary_metric[i]] - default_score
+        try : 
+            for metric_name in summary_metric :
+            #Construit la group bar chart bilan
+                plt.figure(figsize=(30, 10)) 
+                g = sns.catplot(
+                    data=data_final, kind="bar",
+                    x="Model", y=metric_name, hue="Transformation",
+                    errorbar="sd", palette="dark", alpha=.6, height=6, legend_out = True
+                )
 
-        for metric_name in summary_metric :
-        #Construit la group bar chart bilan
-            plt.figure(figsize=(30, 10)) 
-            g = sns.catplot(
-                data=data_final, kind="bar",
-                x="Model", y=metric_name, hue="Transformation",
-                errorbar="sd", palette="dark", alpha=.6, height=6, legend_out = True
-            )
+                g.despine(left=True)
+                g.set_axis_labels("Classifier model", f"{metric_name}")
+                g.legend.set_title(f"{dataset_name}")
 
-            g.despine(left=True)
-            g.set_axis_labels("Classifier model", f"{metric_name}")
-            g.legend.set_title(f"{dataset_name}")
-
-            plt.savefig(dataset_folder + f"/summary_barchart_{metric_name}.png", dpi=200)
-            plt.close("all")
+                plt.savefig(dataset_folder + f"/summary_barchart_{metric_name}.png", dpi=200)
+                plt.close("all")
+        except Exception :
+            log_error(dataset_name, f"summary_barchart {metric_name}", id_group)
             
