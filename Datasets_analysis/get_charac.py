@@ -329,12 +329,11 @@ def calc_periods_nb(data, file_name) -> dict :
 
             for period in candidate_periods:
 
-
                 #Find the search range
                 period_k_plus_1 = 1/( (1/period) + 1/len(acf) )
                 period_k_minus_1 = 1/( (1/period) - 1/len(acf) )
-                lower_bound_search = int( (period + period_k_plus_1)/2 )  - 2
-                upper_bound_search = int( (period + period_k_minus_1)/2 ) + 2
+                lower_bound_search = max( int( (period + period_k_plus_1)/2 )  - 2 , 0 )
+                upper_bound_search = min( int( (period + period_k_minus_1)/2 ) + 2 , len(acf) - 1 )
 
                 #Find the best split point in the search range
                 best_split, slope1, slope2, intercept1, intercept2 = find_best_split(acf[lower_bound_search : upper_bound_search + 1])
