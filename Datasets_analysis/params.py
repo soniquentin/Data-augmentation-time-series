@@ -47,7 +47,7 @@ DATASETS_TO_TEST = [
                     ]
 """
 
-#DATASETS_TO_TEST = ["Homemade3"]
+#DATASETS_TO_TEST = ["StockMarket"]
 
 
 DATASETS_TO_TEST = ['Haptics', 'SyntheticControl', 'Worms', 'Computers', 'HouseTwenty',  'Chinatown', 'UWaveGestureLibraryAll', 'Strawberry', 'Car', 'GunPointAgeSpan',  'BeetleFly', 'Wafer', 'CBF', 'Adiac', 'ItalyPowerDemand',  'Trace', 'PigAirwayPressure', 'ShapesAll', 'Beef',  'Mallat', 'GunPointOldVersusYoung', 'MiddlePhalanxTW',  'Meat', 'Herring', 'MiddlePhalanxOutlineCorrect', 'InsectEPGRegularTrain', 'FordA', 'SwedishLeaf', 'InlineSkate',  'UMD', 'CricketY',                'SmoothSubspace', 'OSULeaf', 'Ham', 'CricketX', 'SonyAIBORobotSurface1', 'ToeSegmentation1', 'ScreenType', 'PigArtPressure', 'SmallKitchenAppliances', 'Crop', 'MoteStrain',  'ECGFiveDays', 'Wine', 'SemgHandMovementCh2', 'FreezerSmallTrain', 'UWaveGestureLibraryZ', 'NonInvasiveFetalECGThorax1', 'TwoLeadECG', 'Lightning7', 'Phoneme', 'SemgHandSubjectCh2',  'MiddlePhalanxOutlineAgeGroup',  'DistalPhalanxOutlineCorrect', 'DistalPhalanxTW', 'FacesUCR', 'ECG5000',   'HandOutlines', 'GunPointMaleVersusFemale', 'Coffee', 'Rock', 'MixedShapesSmallTrain',  'FordB', 'FiftyWords', 'InsectWingbeatSound', 'MedicalImages', 'Symbols', 'ArrowHead', 'ProximalPhalanxOutlineAgeGroup', 'EOGHorizontalSignal', 'TwoPatterns', 'ChlorineConcentration', 'Plane', 'ACSF1', 'PhalangesOutlinesCorrect', 'ShapeletSim', 'DistalPhalanxOutlineAgeGroup', 'InsectEPGSmallTrain',  'EOGVerticalSignal', 'CricketZ', 'FaceFour', 'RefrigerationDevices',  'MixedShapesRegularTrain', 'GunPoint',  'ECG200', 'ToeSegmentation2', 'WordSynonyms', 'Fungi', 'BirdChicken', 'SemgHandGenderCh2', 'OliveOil', 'BME', 'LargeKitchenAppliances', 'SonyAIBORobotSurface2', 'Lightning2', 'EthanolLevel', 'UWaveGestureLibraryX', 'FreezerRegularTrain', 'Fish', 'ProximalPhalanxOutlineCorrect', 'NonInvasiveFetalECGThorax2', 'UWaveGestureLibraryY', 'FaceAll', 'StarLightCurves', 'ElectricDevices', 'Earthquakes', 'PowerCons', 'DiatomSizeReduction', 'CinCECGTorso', 'PigCVP', 'ProximalPhalanxTW']
@@ -77,5 +77,6 @@ DATASET_CHARACTERISTICS = [
                            "Intra-class variance",
                            "Dispersion smoothness",
                            "Bhattacharyya",
-                           "Mean smoothness"
+                           "Mean smoothness",
+                           "Number of periods"
                           ]

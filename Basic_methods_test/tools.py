@@ -109,6 +109,8 @@ def timeseries_trans(data, name_trans, minor_class, major_class, dataset_name) :
         minor_class = (label, count)
         major_class = (label, count)
     """
+    synthesized_data = pd.DataFrame()
+
     l_minor, cnt_min = minor_class
     l_major, cnt_maj = major_class
 
@@ -150,16 +152,13 @@ def timeseries_trans(data, name_trans, minor_class, major_class, dataset_name) :
         new_samples[0] = l_minor
 
 
-        #Concat the new sample with data
-        data = pd.concat([data,new_samples], axis=0)
+        #Concat the new sample with the already created ones
+        synthesized_data = pd.concat([synthesized_data,new_samples], axis=0)
 
         #Update cnt_maj and cnt_min
-        cnt_maj = data[data[0] == l_major].shape[0]
-        cnt_min = data[data[0] == l_minor].shape[0]
-
-    data_to_return = data.reset_index().drop(["index"], axis = 1)
-
-    return data_to_return[data_to_return[0] == l_minor]
+        cnt_min += nb_sample_to_create
+        
+    return synthesized_data.reset_index().drop(["index"], axis = 1)
 
 
 

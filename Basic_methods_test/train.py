@@ -10,11 +10,15 @@ import warnings
 from rocket.rocket_functions import apply_kernels
 import time
 
-def plot_tsne(new_data, method, dataset_name,count_label, unique_labels) :
+def analyze_newdata(new_data, method, dataset_name,count_label, unique_labels) :
     """
-        Plot tsne des nouvelles données
+        new_data : DataFrame
+        method : str
+
+        Save the TSNE plot and the synthesized data
     """
 
+    ### PLOT TSNE ###
     plt.figure()
 
     nb_data = len(new_data)
@@ -27,12 +31,23 @@ def plot_tsne(new_data, method, dataset_name,count_label, unique_labels) :
     new_data.rename(columns = {0:'label'}, inplace = True)
     sns.scatterplot(x=data_transformed[:,0], y=data_transformed[:,1], hue = new_data["label"], style = new_data["Synthesized"], size = new_data["Size"], legend='full', palette=colours, alpha = 0.5)
     
-    #Save plot
+    # SAVE SYNTHEZISED DATA
     TSNE_plot_folder = f"tests/{dataset_name}/plot_TSNE"
     if not os.path.exists(TSNE_plot_folder) :
         os.makedirs(TSNE_plot_folder)
     
     plt.savefig(f"{TSNE_plot_folder}/{method}.png", dpi = 200) #Normalement, si on lance depuis Dataset_analysis/, ça devrait sauvegarder dans Dataset_analysis/tests
+
+
+
+    ### SAVE SYNTHESIZED DATA ###
+    synthesized_data = new_data[new_data["Synthesized"] == "Synthesized"]
+    synthesized_data.rename(columns = {'label':0}, inplace = True)
+    synthesized_data.drop(["Synthesized", "Size"], axis = 1, inplace = True)
+    if not os.path.exists(f"tests/{dataset_name}/synthesized_data") :
+        os.makedirs(f"tests/{dataset_name}/synthesized_data")
+    synthesized_data.to_csv(f"tests/{dataset_name}/synthesized_data/{method}.csv", index = False)
+
 
 #Train and calculate the score
 def train(model, new_data, data_test, **kwargs) :
@@ -122,7 +137,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
 
     
         print("--> ROS")
-        new_data = data_per_class[indice_max].copy()
+        new_data = data.copy()
         for j in range(len(unique_labels)) :
             if unique_labels[j] != label_max :
                 data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "ROS", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count), dataset_name = dataset_name)
@@ -135,7 +150,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
 
 
         print("--> Jittering")
-        new_data = data_per_class[indice_max].copy()
+        new_data = data.copy()
         for j in range(len(unique_labels)) :
             if unique_labels[j] != label_max :
                 data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "Jit", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count), dataset_name = dataset_name)
@@ -145,13 +160,13 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores["Transformation"] = "Jit"
         scores["Dataset"] = dataset_name
         scores_matrix.loc["Jit_{}".format(i+1)] = scores
-        #Plot TNSE
+        #Plot TNSE and save synthetized data
         if i == 0 :
-            plot_tsne(new_data, method = "Jittering", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+            analyze_newdata(new_data, method = "Jittering", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
 
 
         print("--> TimeWarping")
-        new_data = data_per_class[indice_max].copy()
+        new_data = data.copy()
         for j in range(len(unique_labels)) :
             if unique_labels[j] != label_max :
                 data_minor = timeseries_trans( pd.concat( [data_per_class[indice_max] , data_per_class[j] ], axis=0), name_trans = "TW", minor_class = (unique_labels[j] ,count_label[j]), major_class = (label_max, max_label_count), dataset_name = dataset_name)
@@ -161,9 +176,9 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores["Transformation"] = "TW"
         scores["Dataset"] = dataset_name
         scores_matrix.loc["TW_{}".format(i+1)] = scores
-        #Plot TNSE
+        #Plot TNSE and save synthetized data
         if i == 0 :
-            plot_tsne(new_data, method = "TimeWarping", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+            analyze_newdata(new_data, method = "TimeWarping", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
 
 
 
@@ -176,9 +191,9 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores["Transformation"] = "Basic"
         scores["Dataset"] = dataset_name
         scores_matrix.loc["Basic_{}".format(i+1)] = scores
-        #Plot TNSE
+        #Plot TNSE and save synthetized data
         if i == 0 :
-            plot_tsne(new_data, method = "Basic", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+            analyze_newdata(new_data, method = "Basic", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
 
 
         print("--> Basic Adasyn")
@@ -189,12 +204,13 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
             scores["Transformation"] = "Ada"
             scores["Dataset"] = dataset_name
             scores_matrix.loc["Ada_{}".format(i+1)] = scores
-            #Plot TNSE
+            #Plot TNSE and save synthetized data
             if i == 0 :
-                plot_tsne(new_data, method = "Ada", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+                analyze_newdata(new_data, method = "Ada", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
         except Exception as e :
             warnings.warn(f"    /!\/!\/!\ Asadyn failed /!\/!\/!\ : {e}")
 
+        """
         print("--> GAN")
         new_data = gan_augmentation(data, dataset_name, sampling_strategy = sampling_strategy)
         scores = train(model, new_data, data_test, **kwargs)
@@ -202,7 +218,10 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores["Transformation"] = "GAN"
         scores["Dataset"] = dataset_name
         scores_matrix.loc["GAN{}".format(i+1)] = scores
-
+        #Plot TNSE and save synthetized data
+        if i == 0 :
+            analyze_newdata(new_data, method = "GAN", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+        """
 
         print("--> DTW SMOTE")
         new_data = dtw_smote(data, dataset_name, sampling_strategy = sampling_strategy)
@@ -211,6 +230,9 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores["Transformation"] = "DTW-SMOTE"
         scores["Dataset"] = dataset_name
         scores_matrix.loc["DTW-SMOTE{}".format(i+1)] = scores
+        #Plot TNSE and save synthetized data
+        if i == 0 :
+            analyze_newdata(new_data, method = "DTW-SMOTE", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
 
 
     #pd.set_option('display.max_rows', None)

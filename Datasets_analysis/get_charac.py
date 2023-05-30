@@ -407,6 +407,46 @@ def calc_periods_nb(data, file_name) -> dict :
     return np.mean(counts_of_periods)
 
 
+def extract_charac(data, caract_list, file_name = None) : 
+    """
+    Extract the caracteristics of a dataset
+
+    Parameters
+    ----------
+    data : array-like
+        The dataset
+    caract_list : dict
+        The dictionnary of caracteristics to be extracted
+        {function : (carac_name1, carac_name2, ...)}
+
+    Returns
+    -------
+    charac_dict : dict
+        The dictionnary of caracteristics extracted
+        {carac_name1 : carac_value1, carac_name2 : carac_value2, ...}
+    """
+    charac_dict = {}
+
+    for function, v in caract_list.items() :
+        carac_values = function(data, file_name)
+
+        try :
+            if "dict" not in str(type(carac_values)) :
+                carac_values = list(carac_values)
+                v = list(v)
+            else :
+                raise TypeError
+        except TypeError :
+            carac_values = [carac_values]
+            v = [v]
+
+        for carac_name, carac_value  in zip(v, carac_values) :
+            charac_dict[carac_name] = carac_value
+    
+    return charac_dict
+
+
+
 
 def get_datasets_infos(caract_list):
 
@@ -434,21 +474,7 @@ def get_datasets_infos(caract_list):
 
         data = pd.read_csv(file_path,sep='\t', header =None)
         #OTHER CHARACTERISTICS
-        for function, v in caract_list.items() :
-            carac_values = function(data, file_name)
-
-            try :
-                if "dict" not in str(type(carac_values)) :
-                    carac_values = list(carac_values)
-                    v = list(v)
-                else :
-                    raise TypeError
-            except TypeError :
-                carac_values = [carac_values]
-                v = [v]
-
-            for carac_name, carac_value  in zip(v, carac_values) :
-                dict_dataset[carac_name] = carac_value
+        dict_dataset = {**dict_dataset, **extract_charac(data, caract_list, file_name)}
 
         #FILEPATH
         dict_dataset["Filepath"] = file_path

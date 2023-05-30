@@ -22,6 +22,7 @@ import numpy as np
 
 
 if __name__ == "__main__" :
+
     range_picke_file = int(ceil(len(DATASETS_TO_TEST)/group_size))
 
     #Récupère les listes des caractéristiques des datasets

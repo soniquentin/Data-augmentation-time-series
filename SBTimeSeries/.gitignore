@@ -18,3 +18,5 @@ figures/
 
 # python cache
 DeepHedging/__pycache__/
+
+test/
