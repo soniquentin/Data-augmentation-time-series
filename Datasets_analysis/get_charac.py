@@ -11,6 +11,7 @@ import warnings
 warnings.filterwarnings('ignore')
 from scipy.signal import periodogram
 from statsmodels.tsa.stattools import acf
+import pycatch22
 
 
 def calc_bhattacharyya(data, file_name) -> float :
@@ -163,7 +164,8 @@ def calc_length(data,file_name) -> int :
 
 
 
-def calc_nb(data,file_name) -> (int,int,dict) :
+def calc_nb(data, file_name) -> (int,int,dict) :
+
     #Labels et leur compte :
     unique_labels = np.sort( data[0].unique() )
     label_dict = {}
@@ -193,7 +195,7 @@ def calc_IR_ID(data,file_name) -> (float,float) :
 
 
 
-def calc_smoothness_each_label(data,file_name) -> dict :
+def calc_smoothness_each_label(data,file_name) -> (dict, int, int) :
     """
     Calcule la smoothness pour chaque label
 
@@ -233,7 +235,7 @@ def calc_smoothness_each_label(data,file_name) -> dict :
 
 
 
-def calc_periods_nb(data, file_name) -> dict :
+def calc_periods_nb(data, file_name) -> int :
 
     def detect_periods(timeseries, verbose = False):
 
@@ -407,6 +409,27 @@ def calc_periods_nb(data, file_name) -> dict :
     return np.mean(counts_of_periods)
 
 
+def calc_catch22(data, file_name) -> dict :
+
+    """
+    Calculate the catch22 features of a dataset --> means of the features of the time series
+
+    """
+
+    # Convert data to numpy array without the 0 columns
+    data_numpy = np.array(data)[:,1:]
+
+    sum_features = np.zeros(22)
+
+    for ts in data_numpy :
+        sum_features += np.array( pycatch22.catch22_all(ts)["values"] )
+
+    
+    mean_features = sum_features / data_numpy.shape[0]
+
+    return tuple(mean_features)
+
+
 def extract_charac(data, caract_list, file_name = None) : 
     """
     Extract the caracteristics of a dataset
@@ -509,7 +532,8 @@ if __name__ == "__main__" :
                   calc_IR_ID : ("ID", "IR"),
                   calc_smoothness_each_label : ("Smoothness", "Mean smoothness", "Dispersion smoothness"), 
                   calc_bhattacharyya : "Bhattacharyya",
-                  calc_periods_nb : "Number of periods"
+                  calc_periods_nb : "Number of periods",
+                  calc_catch22 : ('DN_HistogramMode_5', 'DN_HistogramMode_10', 'CO_f1ecac', 'CO_FirstMin_ac', 'CO_HistogramAMI_even_2_5', 'CO_trev_1_num', 'MD_hrv_classic_pnn40', 'SB_BinaryStats_mean_longstretch1', 'SB_TransitionMatrix_3ac_sumdiagcov', 'PD_PeriodicityWang_th0_01', 'CO_Embed2_Dist_tau_d_expfit_meandiff', 'IN_AutoMutualInfoStats_40_gaussian_fmmi', 'FC_LocalSimple_mean1_tauresrat', 'DN_OutlierInclude_p_001_mdrmd', 'DN_OutlierInclude_n_001_mdrmd', 'SP_Summaries_welch_rect_area_5_1', 'SB_BinaryStats_diff_longstretch0', 'SB_MotifThree_quantile_hh', 'SC_FluctAnal_2_rsrangefit_50_1_logi_prop_r1', 'SC_FluctAnal_2_dfa_50_1_2_logi_prop_r1', 'SP_Summaries_welch_rect_centroid', 'FC_LocalSimple_mean3_stderr')
                   }
 
 

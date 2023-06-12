@@ -2,3 +2,5 @@ tests/*
 !tests/.gitkeep
 *.png
 tmp
+impact
+*.csv

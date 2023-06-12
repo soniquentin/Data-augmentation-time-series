@@ -96,7 +96,7 @@ def timeseries_smote(data, name_trans = "Basic",  k_neighbors = 3, sampling_stra
         plot_examples(real_x[real_y == label], new_data = synthetic_x[synthetic_y == label] , dataset_name = dataset_name, label = label, da_method = name_trans)
     
     new_samples = pd.DataFrame(x, columns = [i+1 for i in range(len(x[0]))])
-    new_samples[0] = pd.DataFrame(y)
+    new_samples.insert(0, 0, y)
 
     return new_samples.reset_index().drop(["index"], axis = 1)
 
@@ -149,7 +149,7 @@ def timeseries_trans(data, name_trans, minor_class, major_class, dataset_name) :
 
 
         new_samples = pd.DataFrame(new_samples, columns = [i+1 for i in range(len(data_minor.columns))])
-        new_samples[0] = l_minor
+        new_samples.insert(0, 0, l_minor)
 
 
         #Concat the new sample with the already created ones
@@ -157,7 +157,7 @@ def timeseries_trans(data, name_trans, minor_class, major_class, dataset_name) :
 
         #Update cnt_maj and cnt_min
         cnt_min += nb_sample_to_create
-        
+
     return synthesized_data.reset_index().drop(["index"], axis = 1)
 
 
@@ -220,7 +220,7 @@ def gan_augmentation(data, dataset_name, sampling_strategy = None):
                 new_data = np.array(synth_data[:sampling_strategy[label] - current_label_nb,:,0])
 
                 new_samples = pd.DataFrame(new_data*(maxi - mini) + mini, columns = [i+1 for i in range(len(data.columns) - 1)])
-                new_samples[0] = label
+                new_samples.insert(0, 0, label)
 
                 datafinal = pd.concat([datafinal,new_samples], axis=0)
 

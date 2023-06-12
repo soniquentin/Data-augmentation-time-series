@@ -77,23 +77,11 @@ if __name__ == "__main__" :
         DATASETS_TO_TEST = DATASETS_TO_TEST[(id_group - 1)*group_size: id_group*group_size]
 
 
-    delta_metric = [{} for i in range(len(summary_metric))] #Liste Dictionnaire {dataset_name : {model : {DA : Delta_Acc}} } qui va contenir Delta_Acc ou Delta_F1 (i.e Delta_summary_metric)
-    
     #Ouvre le fichier d'info
     infos = pd.read_csv("infos.csv",sep=',')
 
     print(f"\n\n\nDatasets testés : {DATASETS_TO_TEST}\n\n\n")
     for dataset_name in DATASETS_TO_TEST :
-
-        #Sauvegarde delta_metric temp et temp
-        for i in range(len(summary_metric)) :
-
-            with open(f"tmp/delta_metric{id_group}_{summary_metric[i]}.pickle", 'wb') as handle:
-                pickle.dump(delta_metric[i], handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-            #Initialise le dictionnaire (qui est la valeur associée à la clé dataset_name dans delta_metric)
-            delta_metric[i][dataset_name] = {}
-        
 
         #Retrouve le chemin du dataset
         for index, row in infos.iterrows():
@@ -108,35 +96,33 @@ if __name__ == "__main__" :
         if not os.path.exists(dataset_folder) :
             os.makedirs(dataset_folder)
 
-        for model, nb_iteration in MODELS_TO_TEST :
-            
-            try : 
-                with HiddenPrints() :   
-                    #Entraine et fais les tests
-                    data = pd.read_csv(file_parent + f"/{dataset_name}_TRAIN.tsv" ,sep='\t', header =None)
-                    data_test = pd.read_csv(file_parent + f"/{dataset_name}_TEST.tsv",sep='\t', header =None)
-                    score_matrix = make_score_test(data, data_test, dataset_name, model_name = model, nb_iteration = nb_iteration)
-                    
-                    #Transforme les résultats des tests en tableaux (mean et p-value) et sauvegarde les plots + les tableaux
-                    model_foler = f"tests/{dataset_name}/{model}"
-                    if not os.path.exists(model_foler) :
-                        os.makedirs(model_foler)
-                    final_tab_mean, final_tab_p_value = make_final_tab(score_matrix, save_plot_path = model_foler)
-                    final_tab_mean.to_csv(model_foler + f"/Mean.csv", sep='\t')
-                    final_tab_p_value.to_csv(model_foler + f"/Pvalues.csv", sep='\t')
+        for model_dict in MODELS_TO_TEST :
 
-                    #Concatène le dataframe de score pour le rendu du bar chart final
-                    data_final = pd.concat([data_final,score_matrix])
+            model = model_dict["Name"]
+            nb_iteration = model_dict["Iterations"]
+            takes = model_dict["Make Test"]
 
-                    #Ajoute les moyennes dans delta_metric
-                    for i in range(len(summary_metric)) :
-                        delta_metric[i][dataset_name][model] = {}
-                        default_score = final_tab_mean.loc["Default"][summary_metric[i]]
-                        for index, row in final_tab_mean.iterrows():
-                            if index != "Default" :
-                                delta_metric[i][dataset_name][model][index] = row[summary_metric[i]] - default_score
-            except Exception :
-                log_error(dataset_name, model, id_group)
+            if takes : 
+                try : 
+                    with HiddenPrints() :   
+                        #Entraine et fais les tests
+                        data = pd.read_csv(file_parent + f"/{dataset_name}_TRAIN.tsv" ,sep='\t', header =None)
+                        data_test = pd.read_csv(file_parent + f"/{dataset_name}_TEST.tsv",sep='\t', header =None)
+                        score_matrix = make_score_test(data, data_test, dataset_name, model_name = model, nb_iteration = nb_iteration)
+                        
+                        #Transforme les résultats des tests en tableaux (mean et p-value) et sauvegarde les plots + les tableaux
+                        model_foler = f"tests/{dataset_name}/{model}"
+                        if not os.path.exists(model_foler) :
+                            os.makedirs(model_foler)
+                        final_tab_mean, final_tab_p_value = make_final_tab(score_matrix, save_plot_path = model_foler)
+                        final_tab_mean.to_csv(model_foler + f"/Mean.csv", sep='\t')
+                        final_tab_p_value.to_csv(model_foler + f"/Pvalues.csv", sep='\t')
+
+                        #Concatène le dataframe de score pour le rendu du bar chart final
+                        data_final = pd.concat([data_final,score_matrix])
+                        
+                except Exception :
+                    log_error(dataset_name, model, id_group)
 
         try : 
             for metric_name in summary_metric :

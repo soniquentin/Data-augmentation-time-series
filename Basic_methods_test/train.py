@@ -40,17 +40,24 @@ def analyze_newdata(new_data, method, dataset_name,count_label, unique_labels) :
 
 
 
-    ### SAVE SYNTHESIZED DATA ###
-    synthesized_data = new_data[new_data["Synthesized"] == "Synthesized"]
+    ### SAVE FINAL (SYNTHESIZED) DATA ###
+    synthesized_data = new_data #synthesized_data = new_data[new_data["Synthesized"] == "Synthesized"]
+
     synthesized_data.rename(columns = {'label':0}, inplace = True)
     synthesized_data.drop(["Synthesized", "Size"], axis = 1, inplace = True)
-    if not os.path.exists(f"tests/{dataset_name}/synthesized_data") :
-        os.makedirs(f"tests/{dataset_name}/synthesized_data")
-    synthesized_data.to_csv(f"tests/{dataset_name}/synthesized_data/{method}.csv", index = False)
+    # Créer le dossier des datasets augmentés s'il n'existe pas
+    if not os.path.exists("../datasets/Augmented/") :
+        os.makedirs("../datasets/Augmented/")
+    # Créer le dossier du dataset augmenté s'il n'existe pas
+    if not os.path.exists(f"../datasets/Augmented/{dataset_name}") :
+        os.makedirs(f"../datasets/Augmented/{dataset_name}")
+    # Sauvegarder le dataset augmenté
+    synthesized_data.to_csv(f"../datasets/Augmented/{dataset_name}/{dataset_name}_{method}_TRAIN.tsv", sep='\t', index = False,  header =None)
 
 
 #Train and calculate the score
 def train(model, new_data, data_test, **kwargs) :
+
 
     mdl, model_name = model
     if model_name == "NN" : #Faut modifier un peu les target
@@ -60,6 +67,29 @@ def train(model, new_data, data_test, **kwargs) :
         for i in range(len(y_temp)) :
             ind = np.where(unique_labels == y_temp[i])[0][0]
             y[i,ind] = 1
+
+    elif model_name == "LSTM" : 
+
+        #Même modif que pour NN
+        X, y_temp = np.array(new_data.drop([0], axis = 1), dtype = 'float'), np.array(new_data[0])
+
+
+        unique_labels = np.sort( new_data[0].unique() )
+        y = np.zeros( (len(y_temp) , len(unique_labels) ))
+        for i in range(len(y_temp)) :
+            ind = np.where(unique_labels == y_temp[i])[0][0]
+            y[i,ind] = 1
+
+        # On fait des tranches de n_steps parce que LTSM prend des timeseries plus petites. Du coup, ça fait beaucoup plus de timeseries ! 
+        n_steps = min(X.shape[1], 100)
+        X_new, y_new = [], []
+        for i in range(len(X)):
+            for j in range(len(X[i]) - n_steps + 1):
+                X_new.append(X[i][j:j+n_steps])
+                y_new.append(y[i])
+        X, y = np.array(X_new), np.array(y_new)
+        X = X.reshape((X.shape[0], X.shape[1], 1))
+
     else :
         X, y = np.array(new_data.drop([0], axis = 1), dtype = 'float'), np.array(new_data[0])
     
@@ -72,13 +102,35 @@ def train(model, new_data, data_test, **kwargs) :
 
     print("    --> Scores calculation...")
     X_test, y_test = np.array(data_test.drop([0], axis = 1), dtype = 'float'), np.array(data_test[0])
-    if model_name == "KERNEL" : #Faut transformer X
+
+    #Faut transformer X pour quelques classifiers
+    if model_name == "KERNEL" : 
         X_test = apply_kernels(X_test, kernels)
+    elif model_name == "LSTM" : 
+        X_new = []
+        separation = [0] #Pour savoir où sont les séparations entre les timeseries
+        i = 0
+        for i in range(len(X_test)):
+            for j in range(len(X_test[i]) - n_steps + 1):
+                X_new.append(X_test[i][j:j+n_steps])
+                i += 1
+            separation.append(i)
+        X_test = np.array(X_new)
+        X_test = X_test.reshape((X_test.shape[0], X_test.shape[1], 1))
 
     y_pred = mdl.predict(X_test)
 
     if model_name == "NN" :
         y_pred = np.array([unique_labels[np.argmax(y)] for y in y_pred], dtype = 'int')
+    elif model_name == "LSTM" :
+        y_pred_tmp = np.array([unique_labels[np.argmax(y)] for y in y_pred], dtype = 'int')
+        y_pred = []
+        for i in range(len(separation) - 1):
+            #On prend la prédiction qui est le plus apparu dans la prédiction de la timeserie
+            mini = min( np.min(y_pred_tmp[separation[i]:separation[i+1]]) , 0 )
+            y_pred_tmp[separation[i]:separation[i+1]] -= mini
+            y_pred.append( np.argmax(np.bincount(y_pred_tmp[separation[i]:separation[i+1]])) + mini )
+        y_pred = np.array(y_pred)
 
     return { "MCC" : matthews_corrcoef(y_test, y_pred), 
             "F1" : f1_score(y_test, y_pred, average = "weighted"), 
@@ -111,6 +163,8 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
 
     indice_max = np.argmax(count_label)
     max_label_count, label_max = np.max(count_label), unique_labels[indice_max]
+
+    sampling_strategy = {unique_labels[i] : np.max(count_label) for i in range(len(unique_labels))}
     
     t_i = time.time()
     pbar = tqdm( range(nb_iteration) )
@@ -293,11 +347,12 @@ def make_final_tab(scores_matrix, save_plot_path = "results"):
 
 if __name__ == "__main__" :
 
-    dataset_folder = "./datasets"
-    dataset = "Earthquakes"
+    data = pd.read_csv("../datasets/Ham/Ham_TRAIN.tsv",sep='\t', header =None)
+    data_test = pd.read_csv("../datasets/Ham/Ham_TEST.tsv",sep='\t', header =None)
 
-    data = pd.read_csv(dataset_folder + "/{}/{}_TRAIN.tsv".format(dataset, dataset) ,sep='\t', header =None)
-    data_test = pd.read_csv(dataset_folder + "/{}/{}_TEST.tsv".format(dataset, dataset) ,sep='\t', header =None)
+    make_score_test(data, data_test, "Ham", model_name = "LSTM", nb_iteration = 5)
+
+
 
 
     
