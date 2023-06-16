@@ -184,13 +184,11 @@ def calc_IR_ID(data,file_name) -> (float,float) :
     if im_deg == 0 : #On divise par 10, peut-être que c'est parce que les nombre sont trop grands
         im_deg = imbalance_degree(classes_count//10, "EU")
 
-    #Imbalance ratio (si possible)
-    im_rat = None
     if len(unique_labels) == 2 :
-        im_rat = np.min(classes_count)/np.max(classes_count)
-        im_deg = None
-    
-    return im_deg, im_rat
+        im_deg = ( np.max(classes_count) - np.min(classes_count))/(np.max(classes_count) - 1)
+
+
+    return im_deg
 
 
 
@@ -529,7 +527,7 @@ if __name__ == "__main__" :
     CARAC_DICT = {calc_length : "Length",
                   calc_nb : ("Dataset size", "Avg label size", "Details size label"),
                   calc_variances_normalized : ("Dataset variance", "Intra-class variance"),
-                  calc_IR_ID : ("ID", "IR"),
+                  calc_IR_ID : "ID",
                   calc_smoothness_each_label : ("Smoothness", "Mean smoothness", "Dispersion smoothness"), 
                   calc_bhattacharyya : "Bhattacharyya",
                   calc_periods_nb : "Number of periods",

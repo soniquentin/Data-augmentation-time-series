@@ -9,3 +9,5 @@ pip install typeguard
 pip install fastdtw
 pip install pyts
 yes | conda install pandas
+yes | conda install -c conda-forge statsmodels
+pip install pycatch22
