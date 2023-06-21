@@ -4,3 +4,5 @@ tests/*
 tmp
 impact
 *.csv
+models/*
+!models/.gitkeep

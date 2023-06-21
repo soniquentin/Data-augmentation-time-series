@@ -1,10 +1,14 @@
 """
 Entraine un classifier pour trouver des corrélations entre datasets et Delta_acc
+
+More infos :
+https://www.quentinlao.com/projects/data_augmentation/predictive_model.html
 """
 from utils import get_charac_and_metric
 import numpy as np
 import pandas as pd
 pd.set_option('display.max_columns', None)
+import tensorflow as tf
 from tensorflow.keras.layers import Dense, Activation, Dropout, BatchNormalization
 from tensorflow.keras import initializers
 from tensorflow.keras.models import Sequential
@@ -14,9 +18,21 @@ from sklearn.ensemble import RandomForestRegressor
 import argparse
 import matplotlib.pyplot as plt
 import pickle
+from sklearn.metrics import mean_absolute_error
 
 
+"""
+Classes :
+    - Multi : entraine un régresseur pour chaque couple classifier x method DA
+    - Single : entraine un régresseur pour tous les couples classifier x method DA
+    - Conditionned_Single : entraine un régresseur pour tous les couples classifier x method DA, mais conditionne les données avec le couple en cours
 
+Fonctions :
+    - convert_into_data : convertit les données en un format utilisable par les réseaux de neurones
+    - normalize_X_y : normalise les données
+    - renormalize_y : renormalise les données
+    - calc_metric : calcule la métrique INVERSION et MAE
+"""
 
 
 ###################
@@ -65,7 +81,7 @@ class Multi() :
 
 
         for model_DA in self.model_x_DA : 
-            y_pred[model_DA] = self.trained_models[model_DA].predict(X).flatten()
+            y_pred[model_DA] = self.trained_models[model_DA].predict(X, verbose = 0).flatten()
 
         
         return y_pred
@@ -76,11 +92,17 @@ class Multi() :
 
         ## MLP
         model = Sequential()
-        model.add(Dense(64,  input_dim=X.shape[1], kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
+
+        model.add(Dense(128,  input_dim=X.shape[1], kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
+        #model.add(BatchNormalization())
         model.add(Activation("relu"))
         model.add(Dropout(rate = 0.10)) #Reduce overfitting
+        model.add(Dense(64, kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
+        #model.add(BatchNormalization())
+        model.add(Activation("sigmoid"))
+        model.add(Dropout(rate = 0.10)) #Reduce overfitting
         model.add(Dense(1, kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
-        model.add(Activation("relu"))
+        model.add(Activation("relu")) 
 
         model.compile(loss='mean_absolute_error', optimizer= Adam(learning_rate = 0.001), metrics=['mean_absolute_error'])
 
@@ -132,7 +154,7 @@ class Single() :
             Renvoie un panda dataframe !
         """
         X = X.to_numpy()
-        y_pred = pd.DataFrame( columns = self.model_x_DA , data = self.trained_model.predict(X) )
+        y_pred = pd.DataFrame( columns = self.model_x_DA , data = self.trained_model.predict(X, verbose = 0) )
 
         return y_pred
 
@@ -145,12 +167,20 @@ class Single() :
         ## MLP
 
         model = Sequential()
-        
-        model.add(Dense(64,  input_dim=X.shape[1], kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
+
+
+
+
+        model.add(Dense(128,  input_dim=X.shape[1], kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
+        #model.add(BatchNormalization())
         model.add(Activation("relu"))
         model.add(Dropout(rate = 0.10)) #Reduce overfitting
+        model.add(Dense(64, kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
+        #model.add(BatchNormalization())
+        model.add(Activation("sigmoid"))
+        model.add(Dropout(rate = 0.10)) #Reduce overfitting
         model.add(Dense(y.shape[1], kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
-        model.add(Activation("relu"))
+        model.add(Activation("relu")) 
 
         model.compile(loss='mean_absolute_error', optimizer= Adam(learning_rate = 0.001), metrics=['mean_absolute_error'])
 
@@ -158,11 +188,10 @@ class Single() :
         ## Random Forest
         """
         model = RandomForestRegressor(n_estimators = 200, max_depth = 20, random_state = 0)
-        kwargs = {}
         """
 
 
-        return model, kwargs
+        return model
 
 
 
@@ -209,6 +238,13 @@ class Contionned_Single() :
         
         X_new = pd.DataFrame(columns = self.caracs + self.model_x_DA, data = X_new)
         y_new = np.array(y_new)
+
+        """
+        X_new["F1 Target"] = y_new
+        #Save X in csv
+        X_new.to_csv("infos_RAONI.csv")
+        exit()
+        """
 
 
         return X_new, y_new
@@ -279,7 +315,7 @@ class Contionned_Single() :
     def predict(self, X) :
 
         X_new, _ = self.condition(X)
-        y_pred = self.trained_model.predict(X_new)
+        y_pred = self.trained_model.predict(X_new, verbose = 0)
 
         _, y_pred  = self.uncondition(X_new, y_pred)
 
@@ -287,7 +323,7 @@ class Contionned_Single() :
 
 
     def get_new_model(self, X, y) :
-        
+
 
         ## MLP
 
@@ -295,7 +331,7 @@ class Contionned_Single() :
         
         model.add(Dense(128,  input_dim=X.shape[1], kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
         #model.add(BatchNormalization())
-        model.add(Activation("relu"))
+        model.add(Activation("sigmoid"))
         model.add(Dropout(rate = 0.10)) #Reduce overfitting
         model.add(Dense(64, kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
         #model.add(BatchNormalization())
@@ -304,11 +340,9 @@ class Contionned_Single() :
         model.add(Dense(1, kernel_initializer=initializers.RandomNormal(stddev=0.1), bias_initializer = initializers.Zeros() ))
         model.add(Activation("relu")) 
 
-        model.compile(loss='mean_absolute_error', optimizer= Adam(learning_rate = 0.001), metrics=['mean_absolute_error'])
+        model.compile(loss='mean_squared_error', optimizer= Adam(learning_rate = 0.001), metrics=['mean_absolute_error'])
 
         return model
-
-
 
 
 
@@ -363,10 +397,9 @@ def normalize_X_y(X,y) :
 
     y_min = y.min()
     y_max = y.max()
-    #y = (y - y_min) / (y_max - y_min)
+    y = (y - y_min) / (y_max - y_min)
 
     return X,y, {"X_max" : X_max, "X_min" : X_min, "y_max" : y_max, "y_min" : y_min}
-
 
 
 def renormalize_y(y, normalization_dict) :
@@ -376,16 +409,72 @@ def renormalize_y(y, normalization_dict) :
     y_max = normalization_dict["y_max"]
     y_min = normalization_dict["y_min"]
 
-    #y = y * (y_max - y_min) + y_min
+    y = y * (y_max - y_min) + y_min
 
     return y
+
+
+def calc_metric(y, y_pred) :
+    """
+    Calcule la métrique
+    """
+
+
+
+    #Check que y et y_pred ont la même taille
+    assert y.shape == y_pred.shape, f"y et y_pred n'ont pas la même taille : {y.shape} != {y_pred.shape}"
+
+
+
+
+    ### ======== NUMBER OF INVERSION ======== ###
+    def mean_inversion(y, y_pred) :
+        """
+        Calcule le nombre moyen d'inversion
+        """
+
+        inversion_list = []
+
+        #Iter sur les lignes
+        for (index, row), (index_pred, row_pred) in zip( y.iterrows() , y_pred.iterrows() ) :
+            inversion = 0
+            weight_sum = 0
+
+            row = row.sort_values() #trie row
+            columns = list(row.index)
+            max_row = row[columns[-1]]
+            min_row = row[columns[0]]
+
+            row_pred = row_pred.sort_values() #trie row_pred
+            rank_in_pred = { col : i for i, col in enumerate(row_pred.index) }
+
+            for i in range(len(columns)) :
+                for j in range(i+1, len(columns)) :
+                    weight = ( np.sqrt( row[columns[i]]*row[columns[j]])/max_row  )**5
+                    #weight = np.exp( row[columns[i]] + row[columns[j]] )
+
+                    if rank_in_pred[columns[i]] > rank_in_pred[columns[j]] :
+                        inversion += weight*1
+                        print(f"Weight : {weight} // row[columns[i]] : {row[columns[i]]} // row[columns[j]] : {row[columns[j]]} // max_row : {max_row}")
+                        
+                    weight_sum += weight
+            
+            inversion_list.append(inversion / weight_sum)
+        return np.mean(inversion_list)
+    mi = mean_inversion(y, y_pred)
+    print(f"Mean inversion : {mi}")
+
+
+    ### ======== MAE ======== ###
+    mae = mean_absolute_error(y, y_pred)
+    print(f"MAE : {mae}")
 
 
 
 if __name__ == "__main__" :
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", help="Mode multi or single", default="multi")
+    parser.add_argument("--mode", help="Mode : multi, single or conditionned_single", default="multi")
     parser.add_argument("--train", help="On or Off if wants to train or import an existing model", default="On")
     parser.add_argument("--target_metric", help="F1, MCC, Acc, G-Mean", default="F1")
     args = parser.parse_args()
@@ -395,28 +484,40 @@ if __name__ == "__main__" :
     #charac_lists de la forme : {carac1 : {dataset1 : valeur, dataset2 : valeur, ...}, carac2 : {dataset1 : valeur, dataset2 : valeur, ...}, ...}
     #global_delta_metric de la forme : { Metric1 : {dataset1 : {model1 : {method_DA1 : Delta_Acc, method_DA2 : Delta_Acc, ...}, ...} ...} ...}
     global_delta_metric, charac_lists, _, all_models, all_transfo = get_charac_and_metric()
-    X, y = convert_into_data(global_delta_metric, charac_lists, all_models, all_transfo, args.target_metric)
-    print(y.head(5))
+    X, y_brut = convert_into_data(global_delta_metric, charac_lists, all_models, all_transfo, args.target_metric)
+
+    #print(y_brut.head(5))
     X.drop("Dataset", axis=1, inplace=True)
 
     ### ======= Normalise les données ======= ###
-    X, y, normalization_dict = normalize_X_y(X,y)
+    X, y, normalization_dict = normalize_X_y(X,y_brut)
 
 
     ### ======= Entraîne le modèle ======= ###
     if args.mode == "multi" :
         model = Multi()
-        kwargs = {"epochs" : 300, "batch_size" : 32}
+
+        #Definit le scheduler dans le callback
+        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
+        
+        kwargs = {"epochs" : 300, "batch_size" : 32, "verbose" : 0, "callbacks" : [scheduler_callback]}
     elif args.mode == "single" :
         model = Single()
-        kwargs = {"epochs" : 300, "batch_size" : 32}
+
+        #Definit le scheduler dans le callback
+        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
+
+        kwargs = {"epochs" : 2000, "batch_size" : 16,  "callbacks" : [scheduler_callback]}
     elif args.mode == "conditionned_single" :
         model = Contionned_Single()
-        kwargs = {"epochs" : 1000, "batch_size" : 16}
+        
+        #Definit le scheduler dans le callback
+        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 400 else lr * 0.94)
+
+        kwargs = {"epochs" : 700, "batch_size" : 16, "callbacks" : [scheduler_callback]}
     
     if args.train == "On" :
         model.train(X, y, **kwargs)
-        
         #Sauvegarde model
         with open(f"models/{args.mode}_{args.target_metric}.h5", "wb") as f :
             pickle.dump(model, f)
@@ -427,9 +528,10 @@ if __name__ == "__main__" :
     
 
     ### ======= Prédit les valeurs pour un dataset ======= ###
-    y_pred = model.predict(X.head(5))
+    y_pred = model.predict(X)
     y_pred = renormalize_y(y_pred, normalization_dict) #Renormalise les données
-    print("\n"*3, y_pred)
+    #print("\n"*3, y_pred)
+    calc_metric(y_brut, y_pred)
 
 
 

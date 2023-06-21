@@ -156,7 +156,6 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
 
 
     #Get info on labels and their count
-    #====>>> /!\/!\/!\ WORKS ONLY FOR BINARY CLASSFICATION !/!\/!\/!\ <<<====
     unique_labels = np.sort( data[0].unique() )
     count_label = np.array( [ len(data[data[0] == label].index) for label in unique_labels ] )
     data_per_class = [data[data[0] == label] for label in unique_labels]
