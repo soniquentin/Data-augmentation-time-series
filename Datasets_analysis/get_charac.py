@@ -178,15 +178,8 @@ def calc_nb(data, file_name) -> (int,int,dict) :
 
 def calc_IR_ID(data,file_name) -> (float,float) :
 
-    unique_labels = np.sort( data[0].unique() )
-    classes_count = np.array( [len( data[data[0] == label].index) for label in unique_labels] )
-    im_deg = imbalance_degree(classes_count, "EU")
-    if im_deg == 0 : #On divise par 10, peut-être que c'est parce que les nombre sont trop grands
-        im_deg = imbalance_degree(classes_count//10, "EU")
-
-    if len(unique_labels) == 2 :
-        im_deg = ( np.max(classes_count) - np.min(classes_count))/(np.max(classes_count) - 1)
-
+    classes = np.array( data[0] )
+    im_deg = imbalance_degree(classes, "EU")
 
     return im_deg
 

@@ -120,7 +120,7 @@ if __name__ == "__main__" :
 
                         #Concatène le dataframe de score pour le rendu du bar chart final
                         data_final = pd.concat([data_final,score_matrix])
-                        
+
                 except Exception :
                     log_error(dataset_name, model, id_group)
 

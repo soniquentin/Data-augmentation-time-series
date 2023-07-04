@@ -19,6 +19,11 @@ import argparse
 import matplotlib.pyplot as plt
 import pickle
 from sklearn.metrics import mean_absolute_error
+import sys, os
+from sklearn.model_selection import train_test_split
+import random as rd
+from scipy.stats import ttest_ind
+
 
 
 """
@@ -297,18 +302,21 @@ class Contionned_Single() :
         self.model_x_DA = list(y_all)
         self.caracs = list(X.columns)
         
-        X_new, y_new = self.condition(X,y)
+        X_new, y_new = self.condition(X,y_all)
 
         self.trained_model = self.get_new_model(X_new, y_new)
+        
 
         #Train et plot la loss
         history = self.trained_model.fit(X_new, y_new, **kwargs)
+        """
         plt.plot(history.epoch, history.history["loss"], 'g', label='Training loss')
         plt.title('Training loss')
         plt.xlabel('Epochs')
         plt.ylabel('Loss')
         plt.legend()
         plt.show()
+        """
 
 
 
@@ -343,8 +351,6 @@ class Contionned_Single() :
         model.compile(loss='mean_squared_error', optimizer= Adam(learning_rate = 0.001), metrics=['mean_absolute_error'])
 
         return model
-
-
 
 
 
@@ -450,36 +456,28 @@ def calc_metric(y, y_pred) :
 
             for i in range(len(columns)) :
                 for j in range(i+1, len(columns)) :
-                    weight = ( np.sqrt( row[columns[i]]*row[columns[j]])/max_row  )**5
-                    #weight = np.exp( row[columns[i]] + row[columns[j]] )
+                    #weight = ( np.sqrt( row[columns[i]]*row[columns[j]])/max_row  )**5
+                    weight = (1 - (1 - row[columns[i]]/max_row)*(1 - row[columns[j]]/max_row)  )**20
 
                     if rank_in_pred[columns[i]] > rank_in_pred[columns[j]] :
                         inversion += weight*1
-                        print(f"Weight : {weight} // row[columns[i]] : {row[columns[i]]} // row[columns[j]] : {row[columns[j]]} // max_row : {max_row}")
+                        #print(f"Weight : {weight} // row[columns[i]] : {row[columns[i]]} // row[columns[j]] : {row[columns[j]]} // max_row : {max_row}")
                         
                     weight_sum += weight
             
             inversion_list.append(inversion / weight_sum)
         return np.mean(inversion_list)
     mi = mean_inversion(y, y_pred)
-    print(f"Mean inversion : {mi}")
 
 
     ### ======== MAE ======== ###
     mae = mean_absolute_error(y, y_pred)
-    print(f"MAE : {mae}")
 
 
-
-if __name__ == "__main__" :
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", help="Mode : multi, single or conditionned_single", default="multi")
-    parser.add_argument("--train", help="On or Off if wants to train or import an existing model", default="On")
-    parser.add_argument("--target_metric", help="F1, MCC, Acc, G-Mean", default="F1")
-    args = parser.parse_args()
+    return mae,mi
 
 
+def main(args) :
     ### ======= Récupère les caractéristiques et les delta_metric ======= ###
     #charac_lists de la forme : {carac1 : {dataset1 : valeur, dataset2 : valeur, ...}, carac2 : {dataset1 : valeur, dataset2 : valeur, ...}, ...}
     #global_delta_metric de la forme : { Metric1 : {dataset1 : {model1 : {method_DA1 : Delta_Acc, method_DA2 : Delta_Acc, ...}, ...} ...} ...}
@@ -491,6 +489,7 @@ if __name__ == "__main__" :
 
     ### ======= Normalise les données ======= ###
     X, y, normalization_dict = normalize_X_y(X,y_brut)
+    nb_row = X.shape[0]
 
 
     ### ======= Entraîne le modèle ======= ###
@@ -500,7 +499,7 @@ if __name__ == "__main__" :
         #Definit le scheduler dans le callback
         scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
         
-        kwargs = {"epochs" : 300, "batch_size" : 32, "verbose" : 0, "callbacks" : [scheduler_callback]}
+        kwargs = {"epochs" : 700, "batch_size" : 16, "verbose" : 0, "callbacks" : [scheduler_callback]}
     elif args.mode == "single" :
         model = Single()
 
@@ -517,7 +516,7 @@ if __name__ == "__main__" :
         kwargs = {"epochs" : 700, "batch_size" : 16, "callbacks" : [scheduler_callback]}
     
     if args.train == "On" :
-        model.train(X, y, **kwargs)
+        model.train(X.head(nb_row - 5), y.head(nb_row - 5), **kwargs)
         #Sauvegarde model
         with open(f"models/{args.mode}_{args.target_metric}.h5", "wb") as f :
             pickle.dump(model, f)
@@ -528,10 +527,120 @@ if __name__ == "__main__" :
     
 
     ### ======= Prédit les valeurs pour un dataset ======= ###
-    y_pred = model.predict(X)
+    y_pred = model.predict(X.tail(5))
     y_pred = renormalize_y(y_pred, normalization_dict) #Renormalise les données
+    y_brut = renormalize_y(y.tail(5), normalization_dict) #Renormalise les données
     #print("\n"*3, y_pred)
-    calc_metric(y_brut, y_pred)
+    mae, mi = calc_metric(y_brut.tail(5), y_pred)
+
+    print(f"MIR : {mi}")
+    print(f"MAE : {mae}")
+
+
+def make_test(args):
+    nb_interation = int(args.iteration)
+    possible_mode = ["multi", "single", "conditionned_single"]
+
+    mir_list = {mode : [] for mode in possible_mode}
+    mae_list = {mode : [] for mode in possible_mode}
+
+    for i in range(nb_interation) :
+
+        print(f"\n\n\n==================== ITERATION {i+1} ====================")
+
+        for mode in possible_mode :
+
+            print(f"\nMode : {mode}")
+
+            ### ======= Récupère les caractéristiques et les delta_metric ======= ###
+            #charac_lists de la forme : {carac1 : {dataset1 : valeur, dataset2 : valeur, ...}, carac2 : {dataset1 : valeur, dataset2 : valeur, ...}, ...}
+            #global_delta_metric de la forme : { Metric1 : {dataset1 : {model1 : {method_DA1 : Delta_Acc, method_DA2 : Delta_Acc, ...}, ...} ...} ...}
+            global_delta_metric, charac_lists, _, all_models, all_transfo = get_charac_and_metric()
+            X, y_brut = convert_into_data(global_delta_metric, charac_lists, all_models, all_transfo, args.target_metric)
+
+            #print(y_brut.head(5))
+            X.drop("Dataset", axis=1, inplace=True)
+
+            ### ======= Normalise les données ======= ###
+            X, y, normalization_dict = normalize_X_y(X,y_brut)
+
+            ### ======= Slit les données en train et test ======= ###
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=rd.randint(0,1000))
+
+
+            ### ======= Entraîne le modèle ======= ###
+            if mode == "multi" :
+                model = Multi()
+
+                #Definit le scheduler dans le callback
+                scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
+                
+                kwargs = {"epochs" : 700, "batch_size" : 16, "verbose" : 0, "callbacks" : [scheduler_callback]}
+            elif mode == "single" :
+                model = Single()
+
+                #Definit le scheduler dans le callback
+                scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
+
+                kwargs = {"epochs" : 2000, "batch_size" : 16,  "callbacks" : [scheduler_callback], "verbose" : 0}
+            elif mode == "conditionned_single" :
+                model = Contionned_Single()
+                
+                #Definit le scheduler dans le callback
+                scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 400 else lr * 0.94)
+
+                kwargs = {"epochs" : 700, "batch_size" : 16, "callbacks" : [scheduler_callback], "verbose" : 0}
+            
+
+            model.train(X_train, y_train, **kwargs)
+
+
+            ### ======= Prédit les valeurs pour un dataset ======= ###
+            y_pred = model.predict(X_test)
+            y_pred = renormalize_y(y_pred, normalization_dict) #Renormalise les données
+            y_test = renormalize_y(y_test, normalization_dict) #Renormalise les données
+            #print("\n"*3, y_pred)
+            mae, mi = calc_metric(y_test, y_pred)
+
+            mir_list.get(mode).append(mi)
+            mae_list.get(mode).append(mae)
+        
+            print(f"Mir : {mir_list.get(mode)[-1]}")
+            print(f"Mae : {mae_list.get(mode)[-1]}")
+    
+
+    ## save pandas
+    dfs_mode = {}
+    for mode in possible_mode :
+        print(f"\n\n\n==================== {mode} RESULT ====================")
+        df = pd.DataFrame({"MIR" : mir_list.get(mode), "MAE" : mae_list.get(mode)})
+        df.to_csv(f"{mode}_{args.target_metric}.csv", index=False)
+        print(df.describe(include='all'))
+        dfs_mode[mode] = df
+    
+    ##Make a ttest between all couples of mode
+    for mode1 in possible_mode :
+        for mode2 in possible_mode :
+            if mode1 != mode2 :
+                print(f"\n\n\n==================== {mode1} VS {mode2} ====================")
+                print(ttest_ind(dfs_mode.get(mode1)["MIR"], dfs_mode.get(mode2)["MIR"]))
+                print(ttest_ind(dfs_mode.get(mode1)["MAE"], dfs_mode.get(mode2)["MAE"]))
+
+
+if __name__ == "__main__" :
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", help="multi, single, conditionned_single, make_test", default="multi")
+    parser.add_argument("--train", help="On, Off", default="On")
+    parser.add_argument("--target_metric", help="F1, MCC, Acc, G-Mean", default="F1")
+    parser.add_argument("--iteration", help="int, useful only for make_test mode", default="20")
+    args = parser.parse_args()
+
+    if args.mode == "make_test" :
+        make_test(args)
+    else :
+        main(args)
+
 
 
 

@@ -52,7 +52,7 @@ if __name__ == "__main__" :
         nb_caracs = len(DATASET_CHARACTERISTICS)
         for j in tqdm( range(nb_caracs) , desc="Spearman's rank correlation" ):
 
-            data_to_plot = pd.DataFrame(columns= ["Model", "Transformation", "Delta_acc"])
+            data_to_plot = pd.DataFrame(columns= ["Model", "Transformation", "Correlation"])
 
             c = DATASET_CHARACTERISTICS[j] #La caractéristique en cours
             list_carac_through_dataset = {dataset_name : charac_lists[c][dataset_name] for dataset_name in effective_test_dataset} #La liste des valeurs de la caractéristique pour tous les datasets
@@ -115,7 +115,7 @@ if __name__ == "__main__" :
                 
             g = sns.catplot(
                 data=data_to_plot, kind="bar",
-                x="Model", y="Delta_acc", hue="Transformation",
+                x="Model", y="Correlation", hue="Transformation",
                 errorbar="sd", palette="dark", alpha=.6, height=6,
                 legend_out = True
             )
