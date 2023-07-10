@@ -9,8 +9,9 @@ from tqdm import tqdm
 import warnings
 from rocket.rocket_functions import apply_kernels
 import time
+import numpy as np
 
-def analyze_newdata(new_data, method, dataset_name,count_label, unique_labels) :
+def analyze_newdata(new_data, method, dataset_name,count_label) :
     """
         new_data : DataFrame
         method : str
@@ -27,7 +28,7 @@ def analyze_newdata(new_data, method, dataset_name,count_label, unique_labels) :
     new_data["Size"] = [1 if i < np.sum(count_label) else 0.5 for i in range(nb_data)] #Taille de chaque point
     tsne = TSNE(n_components = 2, perplexity = min(nb_data//20, 40))
     data_transformed = tsne.fit_transform(new_data.drop([0, "Synthesized", "Size"], axis = 1))
-    colours = sns.color_palette("hls", len(unique_labels))
+    colours = sns.color_palette("hls", len(count_label))
     new_data.rename(columns = {0:'label'}, inplace = True)
     sns.scatterplot(x=data_transformed[:,0], y=data_transformed[:,1], hue = new_data["label"], style = new_data["Synthesized"], size = new_data["Size"], legend='full', palette=colours, alpha = 0.5)
     
@@ -215,7 +216,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores_matrix.loc["Jit_{}".format(i+1)] = scores
         #Plot TNSE and save synthetized data
         if i == 0 :
-            analyze_newdata(new_data, method = "Jittering", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+            analyze_newdata(new_data, method = "Jittering", dataset_name = dataset_name ,count_label = count_label)
 
 
         print("--> TimeWarping")
@@ -231,7 +232,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores_matrix.loc["TW_{}".format(i+1)] = scores
         #Plot TNSE and save synthetized data
         if i == 0 :
-            analyze_newdata(new_data, method = "TimeWarping", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+            analyze_newdata(new_data, method = "TimeWarping", dataset_name = dataset_name ,count_label = count_label)
 
 
 
@@ -246,7 +247,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores_matrix.loc["Basic_{}".format(i+1)] = scores
         #Plot TNSE and save synthetized data
         if i == 0 :
-            analyze_newdata(new_data, method = "Basic", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+            analyze_newdata(new_data, method = "Basic", dataset_name = dataset_name ,count_label = count_label)
 
 
         print("--> Basic Adasyn")
@@ -259,7 +260,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
             scores_matrix.loc["Ada_{}".format(i+1)] = scores
             #Plot TNSE and save synthetized data
             if i == 0 :
-                analyze_newdata(new_data, method = "Ada", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+                analyze_newdata(new_data, method = "Ada", dataset_name = dataset_name ,count_label = count_label)
         except Exception as e :
             warnings.warn(f"    /!\/!\/!\ Asadyn failed /!\/!\/!\ : {e}")
 
@@ -273,7 +274,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores_matrix.loc["GAN{}".format(i+1)] = scores
         #Plot TNSE and save synthetized data
         if i == 0 :
-            analyze_newdata(new_data, method = "GAN", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+            analyze_newdata(new_data, method = "GAN", dataset_name = dataset_name ,count_label = count_label)
         """
 
         print("--> DTW SMOTE")
@@ -285,7 +286,7 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
         scores_matrix.loc["DTW-SMOTE{}".format(i+1)] = scores
         #Plot TNSE and save synthetized data
         if i == 0 :
-            analyze_newdata(new_data, method = "DTW-SMOTE", dataset_name = dataset_name ,count_label = count_label, unique_labels = unique_labels)
+            analyze_newdata(new_data, method = "DTW-SMOTE", dataset_name = dataset_name ,count_label = count_label)
 
 
     #pd.set_option('display.max_rows', None)

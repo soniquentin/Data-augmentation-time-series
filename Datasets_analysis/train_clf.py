@@ -309,14 +309,12 @@ class Contionned_Single() :
 
         #Train et plot la loss
         history = self.trained_model.fit(X_new, y_new, **kwargs)
-        """
         plt.plot(history.epoch, history.history["loss"], 'g', label='Training loss')
         plt.title('Training loss')
         plt.xlabel('Epochs')
         plt.ylabel('Loss')
         plt.legend()
         plt.show()
-        """
 
 
 
@@ -516,7 +514,7 @@ def main(args) :
         kwargs = {"epochs" : 700, "batch_size" : 16, "callbacks" : [scheduler_callback]}
     
     if args.train == "On" :
-        model.train(X.head(nb_row - 5), y.head(nb_row - 5), **kwargs)
+        model.train(X.head(nb_row - 1) , y.head( nb_row - 1 ), **kwargs)
         #Sauvegarde model
         with open(f"models/{args.mode}_{args.target_metric}.h5", "wb") as f :
             pickle.dump(model, f)
@@ -527,14 +525,26 @@ def main(args) :
     
 
     ### ======= Prédit les valeurs pour un dataset ======= ###
-    y_pred = model.predict(X.tail(5))
+    y_pred = model.predict(X.tail(1))
     y_pred = renormalize_y(y_pred, normalization_dict) #Renormalise les données
-    y_brut = renormalize_y(y.tail(5), normalization_dict) #Renormalise les données
+    y_brut = renormalize_y(y.tail(1), normalization_dict) #Renormalise les données
     #print("\n"*3, y_pred)
-    mae, mi = calc_metric(y_brut.tail(5), y_pred)
+    mae, mi = calc_metric(y_brut, y_pred)
+
+    #Concate les deux dataframe
+    F = pd.concat([y_pred, y_brut], axis=0)
+
+    #Transpose le dataframe
+    F = F.T
+
+    #Save les résultats
+    F.to_csv(f"{args.mode}_{args.target_metric}.csv")
 
     print(f"MIR : {mi}")
     print(f"MAE : {mae}")
+
+    print(f"y_brut : {y_brut}")
+    print(f"y_pred : {y_pred}")
 
 
 def make_test(args):
