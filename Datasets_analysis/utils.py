@@ -104,6 +104,7 @@ def get_charac_and_metric(delta = False) :
                         print(f"Erreur : {model_name} n'a pas de Basic ({e})")
                         exit()
     
+    
     #Si pas de GAN, alors supprime le dataset
     datasets_to_delete = []
     for metric_name in global_delta_metric :

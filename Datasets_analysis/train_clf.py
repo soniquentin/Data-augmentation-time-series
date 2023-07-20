@@ -18,7 +18,7 @@ from sklearn.ensemble import RandomForestRegressor
 import argparse
 import matplotlib.pyplot as plt
 import pickle
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error, make_scorer
 import sys, os
 from sklearn.model_selection import train_test_split
 import random as rd
@@ -475,6 +475,38 @@ def calc_metric(y, y_pred) :
     return mae,mi
 
 
+def import_model(model_name : str) :
+    
+    if model_name == "multi" :
+        model = Multi()
+
+        #Definit le scheduler dans le callback
+        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
+        
+        kwargs = {"epochs" : 700, "batch_size" : 16, "verbose" : 0, "callbacks" : [scheduler_callback]}
+    
+    elif model_name == "single" :
+        model = Single()
+
+        #Definit le scheduler dans le callback
+        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
+
+        kwargs = {"epochs" : 2000, "batch_size" : 16,  "callbacks" : [scheduler_callback]}
+
+    elif args.mode == "conditionned_single" :
+        model = Contionned_Single()
+        
+        #Definit le scheduler dans le callback
+        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 400 else lr * 0.94)
+
+        kwargs = {"epochs" : 700, "batch_size" : 16, "callbacks" : [scheduler_callback]}
+    
+    return model, kwargs
+
+
+
+
+
 def main(args) :
     ### ======= Récupère les caractéristiques et les delta_metric ======= ###
     #charac_lists de la forme : {carac1 : {dataset1 : valeur, dataset2 : valeur, ...}, carac2 : {dataset1 : valeur, dataset2 : valeur, ...}, ...}
@@ -487,34 +519,13 @@ def main(args) :
 
     ### ======= Normalise les données ======= ###
     X, y, normalization_dict = normalize_X_y(X,y_brut)
-    nb_row = X.shape[0]
 
 
     ### ======= Entraîne le modèle ======= ###
-    if args.mode == "multi" :
-        model = Multi()
-
-        #Definit le scheduler dans le callback
-        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
-        
-        kwargs = {"epochs" : 700, "batch_size" : 16, "verbose" : 0, "callbacks" : [scheduler_callback]}
-    elif args.mode == "single" :
-        model = Single()
-
-        #Definit le scheduler dans le callback
-        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
-
-        kwargs = {"epochs" : 2000, "batch_size" : 16,  "callbacks" : [scheduler_callback]}
-    elif args.mode == "conditionned_single" :
-        model = Contionned_Single()
-        
-        #Definit le scheduler dans le callback
-        scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 400 else lr * 0.94)
-
-        kwargs = {"epochs" : 700, "batch_size" : 16, "callbacks" : [scheduler_callback]}
+    model, kwargs = import_model(args.model)
     
     if args.train == "On" :
-        model.train(X.head(nb_row - 1) , y.head( nb_row - 1 ), **kwargs)
+        model.train(X, y, **kwargs)
         #Sauvegarde model
         with open(f"models/{args.mode}_{args.target_metric}.h5", "wb") as f :
             pickle.dump(model, f)
@@ -524,21 +535,23 @@ def main(args) :
             model = pickle.load(f)
     
 
-    ### ======= Prédit les valeurs pour un dataset ======= ###
-    y_pred = model.predict(X.tail(1))
+    ### ======= Prédit les valeurs pour le premier dataset ======= ###
+    #C'est juste à titre d'indication parce que en soit, le modèle s'est normalement entrainé dessus
+    y_pred = model.predict(X.head(1))
     y_pred = renormalize_y(y_pred, normalization_dict) #Renormalise les données
-    y_brut = renormalize_y(y.tail(1), normalization_dict) #Renormalise les données
+    y_brut = renormalize_y(y.head(1), normalization_dict) #Renormalise les données
     #print("\n"*3, y_pred)
     mae, mi = calc_metric(y_brut, y_pred)
 
+
     #Concate les deux dataframe
-    F = pd.concat([y_pred, y_brut], axis=0)
+    #F = pd.concat([y_pred, y_brut], axis=0)
 
     #Transpose le dataframe
-    F = F.T
+    #F = F.T
 
     #Save les résultats
-    F.to_csv(f"{args.mode}_{args.target_metric}.csv")
+    #F.to_csv(f"{args.mode}_{args.target_metric}.csv")
 
     print(f"MIR : {mi}")
     print(f"MAE : {mae}")
@@ -640,13 +653,13 @@ def make_test(args):
 if __name__ == "__main__" :
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", help="multi, single, conditionned_single, make_test", default="multi")
-    parser.add_argument("--train", help="On, Off", default="On")
-    parser.add_argument("--target_metric", help="F1, MCC, Acc, G-Mean", default="F1")
+    parser.add_argument("--model", help="Quel model de predictive model ?", choices = ["multi", "single", "conditionned_single"], default="multi")
+    parser.add_argument("--train", help="On pour entrainer un nouveau model, Off pour prendre un model déjà existant (pas réentrainer) et test pour faire un crossval sur un model", chocies = ["On", "Off", "test"] ,default="On")
+    parser.add_argument("--target_metric", help="Quel target metric utilisé ?", choices = ["F1", "MCC", "Acc", "G-Mean"], default="F1")
     parser.add_argument("--iteration", help="int, useful only for make_test mode", default="20")
     args = parser.parse_args()
 
-    if args.mode == "make_test" :
+    if args.train == "test" :
         make_test(args)
     else :
         main(args)

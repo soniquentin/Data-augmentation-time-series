@@ -1,6 +1,7 @@
-__pycache__/
+__pycache__
 .DS_Store
-datasets/
+datasets/*
+!datasets/.gitkeep
 get.sh
 push.sh
 creation/

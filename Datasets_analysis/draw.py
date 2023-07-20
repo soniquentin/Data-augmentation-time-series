@@ -8,6 +8,7 @@ from tqdm import tqdm
 import os
 from statsmodels.tsa.stattools import acf
 from scipy.signal import periodogram
+import argparse
 
 
 ALL_DATASETS = [
@@ -116,41 +117,44 @@ def m_section(dataset_name, nb_plot = 1):
 
 
             #AUTOCORRELATION
-            autocorrelation = acf(label_samples[random_index], nlags = len(label_samples[random_index]), fft = False)
-            dat = pd.DataFrame(columns = ["num", "value"])
-            for i in range(len(autocorrelation)) :
-                dat.loc[i] = [i, autocorrelation[i]]
-            dat['num'] = dat['num'].astype('int')
+            if args.plot_acf == "Y" :
+                autocorrelation = acf(label_samples[random_index], nlags = len(label_samples[random_index]), fft = False)
+                dat = pd.DataFrame(columns = ["num", "value"])
+                for i in range(len(autocorrelation)) :
+                    dat.loc[i] = [i, autocorrelation[i]]
+                dat['num'] = dat['num'].astype('int')
 
-            fig, ax = plt.subplots(figsize=(10,4))
-            chart = sns.barplot(x="num", y="value", data=dat, ax = ax)
-            chart.set(xlabel=None)
-            chart.set_xticklabels(chart.get_xticklabels(), rotation=30)
-            #ax2 = ax.twinx()
-            #ax2.plot(label_samples[random_index], color = color)
-            #plt.xticks([])
-            plt.title(f"ACF of {dataset_name} n°{random_index} ({label})")
-            plt.xticks(np.arange(0,len(label_samples[random_index]),20), np.arange(0,len(label_samples[random_index]),20))
+                fig, ax = plt.subplots(figsize=(10,4))
+                chart = sns.barplot(x="num", y="value", data=dat, ax = ax)
+                chart.set(xlabel=None)
+                chart.set_xticklabels(chart.get_xticklabels(), rotation=30)
+                #ax2 = ax.twinx()
+                #ax2.plot(label_samples[random_index], color = color)
+                #plt.xticks([])
+                plt.title(f"ACF of {dataset_name} n°{random_index} ({label})")
+                plt.xticks(np.arange(0,len(label_samples[random_index]),20), np.arange(0,len(label_samples[random_index]),20))
 
-            plt.savefig(f"{dataset_folder}/label_{label}_{k}_acf.png", dpi = 300)
-            plt.close()
+                plt.savefig(f"{dataset_folder}/label_{label}_{k}_acf.png", dpi = 300)
+                plt.close()
 
             #Plot example
-            fig, ax = plt.subplots(figsize=(10,4))
-            plt.title(f"Example of {dataset_name} n°{random_index} ({label})")
-            plt.plot(label_samples[random_index], color = color)
-            plt.xticks(np.arange(0,len(label_samples[random_index]),20), np.arange(0,len(label_samples[random_index]),20))
-            plt.savefig(f"{dataset_folder}/label_{label}_{k}.png", dpi = 300)
-            plt.close()
+            if args.plot_example == "Y" :
+                fig, ax = plt.subplots(figsize=(10,4))
+                plt.title(f"Example of {dataset_name} n°{random_index} ({label})")
+                plt.plot(label_samples[random_index], color = color)
+                plt.xticks(np.arange(0,len(label_samples[random_index]),20), np.arange(0,len(label_samples[random_index]),20))
+                plt.savefig(f"{dataset_folder}/label_{label}_{k}.png", dpi = 300)
+                plt.close()
 
-            ##
-            plt.figure(figsize=(10,4))
-            x,y = periodogram(label_samples[random_index])
-            plt.plot(x,y, color = color)
-            plt.title(f"Periodogram of {dataset_name} n°{random_index} ({label})")
-            plt.xticks([ round(0.05*i,2) for i in range(11)], [round(0.05*i,2) for i in range(11)])
-            plt.savefig(f"{dataset_folder}/label_{label}_{k}_periodogram.png", dpi = 300)
-            plt.close()
+            #PERIODOGRAM
+            if args.plot_periodogram == "Y" :
+                plt.figure(figsize=(10,4))
+                x,y = periodogram(label_samples[random_index])
+                plt.plot(x,y, color = color)
+                plt.title(f"Periodogram of {dataset_name} n°{random_index} ({label})")
+                plt.xticks([ round(0.05*i,2) for i in range(11)], [round(0.05*i,2) for i in range(11)])
+                plt.savefig(f"{dataset_folder}/label_{label}_{k}_periodogram.png", dpi = 300)
+                plt.close()
 
 
 
@@ -192,56 +196,32 @@ def d_section(dataset_name):
 
     
 
-
-def raise_usage():
-    usage = """
-Run command : python draw.py <DATASET_NAME> <OPTION=--m>
-
-<OPTION> :
-    --m : dessine seulement une courbe au hasard par label. Rajouter le nombre de plot par label en option. Exemple : python draw.py Wafer --m 3
-          Mettre 'all' comme dataset pour faire sur tous les datasets et sauvegarder
-    --d : trace le domaine de tous les samples de chaque label du dataset
-            """
-    print(usage)
-    exit()
-
-
-
-
 if __name__ == "__main__" :
 
-    try :
-        dataset_name = sys.argv[1]
-    except Exception as e:
-        raise_usage()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--plot_example", help="Y, N", default="Y")
+    parser.add_argument("--plot_smoothness", help="Y, N", default="Y")
+    parser.add_argument("--plot_acf", help="Y, N", default="Y")
+    parser.add_argument("--plot_mean", help="Y, N", default="Y")
+    parser.add_argument("--plot_periodogram", help="Y, N", default="Y")
+    parser.add_argument("--dataset", help="[DATASET NAME], all", default="all")
+    parser.add_argument("--nb_plot", help="<int>", default="1")
+    args = parser.parse_args()
 
-    try :
-        option = sys.argv[2]
-    except Exception as e:
-        option = "--m"
-    
+    dataset_name = args.dataset
+    nb_plot = int(args.nb_plot)
 
-    if "--m" in option : 
-        try :
-            nb_plot = int(sys.argv[3])
-        except Exception as e:
-            nb_plot = 1
-        if dataset_name == 'all' :
-            for dataset in tqdm(ALL_DATASETS) : 
-                m_section(dataset, nb_plot)
-        else :
-            m_section(dataset_name, nb_plot)
-
-    elif "--d" in option :
-        try :
-            nb_plot = int(sys.argv[3])
-        except Exception as e:
-            nb_plot = 1
+    if args.mean == "Y" :
         if dataset_name == 'all' :
             for dataset in tqdm(ALL_DATASETS) : 
                 d_section(dataset)
         else :
             d_section(dataset_name)
-
+        
+    
+    if dataset_name == 'all' :
+        for dataset in tqdm(ALL_DATASETS) : 
+            m_section(dataset, nb_plot, args)
     else :
-        raise_usage()
+        m_section(dataset_name, nb_plot, args)
+

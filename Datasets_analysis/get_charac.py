@@ -185,7 +185,6 @@ def calc_IR_ID(data,file_name) -> (float,float) :
 
 
 
-
 def calc_smoothness_each_label(data,file_name) -> (dict, int, int) :
     """
     Calcule la smoothness pour chaque label
@@ -222,7 +221,6 @@ def calc_smoothness_each_label(data,file_name) -> (dict, int, int) :
         """
     
     return label_dict, np.mean( np.array(list(label_dict.values())) ) , np.std( np.array(list(label_dict.values())) )
-
 
 
 
