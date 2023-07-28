@@ -22,6 +22,8 @@ from ydata_synthetic.preprocessing.timeseries import processed_stock
 from ydata_synthetic.synthesizers.timeseries import TimeGAN
 sys.path.append(parent_path + "/dtw_smote")
 from dtw_smote import new_samples
+sys.path.append(parent_path + "/dtw_cf")
+from dtw_cf import cf_augment
 
 
 def plot_examples(data_label, new_data, dataset_name, label, da_method) :
@@ -275,6 +277,16 @@ def dtw_smote(data, dataset_name, sampling_strategy = None) :
             datafinal = pd.concat([datafinal,new_data], axis=0)
     
     return datafinal
+
+
+
+def dtw_counterfactual(data) :
+    df, _ = cf_augment(data, initializer = "kmeans++", mode = 3)
+
+    return df
+
+    
+
         
         
 

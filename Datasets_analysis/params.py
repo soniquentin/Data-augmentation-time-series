@@ -46,7 +46,7 @@ DATASETS_TO_TEST = [
 "Chinatown"]
 """
 
-DATASETS_TO_TEST = ["StockMarket"]
+DATASETS_TO_TEST = ["Strawberry"]
 
 
 #DATASETS_TO_TEST = ['Haptics', 'SyntheticControl', 'Worms', 'Computers', 'HouseTwenty',  'Chinatown', 'UWaveGestureLibraryAll', 'Strawberry', 'Car', 'GunPointAgeSpan',  'BeetleFly', 'Wafer', 'CBF', 'Adiac', 'ItalyPowerDemand',  'Trace', 'PigAirwayPressure', 'ShapesAll', 'Beef',  'Mallat', 'GunPointOldVersusYoung', 'MiddlePhalanxTW',  'Meat', 'Herring', 'MiddlePhalanxOutlineCorrect', 'InsectEPGRegularTrain', 'FordA', 'SwedishLeaf', 'InlineSkate',  'UMD', 'CricketY',                'SmoothSubspace', 'OSULeaf', 'Ham', 'CricketX', 'SonyAIBORobotSurface1', 'ToeSegmentation1', 'ScreenType', 'PigArtPressure', 'SmallKitchenAppliances', 'Crop', 'MoteStrain',  'ECGFiveDays', 'Wine', 'SemgHandMovementCh2', 'FreezerSmallTrain', 'UWaveGestureLibraryZ', 'NonInvasiveFetalECGThorax1', 'TwoLeadECG', 'Lightning7', 'Phoneme', 'SemgHandSubjectCh2',  'MiddlePhalanxOutlineAgeGroup',  'DistalPhalanxOutlineCorrect', 'DistalPhalanxTW', 'FacesUCR', 'ECG5000',   'HandOutlines', 'GunPointMaleVersusFemale', 'Coffee', 'Rock', 'MixedShapesSmallTrain',  'FordB', 'FiftyWords', 'InsectWingbeatSound', 'MedicalImages', 'Symbols', 'ArrowHead', 'ProximalPhalanxOutlineAgeGroup', 'EOGHorizontalSignal', 'TwoPatterns', 'ChlorineConcentration', 'Plane', 'ACSF1', 'PhalangesOutlinesCorrect', 'ShapeletSim', 'DistalPhalanxOutlineAgeGroup', 'InsectEPGSmallTrain',  'EOGVerticalSignal', 'CricketZ', 'FaceFour', 'RefrigerationDevices',  'MixedShapesRegularTrain', 'GunPoint',  'ECG200', 'ToeSegmentation2', 'WordSynonyms', 'Fungi', 'BirdChicken', 'SemgHandGenderCh2', 'OliveOil', 'BME', 'LargeKitchenAppliances', 'SonyAIBORobotSurface2', 'Lightning2', 'EthanolLevel', 'UWaveGestureLibraryX', 'FreezerRegularTrain', 'Fish', 'ProximalPhalanxOutlineCorrect', 'NonInvasiveFetalECGThorax2', 'UWaveGestureLibraryY', 'FaceAll', 'StarLightCurves', 'ElectricDevices', 'Earthquakes', 'PowerCons', 'DiatomSizeReduction', 'CinCECGTorso', 'PigCVP', 'ProximalPhalanxTW']
@@ -59,18 +59,18 @@ group_size = 3
 
 #(Model, nb_iterations)
 
-MODELS_TO_TEST = [ { "Name" : "NN", "Iterations" : 2, "Make Test" : True },
-                   { "Name" : "LSTM", "Iterations" : 2, "Make Test" : False },
-                   { "Name" : "RF", "Iterations" : 2, "Make Test" : True },
-                   { "Name" : "TS-RF", "Iterations" : 2, "Make Test" : True },
-                   { "Name" : "DTW_NEIGBOURS", "Iterations" : 3, "Make Test" : False },
-                   { "Name" : "KERNEL", "Iterations" : 2, "Make Test" : True },
-                   { "Name" : "SHAPELET", "Iterations" : 2, "Make Test" : True }
+MODELS_TO_TEST = [ { "Name" : "NN", "Iterations" : 5, "Make Test" : True },
+                   { "Name" : "LSTM", "Iterations" : 5, "Make Test" : False },
+                   { "Name" : "RF", "Iterations" : 5, "Make Test" : True },
+                   { "Name" : "TS-RF", "Iterations" : 5, "Make Test" : True },
+                   { "Name" : "DTW_NEIGBOURS", "Iterations" : 5, "Make Test" : False },
+                   { "Name" : "KERNEL", "Iterations" : 5, "Make Test" : True },
+                   { "Name" : "SHAPELET", "Iterations" : 5, "Make Test" : True }
                   ]
 
 
 
-ALL_TRANSFO = ["ROS", "Jit", "TW", "Basic", "Ada", "GAN", "DTW-SMOTE"] #N'a aucune influence sur les tests, c'est juste à titre indicatif
+ALL_TRANSFO = ["ROS", "Jit", "TW", "Basic", "Ada", "GAN", "DTW-SMOTE", "DTW-CF"] #N'a aucune influence sur les tests, c'est juste à titre indicatif
 
 #Les métriques à utiliser pour l'analyse de la performance
 summary_metric = ["F1", "G-mean", "Acc", "MCC"]

@@ -507,7 +507,7 @@ def import_model(model_name : str) :
 
 
 
-def main(args) :
+def train(args) :
     ### ======= Récupère les caractéristiques et les delta_metric ======= ###
     #charac_lists de la forme : {carac1 : {dataset1 : valeur, dataset2 : valeur, ...}, carac2 : {dataset1 : valeur, dataset2 : valeur, ...}, ...}
     #global_delta_metric de la forme : { Metric1 : {dataset1 : {model1 : {method_DA1 : Delta_Acc, method_DA2 : Delta_Acc, ...}, ...} ...} ...}
@@ -560,109 +560,47 @@ def main(args) :
     print(f"y_pred : {y_pred}")
 
 
-def make_test(args):
-    nb_interation = int(args.iteration)
-    possible_mode = ["multi", "single", "conditionned_single"]
+def evaluate_model(args):
 
-    mir_list = {mode : [] for mode in possible_mode}
-    mae_list = {mode : [] for mode in possible_mode}
+    ### ======= Récupère les caractéristiques et les delta_metric ======= ###
+    #charac_lists de la forme : {carac1 : {dataset1 : valeur, dataset2 : valeur, ...}, carac2 : {dataset1 : valeur, dataset2 : valeur, ...}, ...}
+    #global_delta_metric de la forme : { Metric1 : {dataset1 : {model1 : {method_DA1 : Delta_Acc, method_DA2 : Delta_Acc, ...}, ...} ...} ...}
+    global_delta_metric, charac_lists, _, all_models, all_transfo = get_charac_and_metric()
+    X, y_brut = convert_into_data(global_delta_metric, charac_lists, all_models, all_transfo, args.target_metric)
 
-    for i in range(nb_interation) :
+    #print(y_brut.head(5))
+    X.drop("Dataset", axis=1, inplace=True)
 
-        print(f"\n\n\n==================== ITERATION {i+1} ====================")
-
-        for mode in possible_mode :
-
-            print(f"\nMode : {mode}")
-
-            ### ======= Récupère les caractéristiques et les delta_metric ======= ###
-            #charac_lists de la forme : {carac1 : {dataset1 : valeur, dataset2 : valeur, ...}, carac2 : {dataset1 : valeur, dataset2 : valeur, ...}, ...}
-            #global_delta_metric de la forme : { Metric1 : {dataset1 : {model1 : {method_DA1 : Delta_Acc, method_DA2 : Delta_Acc, ...}, ...} ...} ...}
-            global_delta_metric, charac_lists, _, all_models, all_transfo = get_charac_and_metric()
-            X, y_brut = convert_into_data(global_delta_metric, charac_lists, all_models, all_transfo, args.target_metric)
-
-            #print(y_brut.head(5))
-            X.drop("Dataset", axis=1, inplace=True)
-
-            ### ======= Normalise les données ======= ###
-            X, y, normalization_dict = normalize_X_y(X,y_brut)
-
-            ### ======= Slit les données en train et test ======= ###
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=rd.randint(0,1000))
+    ### ======= Normalise les données ======= ###
+    X, y, normalization_dict = normalize_X_y(X,y_brut)
 
 
-            ### ======= Entraîne le modèle ======= ###
-            if mode == "multi" :
-                model = Multi()
+    ### ======= Crossval sur le modèle ======= ###
+    model, kwargs = import_model(args.model)
 
-                #Definit le scheduler dans le callback
-                scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
-                
-                kwargs = {"epochs" : 700, "batch_size" : 16, "verbose" : 0, "callbacks" : [scheduler_callback]}
-            elif mode == "single" :
-                model = Single()
+    mae_scorer = make_scorer(mean_absolute_error)
+    scores = cross_val_score(model, 
+                            X, y, cv = args.cv,
+                            scoring = scorer)
 
-                #Definit le scheduler dans le callback
-                scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 1000 else lr * 0.99)
-
-                kwargs = {"epochs" : 2000, "batch_size" : 16,  "callbacks" : [scheduler_callback], "verbose" : 0}
-            elif mode == "conditionned_single" :
-                model = Contionned_Single()
-                
-                #Definit le scheduler dans le callback
-                scheduler_callback = tf.keras.callbacks.LearningRateScheduler(lambda epoch,lr : lr if epoch < 400 else lr * 0.94)
-
-                kwargs = {"epochs" : 700, "batch_size" : 16, "callbacks" : [scheduler_callback], "verbose" : 0}
-            
-
-            model.train(X_train, y_train, **kwargs)
+    print('MAE :', scores.mean()*(normalization_dict["y_max"] - normalization_dict["y_min"]) )
 
 
-            ### ======= Prédit les valeurs pour un dataset ======= ###
-            y_pred = model.predict(X_test)
-            y_pred = renormalize_y(y_pred, normalization_dict) #Renormalise les données
-            y_test = renormalize_y(y_test, normalization_dict) #Renormalise les données
-            #print("\n"*3, y_pred)
-            mae, mi = calc_metric(y_test, y_pred)
-
-            mir_list.get(mode).append(mi)
-            mae_list.get(mode).append(mae)
-        
-            print(f"Mir : {mir_list.get(mode)[-1]}")
-            print(f"Mae : {mae_list.get(mode)[-1]}")
-    
-
-    ## save pandas
-    dfs_mode = {}
-    for mode in possible_mode :
-        print(f"\n\n\n==================== {mode} RESULT ====================")
-        df = pd.DataFrame({"MIR" : mir_list.get(mode), "MAE" : mae_list.get(mode)})
-        df.to_csv(f"{mode}_{args.target_metric}.csv", index=False)
-        print(df.describe(include='all'))
-        dfs_mode[mode] = df
-    
-    ##Make a ttest between all couples of mode
-    for mode1 in possible_mode :
-        for mode2 in possible_mode :
-            if mode1 != mode2 :
-                print(f"\n\n\n==================== {mode1} VS {mode2} ====================")
-                print(ttest_ind(dfs_mode.get(mode1)["MIR"], dfs_mode.get(mode2)["MIR"]))
-                print(ttest_ind(dfs_mode.get(mode1)["MAE"], dfs_mode.get(mode2)["MAE"]))
 
 
 if __name__ == "__main__" :
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", help="Quel model de predictive model ?", choices = ["multi", "single", "conditionned_single"], default="multi")
-    parser.add_argument("--train", help="On pour entrainer un nouveau model, Off pour prendre un model déjà existant (pas réentrainer) et test pour faire un crossval sur un model", chocies = ["On", "Off", "test"] ,default="On")
+    parser.add_argument("--train", help="On pour entrainer un nouveau model, Off pour prendre un model déjà existant (pas réentrainer) et evaluate_model pour faire un crossval sur un model", chocies = ["On", "Off", "evaluate_model"] ,default="On")
     parser.add_argument("--target_metric", help="Quel target metric utilisé ?", choices = ["F1", "MCC", "Acc", "G-Mean"], default="F1")
-    parser.add_argument("--iteration", help="int, useful only for make_test mode", default="20")
+    parser.add_argument("--cv", help="Nombre de fold dans le crossval. Utile que quand train = evaluate_model", default="3")
     args = parser.parse_args()
 
-    if args.train == "test" :
+    if args.train == "evaluate_model" :
         make_test(args)
     else :
-        main(args)
+        train(args)
 
 
 

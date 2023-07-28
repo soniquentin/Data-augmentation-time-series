@@ -289,6 +289,18 @@ def make_score_test(data, data_test, dataset_name, model_name = "RF", nb_iterati
             analyze_newdata(new_data, method = "DTW-SMOTE", dataset_name = dataset_name ,count_label = count_label)
 
 
+        print("--> DTW-CONTREFACTUAL")
+        new_data = dtw_counterfactual(data)
+        scores = train(model, new_data, data_test, **kwargs)
+        scores["Model"] = model_name
+        scores["Transformation"] = "DTW-CF"
+        scores["Dataset"] = dataset_name
+        scores_matrix.loc["DTW-CF{}".format(i+1)] = scores
+        #Plot TNSE and save synthetized data
+        if i == 0 :
+            analyze_newdata(new_data, method = "DTW-CF", dataset_name = dataset_name ,count_label = count_label)
+
+
     #pd.set_option('display.max_rows', None)
 
     return scores_matrix
